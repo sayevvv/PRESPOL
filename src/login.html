@@ -1,0 +1,69 @@
+<html>
+ <head>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <script>
+   function togglePasswordVisibility() {
+     const passwordInput = document.getElementById('password');
+     const passwordToggle = document.getElementById('password-toggle');
+     if (passwordInput.type === 'password') {
+       passwordInput.type = 'text';
+       passwordToggle.classList.remove('fa-eye');
+       passwordToggle.classList.add('fa-eye-slash');
+     } else {
+       passwordInput.type = 'password';
+       passwordToggle.classList.remove('fa-eye-slash');
+       passwordToggle.classList.add('fa-eye');
+     }
+   }
+  </script>
+ </head>
+ <body class="h-screen flex flex-col md:flex-row">
+  <!-- Right Side (Image) -->
+  <div class="w-full md:w-1/2 relative">
+   <img alt="Graduation ceremony in a large hall" class="w-full h-64 md:h-full object-cover" height="600" src="img/imgLogin.png" width="800"/>
+   <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent">
+   </div>
+   <div class="absolute bottom-0 left-0 p-8 text-white">
+    <h1 class="text-2xl md:text-4xl font-bold mb-2">
+     Catat Prestasimu Disini.
+    </h1>
+    <p class="text-sm md:text-lg mb-4">
+     Jadilah Mahasiswa Berprestasi, Torehkan Eksistensi!
+    </p>
+    <div class="flex items-center">
+     <div class="w-12 h-12 bg-gray-300 rounded-full mr-4">
+     </div>
+     <p>
+      lorem ipsum dolor
+     </p>
+    </div>
+   </div>
+  </div>
+  <!-- Left Side (Form) -->
+  <div class="w-full md:w-1/2 flex flex-col justify-center items-center bg-white relative">
+   <div class="absolute top-4 left-4 flex items-center">
+    <img alt="prespol logo" class="mb-4" height="50" src="img/logo prespol.png" width="150"/>
+   </div>
+   <div class="w-2/3 mt-20 md:mt-0">
+    <h2 class="text-xl font-semibold mb-4">
+     Masuk ke Akunmu
+    </h2>
+    <form>
+     <div class="mb-4">
+      <input class="w-full px-4 py-2 border rounded-md" placeholder="Username" type="text"/>
+     </div>
+     <div class="mb-4 relative">
+      <input class="w-full px-4 py-2 border rounded-md pr-10" id="password" placeholder="Password" type="password"/>
+      <i class="fas fa-eye absolute right-3 top-3 cursor-pointer" id="password-toggle" onclick="togglePasswordVisibility()">
+      </i>
+     </div>
+     <button class="w-3/4 bg-gray-800 text-white py-1.5 rounded-full mx-auto block" type="submit">
+      Masuk
+     </button>
+    </form>
+   </div>
+  </div>
+ </body>
+</html>
