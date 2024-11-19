@@ -49,7 +49,7 @@
             <a href="#" class="flex items-center text-gray-700 hover:text-orange-500">
                 <i class="fas fa-home mr-2"></i> Beranda
             </a>
-                <a href="submit_prestasi.php" class="flex items-center text-gray-700 hover:text-orange-500">
+                <a href="inputPrestasi.php" class="flex items-center text-gray-700 hover:text-orange-500">
                     <i class="fas fa-plus-circle mr-2"></i> Tambah Prestasi
                 </a>
                 <a href="view_progress.php" class="flex items-center text-gray-700 hover:text-orange-500">
@@ -123,7 +123,7 @@
                 <h1 class="text-3xl font-bold">Selamat Datang</h1>
                 <h2 class="text-5xl font-bold text-black">Champions!</h2>
                 <p class="text-orange-500 mt-2">Kamu peringkat</p>
-                <button onclick="window.location.href='input.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
+                <button onclick="window.location.href='inputPrestasi.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
                     Tambah Prestasi
                 </button>
             </div>
