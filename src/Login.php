@@ -11,7 +11,7 @@ class Login {
     }
 
     public function authenticate($username, $password) {
-        $sql = "SELECT u.user_id, u.username, u.password, r.role_name 
+        $sql = "SELECT u.user_id, u.username, u.password, r.role_id 
                 FROM [user] u
                 JOIN role r ON u.role_id = r.role_id
                 WHERE u.username = ?";
@@ -28,7 +28,7 @@ class Login {
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['user_id'];
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['role'] = $user['role_name'];
+                $_SESSION['role'] = $user['role_id'];
                 return true;
             }
         }
@@ -43,14 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $login = new Login();
     if ($login->authenticate($username, $password)) {
-        // Redirect berdasarkan role
-        if ($_SESSION['role'] == 'Super Admin') {
-            header('Location: home.php');
-        } elseif ($_SESSION['role'] == 'Mahasiswa') {
-            header('Location: homeMahasiswa.php');
-        } elseif ($_SESSION['role'] == 'Kajur') {
-            header('Location: home.php');
-        }
+        header('Location: home.php');
         exit;
     } else {
         echo "<script>alert('Username atau password salah!');</script>";
