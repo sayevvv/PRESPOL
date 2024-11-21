@@ -1,5 +1,24 @@
 <?php 
 session_start();
+include_once 'classes/User.php';
+if (!isset($_SESSION['role']) || !isset($_SESSION['username'])) {
+    header('Location: login.html');
+    exit();
+}
+
+if($_SESSION['role'] == '2'){
+    header('Location: home.php');
+}
+
+$user = null;
+    
+    if($_SESSION['role'] == '1'){
+        include_once 'classes/Admin.php';
+        $user = new Admin();
+    } else if($_SESSION['role'] == '3'){
+        include_once 'classes/Mahasiswa.php';
+        $user = new Mahasiswa();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,56 +32,25 @@ session_start();
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-    
+    <style>
+        body {
+        background: url('img/homepageGradient.png') no-repeat center center fixed; /* Fixed background */
+        background-size: cover; /* Ensures the image covers the entire area */
+        flex: 1; /* Makes the main content expand to fill the space */
+        }
+
+        main {
+            margin-left: 370px;
+        }
+</style>
 </head>
 <body class="bg-white font-sans min-h-screen flex">
-    <div class="flex">
+    <div class="flex w-4/5">
         <!-- Sidebar -->
-        <aside class="w-2/6 bg-white h-full border-r border-r border-gray-200">
-            <div class="flex items-center justify-center py-6">
-                <i class="fas fa-trophy text-orange-500 text-4xl"></i>
-                <span class="ml-2 text-xl font-bold ">prespol</span>
-            </div>
-            <nav class="mt-10">
-                <ul>
-                    <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-home"></i>
-                            <span class="ml-4">Beranda</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 bg-gray-200">
-                            <i class="fas fa-trophy"></i>
-                            <span class="ml-4">Tambah prestasi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-list"></i>
-                            <span class="ml-4">List Prestasi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-user"></i>
-                            <span class="ml-4">Profil</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-file-alt"></i>
-                            <span class="ml-4">Pengajuan</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-cog"></i>
-                            <span class="ml-4">Setelan</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+        <aside class="bg-white p-6 lg:w-1/5 h-screen fixed top-0 left-0 border-r">
+        <?php 
+            echo $user->sidebar();
+        ?>
         </aside>
         <!-- Main Content -->
         <main class="w-4/5 p-10">
@@ -71,7 +59,7 @@ session_start();
                 <h1 class="text-3xl font-bold">Tambah Prestasi</h1>
             </header>
             <!-- Form -->
-            <form class="space-y-4" action="" method="post" enctype="multipart/form-data">
+            <form id="prestasiForm" class="space-y-4" action="InputProses.php" method="post" enctype="multipart/form-data">
                 <div>
                     <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
                     <input type="text" id="nim" name="nim" placeholder="NIM" class="w-full p-3 border border-gray-300 rounded-lg">
@@ -85,7 +73,7 @@ session_start();
                 <div>
                     <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori Juara</label>
                     <div class="relative">
-                        <select id="kategori" name="juara" class="w-full p-3 border border-gray-300 rounded-lg appearance-none">
+                        <select id="kategori" name="id_juara" class="w-full p-3 border border-gray-300 rounded-lg appearance-none">
                             <option value="1">Juara 1</option>
                             <option value="2">Juara 2</option>
                             <option value="3">Juara 3</option>
@@ -109,18 +97,22 @@ session_start();
                 </div>
             
                 <div>
-                    <label for="dospem" class="block text-sm font-medium text-gray-700">Dosen Pembimbing 1</label>
-                    <input type="text" id="dospem" name="dospem1" placeholder="Dospem" class="w-full p-3 border border-gray-300 rounded-lg">
+                    <label for="dospem1" class="block text-sm font-medium text-gray-700">Dosen Pembimbing 1</label>
+                    <input type="text" id="dospem1" name="dosen_pembimbing_1" placeholder="Dosen Pembimbing" class="w-full p-3 border border-gray-300 rounded-lg">
                 </div>
                 <div>
-                    <label for="dospem" class="block text-sm font-medium text-gray-700">Dosen Pembimbing 2</label>
-                    <input type="text" id="dospem" name="dospem2" placeholder="Dospem" class="w-full p-3 border border-gray-300 rounded-lg">
+                    <label for="dospem2" class="block text-sm font-medium text-gray-700">Dosen Pembimbing 2</label>
+                    <input type="text" id="dospem2" name="dosen_pembimbing_2" placeholder="Dosen Pembimbing" class="w-full p-3 border border-gray-300 rounded-lg">
+                </div>
+                <div>
+                    <label for="peserta" class="block text-sm font-medium text-gray-700">Jumlah Peserta</label>
+                    <input type="text" id="peserta" name="jumlah_peserta" placeholder="Jumlah Peserta" class="w-full p-3 border border-gray-300 rounded-lg">
                 </div>
             
                 <div>
                     <label for="tingkat" class="block text-sm font-medium text-gray-700">Tingkat Kompetisi</label>
                     <div class="relative">
-                        <select id="tingkat" name="kategori" class="w-full p-3 border border-gray-300 rounded-lg appearance-none">
+                        <select id="tingkat" name="id_kategori" class="w-full p-3 border border-gray-300 rounded-lg appearance-none">
                             <option value="1">Internasional</option>
                             <option value="2">Nasional</option>
                             <option value="3">Regional</option>
@@ -129,16 +121,18 @@ session_start();
                         <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2"></i>
                     </div>
                 </div>
+
+                
             
                 <div>
                     <h2 class="text-xl font-bold mt-6 mb-3">Waktu Pelaksanaan</h2>
                     <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
-                    <input type="text" id="tanggal_mulai" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Select a date">
+                    <input type="text" id="tanggal_mulai" name="tanggal_mulai" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Select a date">
                 </div>
             
                 <div>
                     <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
-                    <input type="text" id="tanggal_selesai" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Select a date">
+                    <input type="text" id="tanggal_selesai" name="tanggal_selesai" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Select a date">
                 </div>
                 <!-- Attachments Section -->
                 <section>
@@ -146,11 +140,11 @@ session_start();
                     <div class="space-y-4">
                         <div>
                             <label for="foto_lomba" class="block text-sm font-medium text-gray-700">Foto Lomba</label>
-                            <input type="file" id="foto_lomba" name="foto_lomba" accept="image/*" class="w-full p-3 border border-gray-300 rounded-lg">
+                            <input type="file" id="foto_lomba" name="foto_kompetisi" accept="image/*" class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
                         <div>
                             <label for="flyer_lomba" class="block text-sm font-medium text-gray-700">Poster Lomba</label>
-                            <input type="file" id="flyer_lomba" name="flyer_lomba" accept=".pdf,image/*"  class="w-full p-3 border border-gray-300 rounded-lg">
+                            <input type="file" id="flyer_lomba" name="flyer" accept=".pdf,image/*"  class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
                         <div>
                             <label for="sertifikat" class="block text-sm font-medium text-gray-700">Sertifikat</label>
@@ -162,7 +156,7 @@ session_start();
                         </div>
                         <div>
                             <label for="upload_karya" class="block text-sm font-medium text-gray-700">Upload Karya</label>
-                            <input type="file" id="upload_karya" name="upload_karya" class="w-full p-3 border border-gray-300 rounded-lg">
+                            <input type="file" id="upload_karya" name="karya_kompetisi" class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
                     </div>
                 </section>
@@ -171,7 +165,7 @@ session_start();
             </form>
         </main>
         <!-- Note Section -->
-        <aside class="w-2/5 p-10 py-32">
+        <aside class="w-1/5 p-10 py-32 fixed right-0">
             <div class="bg-white p-6 border border-gray-300 rounded-lg">
                 <h2 class="text-xl font-bold text-orange-500">Note!</h2>
                 <p class="mt-4 text-gray-700">Lorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor</p>
@@ -225,6 +219,48 @@ session_start();
             });
         });
     </script>
-    
+    <script>
+        $(document).ready(function () {
+            $("#prestasiForm").on("submit", function (e) {
+                e.preventDefault(); // Mencegah form submit secara default
+
+                // Ambil data dari form
+                var formData = new FormData(this);
+
+                // Kirim data menggunakan AJAX
+                $.ajax({
+                    url: "InputProses.php", // URL tujuan pengiriman
+                    type: "POST", // Metode pengiriman
+                    data: formData, // Data dari form
+                    processData: false, // Jangan proses data (karena menggunakan FormData)
+                    contentType: false, // Jangan tetapkan jenis konten (otomatis dengan FormData)
+                    success: function (response) {
+                        // Tampilkan notifikasi sukses atau error berdasarkan respons server
+                        try {
+                            var jsonResponse = JSON.parse(response);
+                            if (jsonResponse.status === "success") {
+                                alert("Data berhasil disimpan!");
+                                console.log(jsonResponse.message); // Log respons sukses
+                                // Reset form setelah berhasil
+                                $("#prestasiForm")[0].reset();
+                            } else {
+                                alert("Terjadi kesalahan: " + jsonResponse.message);
+                                console.error(jsonResponse.message); // Log respons error
+                            }
+                        } catch (error) {
+                            alert("Gagal memproses respons dari server.");
+                            console.error("Parsing error:", error);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Tangani error pada proses AJAX
+                        alert("Terjadi kesalahan saat mengirim data: " + error);
+                        console.error("Error details:", xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
