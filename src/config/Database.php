@@ -1,6 +1,6 @@
 <?php 
 class Database {
-    private $serverName = 'ARCH';
+    private $serverName = 'WARMACHINE';
     private $connectionInfo = array( "Database"=>"Prespol");
     private $connection;
 
