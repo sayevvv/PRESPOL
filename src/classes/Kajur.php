@@ -58,20 +58,9 @@ class Kajur extends User {
             WHERE no_induk = ?";
             $params = [$username];
 
-            // Siapkan query menggunakan prepared statement
-            $stmt = sqlsrv_prepare($db->getConnection(), $sql, $params);
-
-            if ($stmt === false) {
-                throw new Exception('Gagal mempersiapkan statement: ' . print_r(sqlsrv_errors(), true));
-            }
-
-            // Eksekusi query
-            if (sqlsrv_execute($stmt) === false) {
-                throw new Exception('Gagal mengeksekusi statement: ' . print_r(sqlsrv_errors(), true));
-            }
 
             // Ambil hasil query
-            $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+            $row = $this->db->fetchOne($sql, $params);
             if ($row) {
                 $nama = $row['nama'] ?? 'Unknown';
                 $fotoProfile = $row['foto_profile'] ?? 'default-profile.png';

@@ -53,9 +53,11 @@
 
 <body class="bg-gradient-to-r from-white to-orange-100 min-h-screen flex flex-col lg:flex-row">
     <!-- Sidebar -->
+    <aside class="w-1/5 p-10 py-32 fixed right-0">
     <?php 
-    echo $user->sidebar();
+        echo $user->sidebar();
     ?>
+    </aside>
     
     <!-- Main Content -->
     <main class="flex-1 p-6 pt-8"> <!-- Added pt-8 for top padding -->
