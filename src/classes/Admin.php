@@ -4,7 +4,6 @@ class Admin extends User{
     public function sidebar(){
         return 
         <<<HTML
-            <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r">
                 <div class="flex items-center mb-8">
                     <i class="fas fa-trophy text-orange-500 text-2xl"></i>
                     <span class="ml-2 text-xl font-bold">Prespol</span>
@@ -55,7 +54,6 @@ class Admin extends User{
                     </li>
                 </ul>
                 </nav>
-            </aside>
         HTML;
     }
 
@@ -70,20 +68,7 @@ class Admin extends User{
             WHERE no_induk = ?";
             $params = [$username];
 
-            // Siapkan query menggunakan prepared statement
-            $stmt = sqlsrv_prepare($db->getConnection(), $sql, $params);
-
-            if ($stmt === false) {
-                throw new Exception('Gagal mempersiapkan statement: ' . print_r(sqlsrv_errors(), true));
-            }
-
-            // Eksekusi query
-            if (sqlsrv_execute($stmt) === false) {
-                throw new Exception('Gagal mengeksekusi statement: ' . print_r(sqlsrv_errors(), true));
-            }
-
-            // Ambil hasil query
-            $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+            $row = $this->db->fetchOne($sql, $params);
             if ($row) {
                 $nama = $row['nama'] ?? 'Unknown';
                 $fotoProfile = $row['foto_profile'] ?? 'default-profile.png';
@@ -120,5 +105,65 @@ class Admin extends User{
         }
     }
 
+    public function getPrestasiPendingList() {
+        // Query untuk mendapatkan data dari VIEW
+        $query = "SELECT id_pending, nama_mahasiswa, nama_kompetisi, nama_kategori, jenis_juara FROM vw_PrestasiPending";
+    
+        // Eksekusi query
+        $stmt = sqlsrv_query($this->db->getConnection(), $query);
+    
+        if ($stmt === false) {
+            throw new Exception('Gagal mengambil data prestasi pending: ' . print_r(sqlsrv_errors(), true));
+        }
+    
+        $result = [];
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $result[] = $row;
+        }
+    
+        return $result;
+    }
+    
+    
+
+    public function getPrestasiPendingDetail($id_pending) {
+        // Query untuk mendapatkan data detail dari VIEW
+        $query = "
+            SELECT * 
+            FROM vw_PrestasiPending 
+            WHERE id_pending = ?
+        ";
+    
+        $params = [$id_pending];
+        return $this->db->fetchOne($query, $params);
+    }
+    
+
+    public function validatePrestasi($id_pending, $status, $deskripsi) {
+        try {
+            // Panggil prosedur untuk memindahkan atau memperbarui data
+            $queryMove = "EXEC sp_ValidatePrestasi @id_pending = ?, @status_validasi = ?, @deskripsi = ?";
+            $params = [$id_pending, $status, $deskripsi];
+    
+            // Jalankan prosedur
+            $this->db->executeProcedure($queryMove, $params);
+    
+            // Periksa hasil dan kembalikan pesan sesuai status
+            if ($status === 'valid') {
+                return "Validasi berhasil dilakukan dan data dipindahkan ke tabel prestasi.";
+            } else {
+                return "Prestasi ditolak. Status validasi diperbarui.";
+            }
+        } catch (Exception $e) {
+            // Tangani kesalahan
+            throw new Exception("Kesalahan validasi: " . $e->getMessage());
+        }
+    }
+    
+    
+
+    public function closeConnection() {
+        $this->db->close();
+    }
 }
 ?>

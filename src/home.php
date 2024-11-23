@@ -1,4 +1,5 @@
 <?php
+
     include_once 'config/Database.php';
     include_once 'classes/User.php';
 
@@ -53,9 +54,11 @@
 
 <body class="bg-gradient-to-r from-white to-orange-100 min-h-screen flex flex-col lg:flex-row">
     <!-- Sidebar -->
+    <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r">
     <?php 
-    echo $user->sidebar();
+        echo $user->sidebar();
     ?>
+    </aside>
     
     <!-- Main Content -->
     <main class="flex-1 p-6 pt-8"> <!-- Added pt-8 for top padding -->
