@@ -1,4 +1,5 @@
 <?php
+
     include_once 'config/Database.php';
     include_once 'classes/User.php';
 
@@ -53,7 +54,7 @@
 
 <body class="bg-gradient-to-r from-white to-orange-100 min-h-screen flex flex-col lg:flex-row">
     <!-- Sidebar -->
-    <aside class="w-1/5 p-10 py-32 fixed right-0">
+    <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r">
     <?php 
         echo $user->sidebar();
     ?>
