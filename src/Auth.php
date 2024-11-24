@@ -2,7 +2,7 @@
 session_start();
 include 'config/database.php';
 
-class Login {
+class Auth {
     private $connection;
 
     public function __construct() {
@@ -35,19 +35,16 @@ class Login {
 
         return false;
     }
-}
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    $login = new Login();
-    if ($login->authenticate($username, $password)) {
-        header('Location: home.php');
-        exit;
-    } else {
-        echo "<script>alert('Username atau password salah!');</script>";
+    public static function checkLogin() {
+        // Cek apakah 'role' dan 'username' ada dalam sesi
+        if (!isset($_SESSION['role']) || !isset($_SESSION['username'])) {
+            // Jika tidak, arahkan ke halaman login
+            header('Location: login.html');
+            exit();
+        }
     }
 }
+
 ?>
 
