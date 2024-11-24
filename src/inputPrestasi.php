@@ -32,7 +32,6 @@ $user = null;
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
         background: url('img/homepageGradient.png') no-repeat center center fixed; /* Fixed background */
@@ -41,14 +40,23 @@ $user = null;
         }
 
         main {
-            margin-left: 370px;
+            margin-left: 280px;
+        }
+        input, #kategori, #tingkat {
+            background: none;
+        }
+        select, select option {
+            color: black; /* Ensures all text in dropdown stays black */
+        }
+        select:invalid {
+             color: gray; /* Placeholder remains gray */
         }
 </style>
 </head>
 <body class="bg-white font-sans min-h-screen flex">
     <div class="flex w-4/5">
         <!-- Sidebar -->
-        <aside class="bg-white p-6 lg:w-1/5 h-screen fixed top-0 left-0 border-r">
+        <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r min-h-screen fixed">
         <?php 
             echo $user->sidebar();
         ?>
@@ -60,7 +68,7 @@ $user = null;
                 <h1 class="text-3xl font-bold">Tambah Prestasi</h1>
             </header>
             <!-- Form -->
-            <form id="prestasiForm" class="space-y-4" action="InputProses.php" method="POST" enctype="multipart/form-data">
+            <form id="prestasiForm" class="space-y-4" action="InputProses.php" method="post" enctype="multipart/form-data">
                 <div>
                     <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
                     <input type="text" id="nim" name="nim" placeholder="NIM" class="w-full p-3 border border-gray-300 rounded-lg">
@@ -74,7 +82,8 @@ $user = null;
                 <div>
                     <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori Juara</label>
                     <div class="relative">
-                        <select id="kategori" name="id_juara" class="w-full p-3 border border-gray-300 rounded-lg appearance-none">
+                        <select id="kategori" name="id_juara" class="w-full p-3 border border-gray-300 rounded-lg appearance-none text-gray-400">
+                            <option value="" disabled selected hidden>Pilih Kategori</option>
                             <option value="1">Juara 1</option>
                             <option value="2">Juara 2</option>
                             <option value="3">Juara 3</option>
@@ -113,7 +122,8 @@ $user = null;
                 <div>
                     <label for="tingkat" class="block text-sm font-medium text-gray-700">Tingkat Kompetisi</label>
                     <div class="relative">
-                        <select id="tingkat" name="id_kategori" class="w-full p-3 border border-gray-300 rounded-lg appearance-none">
+                        <select id="tingkat" name="id_kategori" class="w-full p-3 border border-gray-300 rounded-lg appearance-none text-gray-400">
+                            <option value="" disabled selected hidden>Pilih Kategori</option>
                             <option value="1">Internasional</option>
                             <option value="2">Nasional</option>
                             <option value="3">Regional</option>
@@ -221,82 +231,68 @@ $user = null;
         });
     </script>
     <script>
-    $(document).ready(function () {
-        $("#prestasiForm").on("submit", function (e) {
-            e.preventDefault(); // Mencegah form submit secara default
+        $(document).ready(function () {
+            $("#prestasiForm").on("submit", function (e) {
+                e.preventDefault(); // Mencegah form submit secara default
 
-            // Menampilkan SweetAlert konfirmasi
-            Swal.fire({
-                title: "Apakah anda sudah yakin?",
-                text: "Pastikan semua data yang diinput sudah benar.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "YES",
-                cancelButtonText: "NO",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Jika pengguna memilih YES, kirimkan form menggunakan AJAX
-                    var formData = new FormData($("#prestasiForm")[0]);
+                // Ambil data dari form
+                var formData = new FormData(this);
 
-                    $.ajax({
-                        url: "InputProses.php", // URL tujuan pengiriman
-                        type: "POST", // Metode pengiriman
-                        data: formData, // Data dari form
-                        processData: false, // Jangan proses data (karena menggunakan FormData)
-                        contentType: false, // Jangan tetapkan jenis konten (otomatis dengan FormData)
-                        success: function (response) {
-                            // Tampilkan notifikasi sukses atau error berdasarkan respons server
-                            try {
-                                var jsonResponse = JSON.parse(response);
-                                if (jsonResponse.status === "success") {
-                                    Swal.fire(
-                                        "Berhasil!",
-                                        "Data berhasil disimpan.",
-                                        "success"
-                                    );
-                                    console.log(jsonResponse.message); // Log respons sukses
-                                    // Reset form setelah berhasil
-                                    $("#prestasiForm")[0].reset();
-                                } else {
-                                    Swal.fire(
-                                        "Kesalahan!",
-                                        jsonResponse.message,
-                                        "error"
-                                    );
-                                    console.error(jsonResponse.message); // Log respons error
-                                }
-                            } catch (error) {
-                                Swal.fire(
-                                    "Kesalahan!",
-                                    "Gagal memproses respons dari server.",
-                                    "error"
-                                );
-                                console.error("Parsing error:", error);
+                // Kirim data menggunakan AJAX
+                $.ajax({
+                    url: "InputProses.php", // URL tujuan pengiriman
+                    type: "POST", // Metode pengiriman
+                    data: formData, // Data dari form
+                    processData: false, // Jangan proses data (karena menggunakan FormData)
+                    contentType: false, // Jangan tetapkan jenis konten (otomatis dengan FormData)
+                    success: function (response) {
+                        // Tampilkan notifikasi sukses atau error berdasarkan respons server
+                        try {
+                            var jsonResponse = JSON.parse(response);
+                            if (jsonResponse.status === "success") {
+                                alert("Data berhasil disimpan!");
+                                console.log(jsonResponse.message); // Log respons sukses
+                                // Reset form setelah berhasil
+                                $("#prestasiForm")[0].reset();
+                            } else {
+                                alert("Terjadi kesalahan: " + jsonResponse.message);
+                                console.error(jsonResponse.message); // Log respons error
                             }
-                        },
-                        error: function (xhr, status, error) {
-                            // Tangani error pada proses AJAX
-                            Swal.fire(
-                                "Kesalahan!",
-                                "Terjadi kesalahan saat mengirim data: " + error,
-                                "error"
-                            );
-                            console.error("Error details:", xhr.responseText);
+                        } catch (error) {
+                            alert("Gagal memproses respons dari server.");
+                            console.error("Parsing error:", error);
                         }
-                    });
-                } else {
-                    // Jika pengguna memilih NO
-                    Swal.fire(
-                        "Dibatalkan",
-                        "Silakan periksa inputan anda kembali.",
-                        "info"
-                    );
-                }
+                    },
+                    error: function (xhr, status, error) {
+                        // Tangani error pada proses AJAX
+                        alert("Terjadi kesalahan saat mengirim data: " + error);
+                        console.error("Error details:", xhr.responseText);
+                    }
+                });
             });
+        });
+    </script>
+    <script>
+    $(document).ready(function () {
+        // Change text color of select inputs when an option is chosen
+        $('#kategori, #tingkat').on('change', function () {
+            if ($(this).val()) {
+                $(this).css('color', '#000'); // Set text color to black
+            } else {
+                $(this).css('color', '#9CA3AF'); // Reset to default gray
+            }
+        });
+
+        // Initial check for default color
+        $('#kategori, #tingkat').each(function () {
+            if ($(this).val()) {
+                $(this).css('color', '#000'); // Set text color to black if value is preselected
+            } else {
+                $(this).css('color', '#9CA3AF'); // Default gray for placeholder
+            }
         });
     });
 </script>
+
 </body>
 </html>

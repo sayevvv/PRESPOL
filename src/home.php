@@ -50,11 +50,19 @@
     <title>Prespol - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        body {
+        background: url('img/homepageGradient.png') no-repeat center center fixed; /* Fixed background */
+        background-size: cover; /* Ensures the image covers the entire area */
+        flex: 1; /* Makes the main content expand to fill the space */
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-to-r from-white to-orange-100 min-h-screen flex flex-col lg:flex-row">
+<body class="min-h-screen flex flex-col lg:flex-row">
     <!-- Sidebar -->
-    <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r">
+    <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r min-h-screen">
     <?php 
         echo $user->sidebar();
     ?>
@@ -63,13 +71,15 @@
     <!-- Main Content -->
     <main class="flex-1 p-6 pt-8"> <!-- Added pt-8 for top padding -->
         <!-- Top Navigation Section -->
+        <div>
         <?php 
                 $user->mainContent($username);  
         ?>
+        </div>
 
         <!-- Leaderboard Section -->
-        <section class="bg-white p-6 rounded shadow">
-            <h3 class="text-2xl font-bold mb-4">Peringkat Prestasi</h3>
+        <section class="bg-none p-6 rounded border border-black">
+            <h3 class="text-2xl font-bold mb-8">Peringkat Prestasi</h3>
             <div class="space-y-4">
                 <?php foreach ($leaderboardData as $data): ?>
                     <div class="flex items-center justify-between">
