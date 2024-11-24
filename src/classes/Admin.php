@@ -30,18 +30,12 @@ class Admin extends User{
                     </li>
                     <li>
                         <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-list"></i>
-                            <span class="ml-4">Validasi Prestasi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
                             <i class="fas fa-user"></i>
                             <span class="ml-4">Profil</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
+                        <a href="daftarPengajuan.php" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
                             <i class="fas fa-file-alt"></i>
                             <span class="ml-4">Pengajuan</span>
                         </a>
@@ -89,7 +83,7 @@ class Admin extends User{
                             <h1 class="text-3xl font-bold">Selamat Datang</h1>
                             <h2 class="text-5xl font-bold text-black">Admin!</h2>
                             <p class="text-orange-500 mt-2">Kamu peringkat</p>
-                            <button onclick="window.location.href='#'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
+                            <button onclick="window.location.href='daftarPengajuan.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
                                 Validasi Prestasi
                             </button>
                         </div>
