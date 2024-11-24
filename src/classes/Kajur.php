@@ -4,7 +4,6 @@ class Kajur extends User {
     public function sidebar(){
         return 
         <<<HTML
-            <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r">
                 <div class="flex items-center mb-8">
                     <i class="fas fa-trophy text-orange-500 text-2xl"></i>
                     <span class="ml-2 text-xl font-bold">Prespol</span>
@@ -43,7 +42,6 @@ class Kajur extends User {
                     </li>
                 </ul>
                 </nav>
-            </aside>
         HTML;
     }
 
@@ -58,20 +56,9 @@ class Kajur extends User {
             WHERE no_induk = ?";
             $params = [$username];
 
-            // Siapkan query menggunakan prepared statement
-            $stmt = sqlsrv_prepare($db->getConnection(), $sql, $params);
-
-            if ($stmt === false) {
-                throw new Exception('Gagal mempersiapkan statement: ' . print_r(sqlsrv_errors(), true));
-            }
-
-            // Eksekusi query
-            if (sqlsrv_execute($stmt) === false) {
-                throw new Exception('Gagal mengeksekusi statement: ' . print_r(sqlsrv_errors(), true));
-            }
 
             // Ambil hasil query
-            $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+            $row = $this->db->fetchOne($sql, $params);
             if ($row) {
                 $nama = $row['nama'] ?? 'Unknown';
                 $fotoProfile = $row['foto_profile'] ?? 'default-profile.png';
