@@ -4,46 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRESPOL</title>
-    <link rel="icon" href="img/pres.png" type="image/x-icon">
+    <link rel="icon" href="src/img/pres.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-          const sections = document.querySelectorAll('.animate-fadeIn');
-      
-          const observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  entry.target.classList.add('opacity-100');
-                }
-              });
-            },
-            { threshold: 0.5 }
-          );
-      
-          sections.forEach((section) => {
-            section.classList.add('opacity-0'); // Hide initially
-            observer.observe(section);
-          });
-        });
-      </script>
+    <script src="src/script.js"></script>
 </head>
-<body class="bg-gradient-to-r from-white to-orange-100 font-helvetica text-stone-900 
+<body class="overflow-x-hidden m-0 p-0 bg-gradient-to-r from-white to-orange-100 font-helvetica text-stone-900 
             max-h-[400px] overflow-y-auto
             [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar-track]:rounded-full
             [&::-webkit-scrollbar-track]:bg-neutral-100
             [&::-webkit-scrollbar-thumb]:rounded-full
             [&::-webkit-scrollbar-thumb]:bg-neutral-300">
+    
+    <!-- Transition Overlay         -->
+    <div class="transition-overlay"></div>
+    
     <!-- Navbar -->
     <nav 
-        x-data="{ isOpen: false, hasShadow: false }"
-        x-init="window.addEventListener('scroll', () => { hasShadow = window.scrollY > 10 })"
-        :class="hasShadow ? 'shadow-lg bg-white' : 'shadow-none'"
-        class="rounded-md sticky top-0 z-50 container p-6 mx-auto transition-shadow duration-300 lg:flex lg:justify-between lg:items-center">
+        x-data="{
+            isOpen: false, 
+            hasShadow: false,
+            prevScrollPos: window.pageYOffset,
+            visible: true
+        }"
+        x-init="window.addEventListener('scroll', () => {
+            const currentScrollPos = window.pageYOffset;
+            const scrollingDown = prevScrollPos < currentScrollPos;
+            const scrolledFarDown = currentScrollPos > 200;
+            
+            // Update shadow
+            hasShadow = currentScrollPos > 10;
+            
+            // Update visibility based on scroll direction
+            visible = scrolledFarDown ? !scrollingDown : true;
+            
+            prevScrollPos = currentScrollPos;
+        })"
+        :class="[
+            hasShadow ? 'shadow-lg bg-white' : 'shadow-none',
+            visible ? 'translate-y-0' : '-translate-y-full'
+        ]"
+        class="fixed w-full top-0 z-50 container p-6 mx-auto transition-all duration-300 lg:flex lg:justify-between lg:items-center">
             <div class="flex items-center justify-between">
                 <a href="https://github.com/Archin0/PRESPOL">
                     <img class="w-auto h-8 sm:h-10" src="src/img/logoBlack.svg" alt="logo">
@@ -72,17 +77,17 @@
                     <a class="inline-block tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 lg:mx-6 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#fitur">Fitur</a>
                     <a class="inline-block tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 lg:mx-6 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#leaderb">Leaderboard</a>
                     <a class="inline-block tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 lg:mx-6 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#tentangKami">Tentang Kami</a>
-                    <a class="inline-block tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 font-semibold lg:mx-6 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="src/login.html">Masuk</a>
+                    <a class="inline-block tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 font-semibold lg:mx-6 text-stone-500 hover:text-orange-400 hover:text-orange-500 cursor-pointer" onclick="navigateToPage('src/login.html')" >Masuk</a>
                 </div>
     
-                <a class="block px-5 py-2 mt-4 text-sm text-center text-orange-700 capitalize transition-colors duration-300 transform border rounded-md hover:bg-orange-400 text-stone-600 font-semibold lg:mt-0 hover:bg-orange-100 lg:w-auto" href="src/signup.html">
+                <a class="block px-5 py-2 mt-4 text-sm text-center text-orange-700 capitalize transition-colors duration-300 transform border rounded-md hover:bg-orange-400 text-stone-600 font-semibold lg:mt-0 hover:bg-orange-100 lg:w-auto cursor-pointer" onclick="navigateToPage('src/login.html')">
                     Sign Up
                 </a>
             </div>
     </nav>
     
     <!-- Halaman Utama -->
-    <section>
+    <section class="mt-36">
         <div class="container px-6 py-16 mx-auto text-center">
             <!-- CTA -->
             <div class="max-w-lg mx-auto">
@@ -93,10 +98,10 @@
                 </h2>
     
                 <div class="flex justify-center space-x-4 mt-12">
-                    <button type="button" class="text-white h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400">
+                    <button onclick="navigateToPage('src/signup.html')" class="text-white h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400">
                         Gabung Kami!
                     </button>
-                    <button type="button" class="text-white h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400">
+                    <button onclick="navigateToPage('src/panduan.html')" class="text-white h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400">
                         Panduan
                     </button>
                 </div>
@@ -414,7 +419,7 @@
                 </p>
             </div>
             <div class="flex justify-center space-x-4 mt-4">
-                <button type="button" class="inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
+                <button onclick="navigateToPage('src/signup.html')" class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
                     Gabung!
                 </button>
             </div>
@@ -460,7 +465,5 @@
             </div>
         </div>
     </footer>
-
-    
 </body>
 </html>
