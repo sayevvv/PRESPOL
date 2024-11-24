@@ -4,7 +4,6 @@ class Admin extends User{
     public function sidebar(){
         return 
         <<<HTML
-            <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r">
                 <div class="flex items-center mb-8">
                     <i class="fas fa-trophy text-orange-500 text-2xl"></i>
                     <span class="ml-2 text-xl font-bold">Prespol</span>
@@ -31,18 +30,12 @@ class Admin extends User{
                     </li>
                     <li>
                         <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-list"></i>
-                            <span class="ml-4">Validasi Prestasi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
                             <i class="fas fa-user"></i>
                             <span class="ml-4">Profil</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
+                        <a href="daftarPengajuan.php" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
                             <i class="fas fa-file-alt"></i>
                             <span class="ml-4">Pengajuan</span>
                         </a>
@@ -55,7 +48,6 @@ class Admin extends User{
                     </li>
                 </ul>
                 </nav>
-            </aside>
         HTML;
     }
 
@@ -91,7 +83,7 @@ class Admin extends User{
                             <h1 class="text-3xl font-bold">Selamat Datang</h1>
                             <h2 class="text-5xl font-bold text-black">Admin!</h2>
                             <p class="text-orange-500 mt-2">Kamu peringkat</p>
-                            <button onclick="window.location.href='#'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
+                            <button onclick="window.location.href='daftarPengajuan.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
                                 Validasi Prestasi
                             </button>
                         </div>
@@ -107,5 +99,65 @@ class Admin extends User{
         }
     }
 
+    public function getPrestasiPendingList() {
+        // Query untuk mendapatkan data dari VIEW
+        $query = "SELECT id_pending, nama_mahasiswa, nama_kompetisi, nama_kategori, jenis_juara FROM vw_PrestasiPending";
+    
+        // Eksekusi query
+        $stmt = sqlsrv_query($this->db->getConnection(), $query);
+    
+        if ($stmt === false) {
+            throw new Exception('Gagal mengambil data prestasi pending: ' . print_r(sqlsrv_errors(), true));
+        }
+    
+        $result = [];
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $result[] = $row;
+        }
+    
+        return $result;
+    }
+    
+    
+
+    public function getPrestasiPendingDetail($id_pending) {
+        // Query untuk mendapatkan data detail dari VIEW
+        $query = "
+            SELECT * 
+            FROM vw_PrestasiPending 
+            WHERE id_pending = ?
+        ";
+    
+        $params = [$id_pending];
+        return $this->db->fetchOne($query, $params);
+    }
+    
+
+    public function validatePrestasi($id_pending, $status, $deskripsi) {
+        try {
+            // Panggil prosedur untuk memindahkan atau memperbarui data
+            $queryMove = "EXEC sp_ValidatePrestasi @id_pending = ?, @status_validasi = ?, @deskripsi = ?";
+            $params = [$id_pending, $status, $deskripsi];
+    
+            // Jalankan prosedur
+            $this->db->executeProcedure($queryMove, $params);
+    
+            // Periksa hasil dan kembalikan pesan sesuai status
+            if ($status === 'valid') {
+                return "Validasi berhasil dilakukan dan data dipindahkan ke tabel prestasi.";
+            } else {
+                return "Prestasi ditolak. Status validasi diperbarui.";
+            }
+        } catch (Exception $e) {
+            // Tangani kesalahan
+            throw new Exception("Kesalahan validasi: " . $e->getMessage());
+        }
+    }
+    
+    
+
+    public function closeConnection() {
+        $this->db->close();
+    }
 }
 ?>

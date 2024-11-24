@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page | PRESPOL</title>
+    <title>Sign Up Page | PRESPOL</title>
     <link rel="icon" href="img/pres.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -47,12 +47,11 @@
                             <img onclick="navigateToPage('../index.html')" class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
                         </div>
     
-                        <p class="text-l mt-3 text-gray-500">Masuk untuk mengakses akun yang sudah terdaftar</p>
+                        <p class="text-l mt-3 text-gray-500">Daftarkan akunmu untuk mengakses website PRESPOL</p>
                     </div>
-    
-                    <div class="mt-8">
-                        <form action="prosesLogin.php" method="post">
-
+                    
+                    <div class="mt-16 ">
+                        <form>
                             <div class="relative flex items-center mt-8">
                                 <span class="absolute">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -62,7 +61,28 @@
                 
                                 <input type="text" name="username" id="username" required class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Username">
                             </div>
-    
+                
+                            <div class="relative">
+                                <label for="dropzone-file" class="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                    </svg>
+                    
+                                    <h2 class="mx-3 text-gray-400">Profile Photo</h2>
+                    
+                                    <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </button>
+                                    <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
+                                        Pastikan foto berukuran 1:1 dengan format .jpg, .jpeg, .png, atau .svg. Maks: 2 MB
+                                    </span>
+                    
+                                    <input id="dropzone-file" type="file" class="hidden" accept=".jpg, .jpeg, .png, .svg" required />
+                                </label>
+                            </div>
+
                             <div class="relative flex items-center mt-4">
                                 <span class="absolute">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -89,14 +109,44 @@
                                     </svg>
                                 </span>
                             </div>
-    
+                
+                            <div class="relative flex items-center mt-4">
+                                <span class="absolute">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                </span>
+                
+                                <input type="password" name="confirmPw" id="confirmPw" required class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Confirm Password">
+                                <span
+                                    id="togglePassword2"
+                                    class="absolute right-3 top-4 cursor-pointer text-gray-400 hover:text-orange-600">
+                                    <!-- Tambahkan ikon di sini -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M15 12c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z"
+                                        />
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z"
+                                        />
+                                    </svg>
+                                </span>
+                            </div>
+                
                             <div class="mt-6">
-                                <button type="submit" class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:bg-orange-400 focus:ring focus:ring-orange-300 focus:ring-opacity-50">
-                                    Masuk
+                                <button type="submit" class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:ring focus:ring-orange-300 focus:ring-opacity-50">
+                                    Selanjutnya
                                 </button>
+                
+                                <div class="mt-6 text-center ">
+                                    <p class="mt-6 text-sm text-center text-gray-400">Sudah punya akun? <a onclick="navigateToPage('login.html')" class="cursor-pointer focus:outline-none focus:underline hover:underline">Masuk</a>.</p>
+                                </div>
                             </div>
                         </form>
-                        <p class="mt-6 text-sm text-center text-gray-400">Belum punya akun? <a onclick="navigateToPage('signup.html')" class="cursor-pointer text-orange-500 focus:outline-none focus:underline hover:underline">Daftar</a>.</p>
                     </div>
                 </div>
             </div>

@@ -28,11 +28,10 @@ class InputProses {
         $trimmed = trim($data);
         return $trimmed === '' ? null : htmlspecialchars($trimmed);
     }
-    
-    
+
     public function uploadFile($file, $allowedExtensions, $maxSize, $key) {
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            throw new Exception("Terjadi kesalahan saat mengunggah file.");
+            throw new Exception("Terjadi kesalahan saat mengunggah file: " . $file['name']);
         }
     
         if ($file['size'] > $maxSize) {
@@ -43,8 +42,7 @@ class InputProses {
         if (!empty($allowedExtensions) && !in_array($extension, $allowedExtensions)) {
             throw new Exception("File {$file['name']} memiliki ekstensi yang tidak diizinkan.");
         }
-    
-        // Peta subdirektori
+
         $subDirMap = [
             'foto_kompetisi' => 'upload/prestasi/kompetisi/',
             'flyer' => 'upload/prestasi/flyer/',
@@ -57,63 +55,68 @@ class InputProses {
             throw new Exception("Key file tidak valid: {$key}");
         }
     
-        // Tentukan path file dengan nama unik
         $subDir = $subDirMap[$key];
         $fileName = strtolower(uniqid() . "_" . $file['name']);
         $filePath = $subDir . $fileName;
-    
+
         if (file_exists($filePath)) {
             throw new Exception("File dengan nama {$file['name']} sudah ada di direktori tujuan.");
         }
 
-        // Pindahkan file ke direktori tujuan
         if (!move_uploaded_file($file['tmp_name'], $filePath)) {
             throw new Exception("Gagal memindahkan file {$file['name']} ke direktori tujuan.");
         }
     
         return $filePath;
     }
-    
 
     public function processForm($formData, $fileData) {
         try {
-            $sql = "SELECT
-                        id_mahasiswa
-                    FROM mahasiswa WHERE nim = ?";
-            $params = [$formData['nim']]; // Tambahkan array jika params salah
+            $sql = "SELECT id_mahasiswa FROM mahasiswa WHERE nim = ?";
+            $params = [$formData['nim']]; 
             $id_mahasiswa = $this->db->fetchOne($sql, $params);
             
             if (!$id_mahasiswa) {
                 throw new Exception("Mahasiswa dengan NIM {$formData['nim']} tidak ditemukan.");
             }
 
+            // Menyaring dan menyiapkan data dari form
             $data = [
                 'id_mahasiswa' => $id_mahasiswa['id_mahasiswa'],
                 'nama_kompetisi' => $this->sanitizeInput($formData['nama_kompetisi']),
-                'id_juara' => $this->sanitizeInput($formData['id_juara']),
+                'id_juara' => (int)$this->sanitizeInput($formData['id_juara']),
                 'penyelenggara' => $this->sanitizeInput($formData['penyelenggara']),
                 'event' => $this->sanitizeInput($formData['event']),
                 'dosen_pembimbing_1' => $this->sanitizeInput($formData['dosen_pembimbing_1']),
                 'dosen_pembimbing_2' => $this->sanitizeInput($formData['dosen_pembimbing_2']),
-                'jumlah_peserta' => $this->sanitizeInput($formData['jumlah_peserta']),
-                'id_kategori' => $this->sanitizeInput($formData['id_kategori']),
-                'tanggal_mulai' => $this->sanitizeInput($formData['tanggal_mulai']),
-                'tanggal_selesai' => $this->sanitizeInput($formData['tanggal_selesai']),
+                'jumlah_peserta' => (int)$this->sanitizeInput($formData['jumlah_peserta']),
+                'id_kategori' => (int)$this->sanitizeInput($formData['id_kategori']),
+                'tanggal_mulai' => date("Y-m-d", strtotime($formData['tanggal_mulai'])),
+                'tanggal_selesai' => date("Y-m-d", strtotime($formData['tanggal_selesai'])),
             ];
-
-            $data['tanggal_mulai'] = date("Y-m-d", strtotime($formData['tanggal_mulai']));
-            $data['tanggal_selesai'] = date("Y-m-d", strtotime($formData['tanggal_selesai']));
 
             // Upload file dan tambahkan ke data
             foreach ($this->fileRules as $key => $config) {
-                $data[$key] = isset($fileData[$key]) && $fileData[$key]['size'] > 0
+                $data[$key] = (isset($fileData[$key]) && $fileData[$key]['size'] > 0)
                     ? $this->uploadFile($fileData[$key], $config['allowed'], $config['size'], $key)
                     : null;
             }
-            
 
-            // Gunakan metode `insert` dari Database
-            $this->db->insert('prestasi', $data);
+            $query = "EXEC sp_InsertPrestasiPending @id_mahasiswa=?, @nama_kompetisi=?, @id_juara=?, @penyelenggara=?, 
+            @event=?, @dosen_pembimbing_1=?, @dosen_pembimbing_2=?, @jumlah_peserta=?, 
+            @id_kategori=?, @tanggal_mulai=?, @tanggal_selesai=?, 
+            @foto_kompetisi=?, @sertifikat=?, @flyer=?, @surat_tugas=?, @karya_kompetisi=?";
+            
+            // Paramter untuk stored procedure
+            $params = [
+                $data['id_mahasiswa'], $data['nama_kompetisi'], $data['id_juara'], $data['penyelenggara'], 
+                $data['event'], $data['dosen_pembimbing_1'], $data['dosen_pembimbing_2'], $data['jumlah_peserta'],
+                $data['id_kategori'], $data['tanggal_mulai'], $data['tanggal_selesai'], 
+                $data['foto_kompetisi'], $data['sertifikat'], $data['flyer'], $data['surat_tugas'], $data['karya_kompetisi']
+            ];
+
+            // Jalankan stored procedure dengan parameter yang diberikan
+            $this->db->executeProcedure($query, $params);
 
             return "Data berhasil disimpan!";
         } catch (Exception $e) {
@@ -126,25 +129,21 @@ class InputProses {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
-        // Buat objek Database dan InputProses
         $db = new Database();
         $inputProses = new InputProses($db);
 
-        // Ambil data form dan file
-        $formData = $_POST;  // Ambil semua data dari form
-        $fileData = $_FILES; // Ambil data file yang diupload
+        $formData = $_POST;
+        $fileData = $_FILES;
 
-        // Proses form dengan InputProses
+        // Proses form dan file
         $result = $inputProses->processForm($formData, $fileData);
 
-        // Menampilkan pesan sukses
         echo json_encode(['status' => 'success', 'message' => 'Data berhasil diterima']);
 
     } catch (Exception $e) {
-        // Menangani kesalahan
-        echo json_encode(['status' => 'error', 'message' => 'Metode tidak didukung']);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
 }
 ?>

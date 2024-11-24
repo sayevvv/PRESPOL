@@ -32,6 +32,7 @@ $user = null;
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
         background: url('img/homepageGradient.png') no-repeat center center fixed; /* Fixed background */
@@ -59,7 +60,7 @@ $user = null;
                 <h1 class="text-3xl font-bold">Tambah Prestasi</h1>
             </header>
             <!-- Form -->
-            <form id="prestasiForm" class="space-y-4" action="InputProses.php" method="post" enctype="multipart/form-data">
+            <form id="prestasiForm" class="space-y-4" action="InputProses.php" method="POST" enctype="multipart/form-data">
                 <div>
                     <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
                     <input type="text" id="nim" name="nim" placeholder="NIM" class="w-full p-3 border border-gray-300 rounded-lg">
@@ -220,47 +221,82 @@ $user = null;
         });
     </script>
     <script>
-        $(document).ready(function () {
-            $("#prestasiForm").on("submit", function (e) {
-                e.preventDefault(); // Mencegah form submit secara default
+    $(document).ready(function () {
+        $("#prestasiForm").on("submit", function (e) {
+            e.preventDefault(); // Mencegah form submit secara default
 
-                // Ambil data dari form
-                var formData = new FormData(this);
+            // Menampilkan SweetAlert konfirmasi
+            Swal.fire({
+                title: "Apakah anda sudah yakin?",
+                text: "Pastikan semua data yang diinput sudah benar.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "YES",
+                cancelButtonText: "NO",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika pengguna memilih YES, kirimkan form menggunakan AJAX
+                    var formData = new FormData($("#prestasiForm")[0]);
 
-                // Kirim data menggunakan AJAX
-                $.ajax({
-                    url: "InputProses.php", // URL tujuan pengiriman
-                    type: "POST", // Metode pengiriman
-                    data: formData, // Data dari form
-                    processData: false, // Jangan proses data (karena menggunakan FormData)
-                    contentType: false, // Jangan tetapkan jenis konten (otomatis dengan FormData)
-                    success: function (response) {
-                        // Tampilkan notifikasi sukses atau error berdasarkan respons server
-                        try {
-                            var jsonResponse = JSON.parse(response);
-                            if (jsonResponse.status === "success") {
-                                alert("Data berhasil disimpan!");
-                                console.log(jsonResponse.message); // Log respons sukses
-                                // Reset form setelah berhasil
-                                $("#prestasiForm")[0].reset();
-                            } else {
-                                alert("Terjadi kesalahan: " + jsonResponse.message);
-                                console.error(jsonResponse.message); // Log respons error
+                    $.ajax({
+                        url: "InputProses.php", // URL tujuan pengiriman
+                        type: "POST", // Metode pengiriman
+                        data: formData, // Data dari form
+                        processData: false, // Jangan proses data (karena menggunakan FormData)
+                        contentType: false, // Jangan tetapkan jenis konten (otomatis dengan FormData)
+                        success: function (response) {
+                            // Tampilkan notifikasi sukses atau error berdasarkan respons server
+                            try {
+                                var jsonResponse = JSON.parse(response);
+                                if (jsonResponse.status === "success") {
+                                    Swal.fire(
+                                        "Berhasil!",
+                                        "Data berhasil disimpan.",
+                                        "success"
+                                    );
+                                    console.log(jsonResponse.message); // Log respons sukses
+                                    // Reset form setelah berhasil
+                                    $("#prestasiForm")[0].reset();
+                                } else {
+                                    Swal.fire(
+                                        "Kesalahan!",
+                                        jsonResponse.message,
+                                        "error"
+                                    );
+                                    console.error(jsonResponse.message); // Log respons error
+                                }
+                            } catch (error) {
+                                Swal.fire(
+                                    "Kesalahan!",
+                                    "Gagal memproses respons dari server.",
+                                    "error"
+                                );
+                                console.error("Parsing error:", error);
                             }
-                        } catch (error) {
-                            alert("Gagal memproses respons dari server.");
-                            console.error("Parsing error:", error);
+                        },
+                        error: function (xhr, status, error) {
+                            // Tangani error pada proses AJAX
+                            Swal.fire(
+                                "Kesalahan!",
+                                "Terjadi kesalahan saat mengirim data: " + error,
+                                "error"
+                            );
+                            console.error("Error details:", xhr.responseText);
                         }
-                    },
-                    error: function (xhr, status, error) {
-                        // Tangani error pada proses AJAX
-                        alert("Terjadi kesalahan saat mengirim data: " + error);
-                        console.error("Error details:", xhr.responseText);
-                    }
-                });
+                    });
+                } else {
+                    // Jika pengguna memilih NO
+                    Swal.fire(
+                        "Dibatalkan",
+                        "Silakan periksa inputan anda kembali.",
+                        "info"
+                    );
+                }
             });
         });
-    </script>
-
+    });
+</script>
 </body>
 </html>

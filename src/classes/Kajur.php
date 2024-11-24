@@ -4,7 +4,6 @@ class Kajur extends User {
     public function sidebar(){
         return 
         <<<HTML
-            <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r">
                 <div class="flex items-center mb-8">
                     <i class="fas fa-trophy text-orange-500 text-2xl"></i>
                     <span class="ml-2 text-xl font-bold">Prespol</span>
@@ -43,7 +42,6 @@ class Kajur extends User {
                     </li>
                 </ul>
                 </nav>
-            </aside>
         HTML;
     }
 
