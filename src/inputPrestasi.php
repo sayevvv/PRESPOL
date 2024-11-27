@@ -1,6 +1,8 @@
 <?php 
 session_start();
 include_once 'classes/User.php';
+include_once 'classes/CSRFToken.php';
+
 if (!isset($_SESSION['role']) || !isset($_SESSION['username'])) {
     header('Location: login.html');
     exit();

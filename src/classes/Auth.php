@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'config/database.php';
+include_once 'config/Database.php';
 
 class Auth {
     private $connection;
@@ -11,6 +11,7 @@ class Auth {
     }
 
     public function authenticate($username, $password) {
+
         $sql = "SELECT u.user_id, u.username, u.password, r.role_id 
                 FROM [user] u
                 JOIN role r ON u.role_id = r.role_id

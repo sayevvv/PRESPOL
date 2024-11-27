@@ -1,3 +1,9 @@
+<?php 
+include_once 'classes/CSRFToken.php';
+
+$csrf = new CSRFToken();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,6 +108,7 @@
                             </div>
     
                             <div class="mt-6">
+                                <input type="hidden" name="csrf_token" value="<?= $csrf->generateToken(); ?>">
                                 <button type="submit" class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:bg-orange-400 focus:ring focus:ring-orange-300 focus:ring-opacity-50">
                                     Masuk
                                 </button>
