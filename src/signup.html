@@ -7,31 +7,16 @@
     <link rel="icon" href="img/pres.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
-    <style>
-        .bg-slideshow {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        .bg-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-        }
-        .bg-slide.active {
-            opacity: 1;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </head>
-<body>
+<body class="overflow-x-hidden m-0 p-0">
+    <!-- Transition Overlay         -->
+    <div class="transition-overlay"></div>
+
     <div class="bg-gradient-to-b from-white to-orange-100 font-helvetica">
         <div class="flex justify-center min-h-screen">
             <div class="hidden lg:block lg:w-3/5 relative">
@@ -59,7 +44,7 @@
                 <div class="flex-1">
                     <div class="text-center">
                         <div class="flex justify-center mx-auto">
-                            <img class="w-auto h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
+                            <img onclick="navigateToPage('../index.html')" class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
                         </div>
     
                         <p class="text-l mt-3 text-gray-500">Daftarkan akunmu untuk mengakses website PRESPOL</p>
@@ -67,7 +52,6 @@
                     
                     <div class="mt-16 ">
                         <form>
-
                             <div class="relative flex items-center mt-8">
                                 <span class="absolute">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -75,18 +59,29 @@
                                     </svg>
                                 </span>
                 
-                                <input type="text" required class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Username">
+                                <input type="text" name="username" id="username" required class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Username">
                             </div>
                 
-                            <label for="dropzone-file" class="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                                </svg>
-                
-                                <h2 class="mx-3 text-gray-400">Profile Photo</h2>
-                
-                                <input id="dropzone-file" type="file" class="hidden" required />
-                            </label>
+                            <div class="relative">
+                                <label for="dropzone-file" class="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                    </svg>
+                    
+                                    <h2 class="mx-3 text-gray-400">Profile Photo</h2>
+                    
+                                    <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </button>
+                                    <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
+                                        Pastikan foto berukuran 1:1 dengan format .jpg, .jpeg, .png, atau .svg. Maks: 2 MB
+                                    </span>
+                    
+                                    <input id="dropzone-file" type="file" class="hidden" accept=".jpg, .jpeg, .png, .svg" required />
+                                </label>
+                            </div>
 
                             <div class="relative flex items-center mt-4">
                                 <span class="absolute">
@@ -143,12 +138,12 @@
                             </div>
                 
                             <div class="mt-6">
-                                <button class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:ring focus:ring-orange-300 focus:ring-opacity-50">
+                                <button type="submit" class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:ring focus:ring-orange-300 focus:ring-opacity-50">
                                     Selanjutnya
                                 </button>
                 
                                 <div class="mt-6 text-center ">
-                                    <p class="mt-6 text-sm text-center text-gray-400">Sudah punya akun? <a href="login.html" class="text-orange-500 focus:outline-none focus:underline hover:underline">Masuk</a>.</p>
+                                    <p class="mt-6 text-sm text-center text-gray-400">Sudah punya akun? <a onclick="navigateToPage('login.html')" class="cursor-pointer focus:outline-none focus:underline hover:underline">Masuk</a>.</p>
                                 </div>
                             </div>
                         </form>
@@ -157,56 +152,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Function to create password toggle functionality
-            function setupPasswordToggle(toggleSelector, passwordSelector) {
-                const togglePassword = document.querySelector(toggleSelector);
-                const password = document.querySelector(passwordSelector);
-
-                if (togglePassword && password) {
-                    togglePassword.addEventListener('click', function () {
-                        // Toggle the type attribute
-                        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                        password.setAttribute('type', type);
-
-                        // Toggle the eye icon (optional)
-                        this.classList.toggle('text-gray-600');
-
-                        // Optional: Focus back on the password input after toggling
-                        password.focus();
-                    });
-                }
-            }
-
-            // Setup toggles for both password fields
-            setupPasswordToggle('#togglePassword', '#password');
-            setupPasswordToggle('#togglePassword2', '#confirmPw');
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const slides = document.querySelectorAll('.bg-slide');
-            let currentSlide = 0;
-
-            // Initially activate the first slide
-            slides[0].classList.add('active');
-
-            // Function to change slides
-            function changeSlide() {
-                // Remove active class from current slide
-                slides[currentSlide].classList.remove('active');
-                
-                // Move to next slide, wrap around to start if at end
-                currentSlide = (currentSlide + 1) % slides.length;
-                
-                // Add active class to new slide
-                slides[currentSlide].classList.add('active');
-            }
-
-            // Change slide every 5 seconds
-            setInterval(changeSlide, 5000);
-        });
-    </script>
 </body>
 </html>
