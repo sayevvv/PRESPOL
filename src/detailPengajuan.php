@@ -1,3 +1,10 @@
+<?php
+session_start();
+if($_SESSION['role'] != '1'){
+    header('Location: home.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

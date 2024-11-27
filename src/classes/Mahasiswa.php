@@ -36,7 +36,7 @@ class Mahasiswa extends User {
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
+                        <a href="listPengajuan.php" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
                             <i class="fas fa-file-alt"></i>
                             <span class="ml-4">Pengajuan</span>
                         </a>
