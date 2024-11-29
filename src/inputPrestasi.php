@@ -5,11 +5,9 @@ if (!isset($_SESSION['role']) || !isset($_SESSION['username'])) {
     header('Location: login.html');
     exit();
 }
-
 if($_SESSION['role'] == '2'){
     header('Location: home.php');
 }
-
 $user = null;
     
     if($_SESSION['role'] == '1'){
@@ -39,7 +37,6 @@ $user = null;
         background-size: cover; /* Ensures the image covers the entire area */
         flex: 1; /* Makes the main content expand to fill the space */
         }
-
         main {
             margin-left: 370px;
         }
@@ -122,7 +119,6 @@ $user = null;
                         <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2"></i>
                     </div>
                 </div>
-
                 
             
                 <div>

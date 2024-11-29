@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $serverName = 'LENOVO';
-    private $connectionInfo = array("Database" => "PrespolTest");
+    private $connectionInfo = array( "Database"=>"PrespolTest");
     private $connection;
 
     public function __construct() {
