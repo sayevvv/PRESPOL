@@ -22,7 +22,7 @@
     // Data dummy untuk leaderboard (bisa diganti dengan query database)
     $leaderboardData = [
         ['rank' => 1, 'name' => 'Dwi Ahmad Khairy', 'points' => 180],
-        ['rank' => 2, 'name' => 'Abdullah Shamil Basayev', 'points' => 160],
+        ['rank' => 2, 'name' => 'Abdullah Shamil Basayev', 'points' => 120],
         ['rank' => 3, 'name' => 'Rizki Rahmat', 'points' => 96],
         ['rank' => 4, 'name' => 'Adinda Lova', 'points' => 68],
         ['rank' => 5, 'name' => 'Amanda M.', 'points' => 45],
@@ -79,22 +79,33 @@
         </div>
 
         <!-- Leaderboard Section -->
-        <section class="bg-none p-6 rounded border border-black">
-            <h3 class="text-2xl font-bold mb-8">Peringkat Prestasi</h3>
-            <div class="space-y-4">
-                <?php foreach ($leaderboardData as $data): ?>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <span class="text-xl font-bold mr-4">#<?php echo $data['rank']; ?></span>
-                            <div class="bg-orange-500 text-white py-2 px-4 rounded-full">
-                                <?php echo $data['name']; ?>
-                            </div>
-                        </div>
-                        <span class="text-xl font-bold"><?php echo $data['points']; ?></span>
+        <!-- Leaderboard Section -->
+<section class="bg-none p-6 rounded border border-black">
+    <h3 class="text-2xl font-bold mb-8">Peringkat Prestasi</h3>
+    <div class="space-y-4">
+        <?php
+        // Find the maximum points in the leaderboard for normalization
+        $maxPoints = max(array_column($leaderboardData, 'points'));
+
+        foreach ($leaderboardData as $data):
+            // Calculate the width as a percentage of the maximum points
+            $widthPercentage = ($data['points'] / $maxPoints) * 100;
+        ?>
+            <div class="flex flex-col space-y-1">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-xl font-bold mr-4">#<?php echo $data['rank']; ?></span>
+                        <div class="text-black font-medium"><?php echo $data['name']; ?></div>
                     </div>
-                <?php endforeach; ?>
+                    <span class="text-xl font-bold"><?php echo $data['points']; ?></span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-4">
+                    <div class="bg-orange-500 h-4 rounded-full" style="width: <?php echo $widthPercentage; ?>%;"></div>
+                </div>
             </div>
-        </section>
+        <?php endforeach; ?>
+    </div>
+</section>
     </main>
 </body>
 
