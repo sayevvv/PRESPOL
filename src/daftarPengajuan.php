@@ -46,7 +46,7 @@ if($_SESSION['role'] != '1'){
                         <td class="py-2 px-4"><?php echo htmlspecialchars($item['nama_kategori']); ?></td>
                         <td class="py-2 px-4"><?php echo htmlspecialchars($item['jenis_juara']); ?></td>
                         <td class="py-2 px-4">
-                            <a href="detailPengajuanAdmin.php?id_pending=<?php echo $item['id_pending']; ?>" class="text-blue-600 hover:underline">Detail</a>
+                            <a href="detailPengajuan.php?id_pending=<?php echo $item['id_pending']; ?>" class="text-blue-600 hover:underline">Detail</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
