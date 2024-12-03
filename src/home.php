@@ -79,33 +79,32 @@
         </div>
 
         <!-- Leaderboard Section -->
-        <!-- Leaderboard Section -->
-<section class="bg-none p-6 rounded border border-black">
-    <h3 class="text-2xl font-bold mb-8">Peringkat Prestasi</h3>
-    <div class="space-y-4">
-        <?php
-        // Find the maximum points in the leaderboard for normalization
-        $maxPoints = max(array_column($leaderboardData, 'points'));
-
-        foreach ($leaderboardData as $data):
-            // Calculate the width as a percentage of the maximum points
-            $widthPercentage = ($data['points'] / $maxPoints) * 100;
-        ?>
-            <div class="flex flex-col space-y-1">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <span class="text-xl font-bold mr-4">#<?php echo $data['rank']; ?></span>
-                        <div class="text-black font-medium"><?php echo $data['name']; ?></div>
+        <section class="bg-none p-6 rounded-xl border-2 border-orange-400 mx-auto">
+        <h3 class="text-2xl font-bold mb-8 text-center">Peringkat Prestasi</h3>
+        <div class="space-y-4">
+            <?php
+            // Find the maximum points in the leaderboard for normalization
+            $maxPoints = max(array_column($leaderboardData, 'points'));
+    
+            foreach ($leaderboardData as $data):
+                // Calculate the width as a percentage of the maximum points
+                $widthPercentage = ($data['points'] / $maxPoints) * 100;
+            ?>
+                <div class="flex flex-col space-y-1">
+                    <div class="w-full bg-gray-200 rounded-full h-8 relative">
+                        <div class="bg-orange-500 h-8 rounded-full flex items-center justify-between px-4 relative" style="width: <?php echo $widthPercentage; ?>%;">
+                            <span class="text-white font-bold text-sm truncate">
+                                <?php echo $data['rank']; ?> - <?php echo $data['name']; ?>
+                            </span>
+                            <span class="text-white font-bold text-sm absolute right-2">
+                                <?php echo $data['points']; ?>
+                            </span>
+                        </div>
                     </div>
-                    <span class="text-xl font-bold"><?php echo $data['points']; ?></span>
                 </div>
-                <div class="w-full bg-gray-200 rounded-full h-4">
-                    <div class="bg-orange-500 h-4 rounded-full" style="width: <?php echo $widthPercentage; ?>%;"></div>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-</section>
+            <?php endforeach; ?>
+        </div>
+        </section>
     </main>
 </body>
 

@@ -7,7 +7,7 @@
 
     $leaderboardData = [
         ['rank' => 1, 'name' => 'Dwi Ahmad Khairy', 'points' => 180],
-        ['rank' => 2, 'name' => 'Abdullah Shamil Basayev', 'points' => 120],
+        ['rank' => 2, 'name' => 'Abdullah Shamil Basayev', 'points' => 100],
         ['rank' => 3, 'name' => 'Rizki Rahmat', 'points' => 96],
         ['rank' => 4, 'name' => 'Adinda Lova', 'points' => 68],
         ['rank' => 5, 'name' => 'Amanda M.', 'points' => 45],
@@ -27,8 +27,17 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
     <script src="src/script.js"></script>
+
+    <style>
+        body {
+        background: url('src/img/homepageGradient.png') no-repeat center center fixed; /* Fixed background */
+        background-size: cover; /* Ensures the image covers the entire area */
+        flex: 1; /* Makes the main content expand to fill the space */
+        }
+    </style>
+
 </head>
-<body class="overflow-x-hidden m-0 p-0 bg-gradient-to-r from-white to-orange-100 font-helvetica text-stone-900 
+<body class="overflow-x-hidden m-0 p-0 font-helvetica text-stone-900 
             max-h-[400px] overflow-y-auto
             [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar-track]:rounded-full
@@ -41,66 +50,69 @@
     
     <!-- Navbar -->
     <nav 
-        x-data="{
-            isOpen: false, 
-            hasShadow: false,
-            prevScrollPos: window.pageYOffset,
-            visible: true
-        }"
-        x-init="window.addEventListener('scroll', () => {
-            const currentScrollPos = window.pageYOffset;
-            const scrollingDown = prevScrollPos < currentScrollPos;
-            const scrolledFarDown = currentScrollPos > 200;
+    x-data="{
+        isOpen: false, 
+        hasShadow: false,
+        prevScrollPos: window.pageYOffset,
+        visible: true
+    }"
+    x-init="window.addEventListener('scroll', () => {
+        const currentScrollPos = window.pageYOffset;
+        const scrollingDown = prevScrollPos < currentScrollPos;
+        const scrolledFarDown = currentScrollPos > 200;
+        
+        // Update shadow
+        hasShadow = currentScrollPos > 10;
+        
+        // Update visibility based on scroll direction
+        visible = scrolledFarDown ? !scrollingDown : true;
+        
+        prevScrollPos = currentScrollPos;
+    })"
+    :class="[
+        hasShadow ? 'shadow-lg bg-white' : 'shadow-none',
+        visible ? 'translate-y-0' : '-translate-y-full'
+    ]"
+    class="fixed w-screen left-0 top-0 z-50 px-6 lg:flex lg:justify-between lg:items-center transition-all duration-300 ease-in-out"
+>
+    <section class="container mx-auto flex items-center justify-between w-full px-5 py-8 sm:px-3 sm:py:5">
+        <a href="https://github.com/Archin0/PRESPOL">
+            <img class="w-auto h-8 sm:h-10" src="src/img/logoBlack.svg" alt="logo">
+        </a>
+
+        <!-- Mobile menu button -->
+        <div class="flex lg:hidden">
+            <button x-cloak @click="isOpen = !isOpen" type="button" class="text-orange-500 text-orange-200 hover:text-orange-600 hover:text-orange-400 focus:outline-none focus:text-orange-600 focus:text-orange-400" aria-label="toggle menu">
+                <svg x-show="!isOpen" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
+                </svg>
             
-            // Update shadow
-            hasShadow = currentScrollPos > 10;
-            
-            // Update visibility based on scroll direction
-            visible = scrolledFarDown ? !scrollingDown : true;
-            
-            prevScrollPos = currentScrollPos;
-        })"
-        :class="[
-            hasShadow ? 'shadow-lg bg-white' : 'shadow-none',
-            visible ? 'translate-y-0' : '-translate-y-full'
-        ]"
-        class="fixed w-full top-0 z-50 container p-6 mx-auto transition-all duration-300 lg:flex lg:justify-between lg:items-center">
-            <div class="flex items-center justify-between">
-                <a href="https://github.com/Archin0/PRESPOL">
-                    <img class="w-auto h-8 sm:h-10" src="src/img/logoBlack.svg" alt="logo">
-                </a>
-    
-                <!-- Mobile menu button -->
-                <div class="flex lg:hidden">
-                    <button x-cloak @click="isOpen = !isOpen" type="button" class="text-orange-500 text-orange-200 hover:text-orange-600 hover:text-orange-400 focus:outline-none focus:text-orange-600 focus:text-orange-400" aria-label="toggle menu">
-                        <svg x-show="!isOpen" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
-                        </svg>
-                    
-                        <svg x-show="isOpen" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+                <svg x-show="isOpen" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div x-cloak 
+        :class="[isOpen ? 'translate-x-0 opacity-100 bg-gradient-to-r from-white to-orange-100' : 'opacity-0 -translate-x-full']" 
+        class="rounded absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out shadow-md lg:shadow-none lg:mt-0 lg:p-0 lg:top-0 lg:bg-transparent lg:relative lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center lg:justify-center">
+            <div class="flex flex-col space-y-4 lg:mt-0 lg:flex-row lg:space-y-0 lg:items-center lg:justify-center">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:space-x-6">
+                    <a class="inline-block px-4 py-2 text-center whitespace-nowrap tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#">Beranda</a>
+                    <a class="inline-block px-4 py-2 text-center whitespace-nowrap tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#fitur">Fitur</a>
+                    <a class="inline-block px-4 py-2 text-center whitespace-nowrap tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#leaderb">Leaderboard</a>
+                    <a class="inline-block px-4 py-2 text-center whitespace-nowrap tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#tentangKami">Tentang Kami</a>
+                    <a class="inline-block px-4 py-2 text-center whitespace-nowrap tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 font-semibold text-stone-500 hover:text-orange-400 hover:text-orange-500 cursor-pointer" onclick="navigateToPage('src/login.html')">Masuk</a>
                 </div>
-            </div>
     
-            <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
-            <div x-cloak 
-            :class="[isOpen ? 'translate-x-0 opacity-100 bg-gradient-to-r from-white to-orange-100' : 'opacity-0 -translate-x-full']" 
-            class="rounded absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out shadow-md lg:shadow-none lg:mt-0 lg:p-0 lg:top-0 lg:bg-transparent lg:relative lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center">
-                <div class="flex flex-col space-y-4 lg:mt-0 lg:flex-row lg:space-y-0">
-                    <a class="inline-block tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 lg:mx-6 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#">Beranda</a>
-                    <a class="inline-block tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 lg:mx-6 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#fitur">Fitur</a>
-                    <a class="inline-block tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 lg:mx-6 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#leaderb">Leaderboard</a>
-                    <a class="inline-block tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 lg:mx-6 text-stone-500 hover:text-orange-400 hover:text-orange-500" href="#tentangKami">Tentang Kami</a>
-                    <a class="inline-block tracking-normal transition-all duration-300 hover:tracking-wide text-orange-700 font-semibold lg:mx-6 text-stone-500 hover:text-orange-400 hover:text-orange-500 cursor-pointer" onclick="navigateToPage('src/login.html')">Masuk</a>
-                </div>
-    
-                <a class="block px-5 py-2 mt-4 text-sm text-center text-orange-700 capitalize transition-colors duration-300 transform border rounded-md hover:bg-orange-400 text-stone-600 font-semibold lg:mt-0 hover:bg-orange-100 lg:w-auto cursor-pointer" onclick="navigateToPage('src/signup.html')">
+                <a class="block px-5 py-2 mt-4 text-sm text-center text-orange-700 capitalize transition-colors duration-300 transform border rounded-md hover:bg-orange-400 text-stone-600 font-semibold lg:mt-0 hover:bg-orange-100 lg:w-auto cursor-pointer whitespace-nowrap" onclick="navigateToPage('src/signup.html')">
                     Sign Up
                 </a>
             </div>
-    </nav>
+        </div>
+    </section>
+
+    <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
+</nav>
     
     <!-- Halaman Utama -->
     <section class="mt-36">
@@ -160,32 +172,35 @@
         </div>
     </section>
     <!-- Leaderboard Section -->
-    <section class="bg-none p-6 rounded border border-black mx-32">
-        <h3 class="text-2xl font-bold mb-8">Peringkat Prestasi</h3>
+    <section class="container px-6 py-10 mx-auto text-center">
+        <div class="bg-none p-6 rounded-xl border-2 border-orange-400 mx-auto">
+        <h3 class="text-2xl font-bold mb-8 text-center">Peringkat Prestasi</h3>
         <div class="space-y-4">
             <?php
             // Find the maximum points in the leaderboard for normalization
             $maxPoints = max(array_column($leaderboardData, 'points'));
-
+    
             foreach ($leaderboardData as $data):
                 // Calculate the width as a percentage of the maximum points
                 $widthPercentage = ($data['points'] / $maxPoints) * 100;
             ?>
                 <div class="flex flex-col space-y-1">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <span class="text-xl font-bold mr-4">#<?php echo $data['rank']; ?></span>
-                            <div class="text-black font-medium"><?php echo $data['name']; ?></div>
+                    <div class="w-full bg-gray-200 rounded-full h-8 relative">
+                        <div class="bg-orange-500 h-8 rounded-full flex items-center justify-between px-4 relative" style="width: <?php echo $widthPercentage; ?>%;">
+                            <span class="text-white font-bold text-sm truncate">
+                                <?php echo $data['rank']; ?> - <?php echo $data['name']; ?>
+                            </span>
+                            <span class="text-white font-bold text-sm absolute right-2">
+                                <?php echo $data['points']; ?>
+                            </span>
                         </div>
-                        <span class="text-xl font-bold"><?php echo $data['points']; ?></span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-4">
-                        <div class="bg-orange-500 h-4 rounded-full" style="width: <?php echo $widthPercentage; ?>%;"></div>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
-    </section> 
+        </div>
+    </section>
+
     <!-- Penjelasan PRESPOL  -->
     <section id="about" class="mt-12">
         <div class="container px-6 py-10 mx-auto text-center">
@@ -277,8 +292,8 @@
     </section>
 
     <!-- Tentang Kami  -->
-    <section id="tentangKami" class="bg-white">
-        <div class="h-[32rem] bg-white">
+    <section id="tentangKami" class="mt-12">
+        <div class="h-[32rem]">
             <div class="container px-6 py-10 mx-auto animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500">  
                 <h1 class="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl">Tentang Kami</h1>
     
@@ -294,9 +309,9 @@
             </div>
         </div>
     
-        <div class="container px-6 py-10 mx-auto -mt-72 sm:-mt-80 md:-mt-96">
+        <div class="container px-6 py-10 mx-auto -mt-72 sm:-mt-80 md:-mt-96 ">
             <div class="grid xl:grid-cols-5 md:grid-cols-2 gap-8 mt-8 xl:mt-16 animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500">
-                <div class="flex flex-col items-center text-center p-4 border sm:p-6 rounded-xl">
+                <div class="flex flex-col items-center text-center p-4 border border-orange-400 sm:p-6 rounded-xl bg-white">
                     <img class="object-cover w-full rounded-xl aspect-square" src="src/img/shamel.jpg" alt="shameel">
     
                     <h1 class="mt-4 text-2xl font-semibold text-gray-700 capitalize ">Abdullah Shamil Basayev</h1>
@@ -327,7 +342,7 @@
                     </div>
                 </div>
     
-                <div class="flex flex-col items-center text-center p-4 border sm:p-6 rounded-xl ">
+                <div class="flex flex-col items-center text-center p-4 border border-orange-400 sm:p-6 rounded-xl bg-white">
                     <img class="object-cover w-full rounded-xl aspect-square" src="src/img/dwik.jpg" alt="dwi">
     
                     <h1 class="mt-8 text-2xl font-semibold text-gray-700 capitalize ">Dwi Ahmad Khairy</h1>
@@ -358,7 +373,7 @@
                     </div>
                 </div>
     
-                <div class="flex flex-col items-center text-center p-4 border sm:p-6 rounded-xl ">
+                <div class="flex flex-col items-center text-center p-4 border border-orange-400 sm:p-6 rounded-xl bg-white">
                     <img class="object-cover w-full rounded-xl aspect-square" src="src/img/rifda.jpg" alt="">
     
                     <h1 class="mt-4 text-2xl font-semibold text-gray-700 capitalize ">Muhammad Rifda Musyaffa'</h1>
@@ -386,7 +401,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col items-center text-center p-4 border sm:p-6 rounded-xl">
+                <div class="flex flex-col items-center text-center p-4 border border-orange-400 sm:p-6 rounded-xl bg-white">
                     <img class="object-cover w-full rounded-xl aspect-square" src="src/img/bella.jpg" alt="bella">
     
                     <h1 class="mt-8 text-2xl font-semibold text-gray-700 capitalize ">Rizkya Salsabila</h1>
@@ -417,7 +432,7 @@
                     </div>
                 </div>
     
-                <div class="flex flex-col items-center text-center p-4 border sm:p-6 rounded-xl ">
+                <div class="flex flex-col items-center text-center p-4 border border-orange-400 sm:p-6 rounded-xl bg-white">
                     <img class="object-cover w-full rounded-xl aspect-square" src="src/img/yan.jpg" alt="yan">
     
                     <h1 class="mt-4 text-2xl font-semibold text-gray-700 capitalize ">Yan Daffa Putra Liandhie</h1>
@@ -452,7 +467,7 @@
     </section>
 
     <!-- Advertised -->
-    <section class="mt-12">
+    <section class="mt-20">
         <div class="container px-6 py-10 mx-auto text-center animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500">
             <div>
                 <h1 class="text-6xl font-bold text-orange-800 tracking-normal">Mulai Sekarang!</h1>
@@ -469,23 +484,23 @@
     </section>
 
     <!-- Footer -->
-    <footer class="mt-8">
+    <footer class="mt-8 bg-red-900 text-white">
         <div class="container px-6 py-8 mx-auto">
             <div class="flex flex-col items-center text-center animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500">
                 <a href="#">
-                    <img class="w-auto h-10" src="src/img/logoBlack.svg" alt="">
+                    <img class="w-auto h-10" src="src/img/logoWhitePrespol.svg" alt="">
                 </a>
     
                 <div class="flex flex-wrap justify-center mt-6 -mx-4">
-                    <a href="#" class="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-orange-500" > Home </a>
+                    <a href="#" class="mx-4 text-sm transition-colors duration-300 hover:text-orange-500" > Home </a>
                     
-                    <a href="#about" class="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-orange-500" > About </a>
+                    <a href="#about" class="mx-4 text-sm transition-colors duration-300 hover:text-orange-500" > About </a>
                     
-                    <a href="#tentangKami" class="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-orange-500" > Teams </a>
+                    <a href="#tentangKami" class="mx-4 text-sm transition-colors duration-300 hover:text-orange-500" > Teams </a>
     
-                    <a href="#panduan" class="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-orange-500" > Guide </a>
+                    <a href="#panduan" class="mx-4 text-sm transition-colors duration-300 hover:text-orange-500" > Guide </a>
     
-                    <a href="https://www.polinema.ac.id/" class="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-orange-500" > Polinema </a>
+                    <a href="https://www.polinema.ac.id/" class="mx-4 text-sm transition-colors duration-300 hover:text-orange-500" > Polinema </a>
                 </div>
     
             </div>
@@ -493,9 +508,9 @@
             <hr class="my-6 border-gray-200 md:my-10 animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500" />
     
             <div class="flex flex-col items-center sm:flex-row sm:justify-between animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500">
-                <p class="text-sm text-gray-500">© Prespol 2024. All Rights Reserved.</p>
+                <p class="text-sm">© Prespol 2024. All Rights Reserved.</p>
     
-                    <a href="https://github.com/Archin0/PRESPOL" class="mx-2 text-gray-600 transition-colors duration-300 hover:text-orange-500" aria-label="Github">
+                    <a href="https://github.com/Archin0/PRESPOL" class="mx-2 transition-colors duration-300 hover:text-orange-500" aria-label="Github">
                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
