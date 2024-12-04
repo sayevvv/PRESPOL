@@ -42,7 +42,7 @@ $no = 1; // Inisialisasi variabel nomor urut
     <!-- Main Content -->
     <main class="ml-[20%] w-[80%] p-8"> <!-- Added pt-8 for top padding -->
         <div class="container mx-auto py-8">
-        <h1 class="text-2xl font-bold mb-4">Daftar Prestasi Pending</h1>
+        <h1 class="text-2xl font-bold mb-4">Daftar Pengajuan Prestasi</h1>
         <table class="min-w-full bg-white rounded-lg shadow-md">
             <thead>
                 <tr class="bg-orange-500 text-white">

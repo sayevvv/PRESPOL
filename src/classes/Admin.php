@@ -2,53 +2,56 @@
 class Admin extends User{
 
     public function sidebar(){
+        // Get the current page filename
+        $currentPage = basename($_SERVER['PHP_SELF']);
+        
         return 
         <<<HTML
-                <div class="flex items-center mb-8">
-                    <i class="fas fa-trophy text-orange-500 text-2xl"></i>
-                    <span class="ml-2 text-xl font-bold">Prespol</span>
-                </div>
-                <nav class="space-y-4">
-                <ul>
-                    <li>
-                        <a href="home.php" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-home"></i>
-                            <span class="ml-4">Beranda</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="inputPrestasi.php" class="flex items-center py-2 px-8 text-gray-700 bg-gray-200">
-                            <i class="fas fa-trophy"></i>
-                            <span class="ml-4">Tambah prestasi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="daftarPrestasi.php" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-list"></i>
-                            <span class="ml-4">List Prestasi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-user"></i>
-                            <span class="ml-4">Profil</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="daftarPengajuan.php" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-file-alt"></i>
-                            <span class="ml-4">Pengajuan</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center py-2 px-8 text-gray-700 hover:bg-gray-200">
-                            <i class="fas fa-cog"></i>
-                            <span class="ml-4">Setelan</span>
-                        </a>
-                    </li>
-                </ul>
-                </nav>
+            <div class="flex items-center mb-8">
+                <img src="../src/img/logoBlack.svg" alt="Logo Prespol" class="w-40">
+            </div>
+            <nav class="space-y-4 gap-4">
+            <ul class="space-y-2">
+                <li>
+                    <a href="home.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'home.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-home"></i>
+                        <span class="ml-4">Beranda</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="inputPrestasi.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'inputPrestasi.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-trophy"></i>
+                        <span class="ml-4">Tambah prestasi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="daftarPrestasi.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPrestasi.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-list"></i>
+                        <span class="ml-4">List Prestasi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'profile.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-user"></i>
+                        <span class="ml-4">Profil</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="daftarPengajuan.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="ml-4">Validasi</span>
+                    </a>
+                </li>
+            </ul>
+            </nav>
         HTML;
+    }
+    
+    // Helper method to determine active class
+    private function getActiveClass($currentPage, $pageName) {
+        return $currentPage === $pageName 
+            ? 'bg-orange-500 text-white' 
+            : 'text-gray-700';
     }
 
     public function mainContent($username){

@@ -31,6 +31,13 @@ $username = $_SESSION['username'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+<style>
+        body {
+        background: url('img/homepageGradient.png') no-repeat center center fixed; /* Fixed background */
+        background-size: cover; /* Ensures the image covers the entire area */
+        flex: 1; /* Makes the main content expand to fill the space */
+        }
+    </style>
 <body class="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
     <!-- Sidebar -->
     <aside class="bg-white p-6 lg:w-1/5 h-screen fixed top-0 left-0 border-r">
@@ -49,7 +56,16 @@ $username = $_SESSION['username'];
         if ($id_prestasi) {
             $detail = $user->getPrestasiDetail($id_prestasi);
         ?>
-        
+        <!-- CARD Detail Prestasi -->
+        <section class="flex justify-between items-center bg-gradient-to-r from-orange-500 to-orange-400 text-white px-6 py-8 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 mb-6">
+            <p class="text-2xl font-bold tracking-wide">Juara <?php echo htmlspecialchars($detail['juara']);?>
+                                                    <?php echo htmlspecialchars($detail['nama_kompetisi']);?>
+                                                    <?php echo htmlspecialchars($detail['kategori']);?></p>
+            <div>
+                <p class="text-lg"><?php echo htmlspecialchars($detail['event']);?></p>
+                <p class="text-md opacity-80"><?php echo htmlspecialchars($detail['penyelenggara'])?></p>
+            </div>
+        </section>
             
         <div id="detailView" class="bg-white p-6 rounded-lg shadow-lg border border-gray-300">
             <!-- Detail Kompetisi -->
