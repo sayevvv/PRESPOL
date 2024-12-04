@@ -1,18 +1,35 @@
-// Include the transition script from the layout --
-function navigateToPage(url) {
-    const overlay = document.querySelector('.transition-overlay');
-    
-    const tl = gsap.timeline({
-        onComplete: () => {
-            sessionStorage.setItem('isTransitioning', 'true');
-            window.location.href = url;
-        }
-    });
-    
-    tl.to(overlay, {
-        left: 0,
-        duration: 0.6,
+// Transition div
+function transitionToPage(pageNumber) {
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+
+    // Determine which pages to animate
+    const exitPage = pageNumber === 2 ? page1 : page2;
+    const enterPage = pageNumber === 2 ? page2 : page1;
+
+    // Ensure the enter page is visible
+    enterPage.classList.remove('hidden');
+
+    // GSAP Timeline for transition
+    const tl = gsap.timeline();
+
+    tl.to(exitPage, {
+        duration: 0.5,
+        x: pageNumber === 2 ? '-100%' : '100%',
         ease: 'power2.inOut'
+    })
+    .fromTo(enterPage, 
+        { x: pageNumber === 2 ? '100%' : '-100%' }, 
+        {
+            duration: 0.5,
+            x: '0%',
+            ease: 'power2.inOut'
+        }, 
+        0 // Start this animation at the same time as the exit animation
+    )
+    .then(() => {
+        // Hide the exit page after transition
+        exitPage.classList.add('hidden');
     });
 }
 
@@ -36,23 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
       section.classList.add('opacity-0'); // Hide initially
       observer.observe(section);
     });
-
-    const overlay = document.querySelector('.transition-overlay');
-    const isTransitioning = sessionStorage.getItem('isTransitioning');
-    
-    if (isTransitioning) {
-        gsap.set(overlay, { left: 0 });
-        
-        gsap.to(overlay, {
-            left: '100%',
-            duration: 0.6,
-            ease: 'power2.inOut',
-            onComplete: () => {
-                gsap.set(overlay, { left: '-100%' });
-                sessionStorage.removeItem('isTransitioning');
-            }
-        });
-    }
 
     // Pagination --
     const signupForm = document.getElementById('signupForm');
@@ -275,6 +275,3 @@ document.addEventListener('DOMContentLoaded', function() {
     // Change slide every 5 seconds
     setInterval(changeSlide, 5000);
 });
-
-
-
