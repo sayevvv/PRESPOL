@@ -38,9 +38,9 @@ class Mahasiswa extends User {
                     </a>
                 </li>
                 <li>
-                    <a href="daftarPengajuan.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                    <a href="historiPengajuan.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-file-alt"></i>
-                        <span class="ml-4">Pengajaun</span>
+                        <span class="ml-4">Pengajuan</span>
                     </a>
                 </li>
             </ul>
@@ -194,5 +194,4 @@ class Mahasiswa extends User {
         }
     }
 }
-    
 ?>
