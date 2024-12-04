@@ -1,7 +1,13 @@
 <?php 
-session_start();
-include_once 'Auth.php';
+include_once 'classes/Auth.php';
+include_once 'classes/CSRFToken.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $csrf = new CSRFToken();
+    if (!$csrf->validateToken($_POST['csrf_token'])) {
+        header("HTTP/1.1 403 Forbidden");
+        die("Invalid CSRF Token");
+    }
+    
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -10,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: home.php');
         exit;
     } else {
-        header('Location: login.html');
+        header('Location: login.php');
     }
 }
 ?>

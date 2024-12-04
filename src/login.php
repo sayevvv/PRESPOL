@@ -1,3 +1,9 @@
+<?php 
+include_once 'classes/CSRFToken.php';
+
+$csrf = new CSRFToken();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +22,6 @@
 <body class="overflow-x-hidden m-0 p-0">
     <!-- Transition Overlay         -->
     <div class="transition-overlay"></div>
-
     <div class="bg-gradient-to-b from-white to-orange-100 font-helvetica">
         <div class="flex justify-center min-h-screen">
             <div class="hidden lg:block lg:w-3/5 relative">
@@ -44,7 +49,9 @@
                 <div class="flex-1">
                     <div class="text-center">
                         <div class="flex justify-center mx-auto">
+
                             <img onclick="navigateToPage('../index.html')" class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
+
                         </div>
     
                         <p class="text-l mt-3 text-gray-500">Masuk untuk mengakses akun yang sudah terdaftar</p>
@@ -52,6 +59,7 @@
     
                     <div class="mt-8">
                         <form action="prosesLogin.php" method="post">
+
 
                             <div class="relative flex items-center mt-8">
                                 <span class="absolute">
@@ -91,16 +99,65 @@
                             </div>
     
                             <div class="mt-6">
+                              <input type="hidden" name="csrf_token" value="<?= $csrf->generateToken(); ?>">
+
                                 <button type="submit" class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:bg-orange-400 focus:ring focus:ring-orange-300 focus:ring-opacity-50">
                                     Masuk
                                 </button>
                             </div>
                         </form>
+
                         <p class="mt-6 text-sm text-center text-gray-400">Belum punya akun? <a onclick="navigateToPage('signup.html')" class="cursor-pointer text-orange-500 focus:outline-none focus:underline hover:underline">Daftar</a>.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+    
+        togglePassword.addEventListener('click', function () {
+            // Toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+    
+            // Toggle the eye icon (optional)
+            this.classList.toggle('text-gray-600');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.bg-slide');
+            let currentSlide = 0;
+
+            // Initially activate the first slide
+            slides[0].classList.add('active');
+
+            // Function to change slides
+            function changeSlide() {
+                // Remove active class from current slide
+                slides[currentSlide].classList.remove('active');
+                
+                // Move to next slide, wrap around to start if at end
+                currentSlide = (currentSlide + 1) % slides.length;
+                
+                // Add active class to new slide
+                slides[currentSlide].classList.add('active');
+            }
+
+            // Change slide every 5 seconds
+            setInterval(changeSlide, 5000);
+
+            // Password toggle functionality
+            const passwordInput = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,3 +1,19 @@
+<?php
+session_start();
+if($_SESSION['role'] != '1'){
+    header('Location: home.php');
+}
+
+include_once 'classes/User.php';
+include_once 'classes/Admin.php';
+include_once 'config/Database.php';
+
+$db = new Database();
+$user = new Admin($db);
+
+$username = $_SESSION['username'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,56 +21,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Prestasi Pending</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto py-8">
+<body class="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
+    <!-- Sidebar -->
+    <aside class="bg-white p-6 lg:w-1/5 h-screen fixed top-0 left-0 border-r">
+    <?php 
+        echo $user->sidebar();
+    ?>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="ml-[20%] w-[80%] p-8"> <!-- Added pt-8 for top padding -->
+        <!-- Top Navigation Section -->
+        <div class="container mx-auto py-8">
         <h1 class="text-2xl font-bold mb-4">Detail Prestasi Pending</h1>
         <?php
-        include_once 'classes/User.php';
-        include_once 'classes/Admin.php';
-        include_once 'config/Database.php';
-
-        $db = new Database();
-        $validasiAdmin = new Admin($db);
-
         $id_pending = $_GET['id_pending'] ?? null;
         if ($id_pending) {
-            $detail = $validasiAdmin->getPrestasiPendingDetail($id_pending);
+            $detail = $user->getPrestasiPendingDetail($id_pending);
         ?>
         
-
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <p><strong>Nama Kompetisi:</strong> <?php echo htmlspecialchars($detail['nama_kompetisi']); ?></p>
-            <p><strong>Penyelenggara:</strong> <?php echo htmlspecialchars($detail['penyelenggara']); ?></p>
-            <p><strong>Event:</strong> <?php echo htmlspecialchars($detail['event']); ?></p>
-            <p><strong>Kategori:</strong> <?php echo htmlspecialchars($detail['nama_kategori']); ?></p>
-            <p><strong>Juara:</strong> <?php echo htmlspecialchars($detail['jenis_juara']); ?></p>
-            <p><strong>Dosen Pembimbing 1:</strong> <?php echo !empty($detail['dosen_pembimbing_1']) ? htmlspecialchars($detail['dosen_pembimbing_1']) : '-'; ?></p>
-            <p><strong>Dosen Pembimbing 2:</strong> <?php echo !empty($detail['dosen_pembimbing_2']) ? htmlspecialchars($detail['dosen_pembimbing_2']) : '-'; ?></p>
-            <p><strong>Tanggal Mulai:</strong> <?php echo htmlspecialchars($detail['tanggal_mulai']->format('Y-m-d')); ?></p>
-            <p><strong>Tanggal Selesai:</strong> <?php echo htmlspecialchars($detail['tanggal_selesai']->format('Y-m-d')); ?></p>
-            <p><strong>Foto Kompetisi:</strong></p>
-            <img src="<?php echo htmlspecialchars($detail['foto_kompetisi']); ?>" alt="Foto Kompetisi" class="max-w-md mt-4">
-            <p><strong>Poster Kompetisi:</strong></p>
-            <?php if (strtolower(pathinfo($detail['flyer'], PATHINFO_EXTENSION)) === 'pdf'): ?>
-                <a href="<?php echo htmlspecialchars($detail['flyer']); ?>" target="_blank" class="text-blue-600">Lihat Poster (PDF)</a>
-            <?php else: ?>
-                <img src="<?php echo htmlspecialchars($detail['flyer']); ?>" alt="Poster Kompetisi" class="max-w-md mt-4">
-            <?php endif; ?>
-
-            <p><strong>Karya Kompetisi:</strong></p>
-            <p>
-                <?php if (!empty($detail['karya_kompetisi'])): ?>
-                    <a href="<?php echo htmlspecialchars($detail['karya_kompetisi']); ?>" target="_blank" class="text-blue-600">Lihat Karya</a>
+            
+        <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-300">
+            <!-- Detail Kompetisi -->
+            <div class="mb-4 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Nama Kompetisi</strong></p>
+                <p class="text-gray-700"><?php echo htmlspecialchars($detail['nama_kompetisi']); ?></p>
+            </div>
+            <div class="mb-4 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Penyelenggara</strong></p>
+                <p class="text-gray-700"><?php echo htmlspecialchars($detail['penyelenggara']); ?></p>
+            </div>
+            <div class="mb-4 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Event</strong></p>
+                <p class="text-gray-700"><?php echo htmlspecialchars($detail['event']); ?></p>
+            </div>
+            <div class="mb-4 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Kategori</strong></p>
+                <p class="text-gray-700"><?php echo htmlspecialchars($detail['nama_kategori']); ?></p>
+            </div>
+            <div class="mb-4 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Juara</strong></p>
+                <p class="text-gray-700"><?php echo htmlspecialchars($detail['jenis_juara']); ?></p>
+            </div>
+            <div class="mb-4 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Dosen Pembimbing 1</strong></p>
+                <p class="text-gray-700"><?php echo !empty($detail['dosen_pembimbing_1']) ? htmlspecialchars($detail['dosen_pembimbing_1']) : '-'; ?></p>
+            </div>
+            <div class="mb-4 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Dosen Pembimbing 2</strong></p>
+                <p class="text-gray-700"><?php echo !empty($detail['dosen_pembimbing_2']) ? htmlspecialchars($detail['dosen_pembimbing_2']) : '-'; ?></p>
+            </div>
+            <div class="mb-4 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Tanggal Mulai</strong></p>
+                <p class="text-gray-700"><?php echo htmlspecialchars($detail['tanggal_mulai']->format('Y-m-d')); ?></p>
+            </div>
+            <div class="mb-4 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Tanggal Selesai</strong></p>
+                <p class="text-gray-700"><?php echo htmlspecialchars($detail['tanggal_selesai']->format('Y-m-d')); ?></p>
+            </div>
+            <div class="mb-6 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Foto Kompetisi</strong></p>
+                <img src="<?php echo htmlspecialchars($detail['foto_kompetisi']); ?>" alt="Foto Kompetisi" class="max-w-full mt-4 rounded-lg shadow-md">
+            </div>
+            <div class="mb-6 border-b border-gray-200 pb-4">
+                <p class="text-lg font-semibold text-gray-800"><strong>Poster Kompetisi</strong></p>
+                <?php if (strtolower(pathinfo($detail['flyer'], PATHINFO_EXTENSION)) === 'pdf'): ?>
+                    <a href="<?php echo htmlspecialchars($detail['flyer']); ?>" target="_blank" class="text-blue-500 hover:underline">Lihat Poster (PDF)</a>
                 <?php else: ?>
-                    -
+                    <img src="<?php echo htmlspecialchars($detail['flyer']); ?>" alt="Poster Kompetisi" class="max-w-full mt-4 rounded-lg shadow-md">
                 <?php endif; ?>
-            </p>
-            <p><strong>Sertifikat Kompetisi:</strong></p>
-            <a href="<?php echo htmlspecialchars($detail['sertifikat']); ?>" target="_blank" class="text-blue-600">Lihat Sertifikat (PDF)</a>
-            <p><strong>Surat Tugas:</strong></p>
-            <a href="<?php echo htmlspecialchars($detail['surat_tugas']); ?>" target="_blank" class="text-blue-600">Lihat Surat Tugas (PDF)</a>
+            </div>
+            <div class="mb-6">
+                <p class="text-lg font-semibold text-gray-800"><strong>Karya Kompetisi</strong></p>
+                <?php if (!empty($detail['karya_kompetisi'])): ?>
+                    <a href="<?php echo htmlspecialchars($detail['karya_kompetisi']); ?>" target="_blank" class="text-blue-500 hover:underline">Lihat Karya</a>
+                <?php else: ?>
+                    <p class="text-gray-700">-</p>
+                <?php endif; ?>
+            </div>
+            <div class="mb-6">
+                <p class="text-lg font-semibold text-gray-800"><strong>Sertifikat Kompetisi</strong></p>
+                <a href="<?php echo htmlspecialchars($detail['sertifikat']); ?>" target="_blank" class="text-blue-500 hover:underline">Lihat Sertifikat (PDF)</a>
+            </div>
+            <div class="mb-6">
+                <p class="text-lg font-semibold text-gray-800"><strong>Surat Tugas</strong></p>
+                <a href="<?php echo htmlspecialchars($detail['surat_tugas']); ?>" target="_blank" class="text-blue-500 hover:underline">Lihat Surat Tugas (PDF)</a>
+            </div>
         </div>
 
         <div class="mt-4">
@@ -73,8 +128,8 @@
         <p class="text-red-600">ID tidak ditemukan!</p>
         <?php } ?>
     </div>
-    
 
+    </main>
     <!-- Script jQuery untuk AJAX -->
     <script>
     $(document).ready(function () {
@@ -97,7 +152,7 @@
                     // Menampilkan pesan berdasarkan respons
                     if (response.status === 'success') {
                         alert(response.message); // Pesan sukses
-                        window.location.href = 'daftarPengajuanAdmin.php'; // Redirect jika sukses
+                        window.location.href = 'daftarPengajuan.php'; // Redirect jika sukses
                     } else {
                         alert(response.message); // Pesan error
                     }
