@@ -40,6 +40,7 @@
         include_once 'classes/Mahasiswa.php';
         $user = new Mahasiswa();
     }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
