@@ -37,21 +37,21 @@ class Auth {
                 // Ambil informasi tambahan berdasarkan role
                 if (in_array($user['role_id'], [1, 2])) {
                     $query = "SELECT 
-                                  u.username,
-                                  p.id_pegawai,
-                                  p.no_induk AS [no_induk]
-                              FROM [user] u
-                              JOIN pegawai p ON u.id_pegawai = p.id_pegawai
-                              WHERE p.id_pegawai = ?";
+                                u.username,
+                                p.id_pegawai,
+                                p.no_induk AS [no_induk]
+                            FROM [user] u
+                            JOIN pegawai p ON u.id_pegawai = p.id_pegawai
+                            WHERE p.id_pegawai = ?";
                     $result = $this->db->fetchOne($query, [$user['id_pegawai']]);
                 } elseif ($user['role_id'] == 3) {
                     $query = "SELECT 
-                                  u.username,
-                                  m.id_mahasiswa,
-                                  m.nim AS [no_induk]
-                              FROM [user] u
-                              JOIN mahasiswa m ON u.id_mahasiswa = m.id_mahasiswa
-                              WHERE m.id_mahasiswa = ?";
+                                u.username,
+                                m.id_mahasiswa,
+                                m.nim AS [no_induk]
+                            FROM [user] u
+                            JOIN mahasiswa m ON u.id_mahasiswa = m.id_mahasiswa
+                            WHERE m.id_mahasiswa = ?";
                     $result = $this->db->fetchOne($query, [$user['id_mahasiswa']]);
                 } else {
                     return false; // Role tidak valid

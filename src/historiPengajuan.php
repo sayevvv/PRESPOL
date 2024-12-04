@@ -3,6 +3,7 @@ session_start();
 
 include_once 'classes/User.php';
 include_once 'classes/Mahasiswa.php';
+include_once 'config/Database.php';
 
 // Cek apakah user memiliki akses
 if ($_SESSION['role'] != '3') {
@@ -10,8 +11,17 @@ if ($_SESSION['role'] != '3') {
 }
 
 $user = new Mahasiswa();
+$username = $_SESSION['username'];
 $nim = $_SESSION['no_induk']; // Pastikan NIM disimpan di sesi saat login
-// $prestasiList = $user->getPrestasiByNim($nim); // Ambil data prestasi berdasarkan NIM
+$db = new Database();
+$sql = " SELECT 
+            nama_kompetisi, 
+            event, 
+            status, 
+            deskripsi
+        FROM vw_prestasi_list_by_nim
+        WHERE nim = ?";
+$prestasiList = $db->fetchAll($sql, [$nim]); // Ambil data prestasi berdasarkan NIM
 ?>
 
 <html>
@@ -35,16 +45,9 @@ $nim = $_SESSION['no_induk']; // Pastikan NIM disimpan di sesi saat login
     <main class="flex-1 p-6 pt-8">
         <div class="flex justify-between items-center bg-white p-6 rounded shadow-md">
             <h1 class="text-3xl font-bold text-gray-800">Pengajuan</h1>
-            <div class="flex items-center">
-                <span class="mr-4 text-gray-700 font-medium">
-                    <?php echo $_SESSION['username']; // Tampilkan nama pengguna ?>
-                </span>
-                <img
-                    alt="User profile picture"
-                    class="rounded-full border w-12 h-12"
-                    src="https://storage.googleapis.com/a1aa/image/1omPrB4FXfzRY6txh7LYvFaAdkpef5eBcUPobczTGMy9gmNPB.jpg"
-                />
-            </div>
+            <?php 
+                $user->profile($username);
+            ?>
         </div>
         <div class="mt-8">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Selesai</h2>
@@ -52,7 +55,7 @@ $nim = $_SESSION['no_induk']; // Pastikan NIM disimpan di sesi saat login
                 <thead>
                     <tr class="bg-orange-500 text-white">
                         <th class="py-3 px-6 border">No</th>
-                        <th class="py-3 px-6 border">Ajuan Prestasi</th>
+                        <th class="py-3 px-6 border">Nama Kompetisi</th>
                         <th class="py-3 px-6 border">Event</th>
                         <th class="py-3 px-6 border">Status</th>
                         <th class="py-3 px-6 border">Deskripsi</th>
@@ -68,7 +71,7 @@ $nim = $_SESSION['no_induk']; // Pastikan NIM disimpan di sesi saat login
                             echo "<td class='py-3 px-6 border'>{$prestasi['nama_kompetisi']}</td>";
                             echo "<td class='py-3 px-6 border'>{$prestasi['event']}</td>";
                             $statusColor = $prestasi['status'] == 'Disetujui' ? 'text-green-500' :
-                                          ($prestasi['status'] == 'Menunggu' ? 'text-yellow-500' : 'text-red-500');
+                                        ($prestasi['status'] == 'Menunggu' ? 'text-yellow-500' : 'text-red-500');
                             echo "<td class='py-3 px-6 border {$statusColor}'>{$prestasi['status']}</td>";
                             echo "<td class='py-3 px-6 border'>{$prestasi['deskripsi']}</td>";
                             echo "</tr>";

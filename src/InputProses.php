@@ -30,19 +30,29 @@ class InputProses {
     }
 
     public function uploadFile($file, $allowedExtensions, $maxSize, $key) {
+        // Periksa apakah ada kesalahan dalam proses upload file
         if ($file['error'] !== UPLOAD_ERR_OK) {
             throw new Exception("Terjadi kesalahan saat mengunggah file: " . $file['name']);
         }
-    
+
+        // Periksa ukuran file, pastikan tidak melebihi batas
         if ($file['size'] > $maxSize) {
             throw new Exception("Ukuran file {$file['name']} melebihi batas maksimum 5 MB.");
         }
-    
+
+        // Periksa ekstensi file
         $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         if (!empty($allowedExtensions) && !in_array($extension, $allowedExtensions)) {
             throw new Exception("File {$file['name']} memiliki ekstensi yang tidak diizinkan.");
         }
 
+        // Cek MIME type file untuk memastikan jenis file yang benar
+        $mimeType = mime_content_type($file['tmp_name']);
+        if (!in_array($mimeType, $this->getAllowedMimeTypes($extension))) {
+            throw new Exception("File {$file['name']} memiliki MIME type yang tidak sesuai.");
+        }
+
+        // Map untuk subdirektori berdasarkan key file
         $subDirMap = [
             'foto_kompetisi' => 'upload/prestasi/kompetisi/',
             'flyer' => 'upload/prestasi/flyer/',
@@ -50,24 +60,56 @@ class InputProses {
             'surat_tugas' => 'upload/prestasi/surat-tugas/',
             'karya_kompetisi' => 'upload/prestasi/karya/',
         ];
-    
+
+        // Validasi key file
         if (!isset($subDirMap[$key])) {
             throw new Exception("Key file tidak valid: {$key}");
         }
-    
+
         $subDir = $subDirMap[$key];
-        $fileName = strtolower(uniqid() . "_" . $file['name']);
+
+        // Membuat nama file unik menggunakan uniqid() dan memastikan nama aman
+        $fileName = strtolower(uniqid('file_', true) . "_" . basename($file['name']));
+        
+        // Pastikan tidak ada path traversal atau karakter yang berbahaya dalam nama file
+        $fileName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $fileName);
+
+        // Tentukan path lengkap file yang akan disimpan
         $filePath = $subDir . $fileName;
 
-        if (file_exists($filePath)) {
-            throw new Exception("File dengan nama {$file['name']} sudah ada di direktori tujuan.");
+        // Periksa apakah file sudah ada, jika ada, tambahkan angka unik
+        $counter = 1;
+        while (file_exists($filePath)) {
+            $fileName = strtolower(uniqid('file_' . $counter . '_', true) . "_" . basename($file['name']));
+            $filePath = $subDir . $fileName;
+            $counter++;
         }
 
+        // Pastikan direktori tujuan ada, jika belum buat
+        if (!is_dir($subDir)) {
+            mkdir($subDir, 0755, true);
+        }
+
+        // Pindahkan file ke direktori tujuan
         if (!move_uploaded_file($file['tmp_name'], $filePath)) {
             throw new Exception("Gagal memindahkan file {$file['name']} ke direktori tujuan.");
         }
-    
+
         return $filePath;
+    }
+
+    // Mendapatkan MIME type yang diizinkan berdasarkan ekstensi file
+    private function getAllowedMimeTypes($extension) {
+        $mimeTypes = [
+            'jpg' => ['image/jpeg'],
+            'jpeg' => ['image/jpeg'],
+            'png' => ['image/png'],
+            'gif' => ['image/gif'],
+            'pdf' => ['application/pdf'],
+            // Tambahkan lebih banyak ekstensi sesuai kebutuhan
+        ];
+
+        return $mimeTypes[$extension] ?? [];
     }
 
     public function processForm($formData, $fileData) {

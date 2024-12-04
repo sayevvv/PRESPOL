@@ -23,6 +23,20 @@ class Database {
         return sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
     }
 
+    public function fetchAll($query, $params = []) {
+        $stmt = sqlsrv_prepare($this->connection, $query, $params);
+        if ($stmt === false || !sqlsrv_execute($stmt)) {
+            throw new Exception('Kesalahan dalam query: ' . print_r(sqlsrv_errors(), true));
+        }
+
+        $result = [];
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
     public function executeProcedure($query, $params = []) {
         $stmt = sqlsrv_prepare($this->connection, $query, $params);
         if ($stmt === false) {
