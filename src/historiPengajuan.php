@@ -64,14 +64,14 @@ $prestasiList = $db->fetchAll($sql, [$nim]); // Ambil data prestasi berdasarkan 
         </div>
         <div class="mt-8">
             <h2 class="text-2xl font-bold mb-10 mt-6">Pengajuan Prestasi</h2>
-            <table class="w-full bg-white rounded shadow-md">
-                <thead>
-                    <tr class="bg-orange-500 text-white">
-                        <th class="py-3 px-6 border">No</th>
-                        <th class="py-3 px-6 border">Nama Kompetisi</th>
-                        <th class="py-3 px-6 border">Event</th>
+            <table class="w-full bg-white rounded-3xl shadow-md overflow-hidden">
+                <thead class="rounded-t-3xl">
+                    <tr class="bg-orange-500 rounded-3xl text-white">
+                        <th class="py-3 px-6 border-r">No</th>
+                        <th class="py-3 px-6 border-r">Nama Kompetisi</th>
+                        <th class="py-3 px-6 border-r">Event</th>
                         <th class="py-3 px-6 border">Status</th>
-                        <th class="py-3 px-6 border">Deskripsi</th>
+                        <th class="py-3 px-6 border-l">Deskripsi</th>
                     </tr>
                 </thead>
                 <tbody>
