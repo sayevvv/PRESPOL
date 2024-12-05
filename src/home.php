@@ -1,19 +1,13 @@
 <?php
-
+    session_start();
     include_once 'config/Database.php';
     include_once 'classes/User.php';
+    include_once 'classes/Auth.php';
+    Auth::checkLogin();
 
     // Ambil koneksi dari class Database
     $db = new Database();
     $connection = $db->getConnection();
-
-    session_start();
-
-    // Redirect ke halaman login jika belum login
-    if (!isset($_SESSION['role']) || !isset($_SESSION['username'])) {
-        header('Location: login.html');
-        exit();
-    }
 
     // Ambil data dari session
     $role = $_SESSION['role'];

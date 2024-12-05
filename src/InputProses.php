@@ -1,6 +1,8 @@
 <?php 
 session_start();
-include 'config/Database.php';
+include_once 'config/Database.php';
+include_once 'classes/Auth.php';
+Auth::checkLogin();
 
 class InputProses {
     private $db;

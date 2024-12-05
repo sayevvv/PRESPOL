@@ -1,5 +1,4 @@
 <?php
-session_start();
 include_once 'config/Database.php';
 
 class Auth {
@@ -79,7 +78,7 @@ class Auth {
         // Cek apakah 'role' dan 'username' ada dalam sesi
         if (!isset($_SESSION['role']) || !isset($_SESSION['username'])) {
             // Jika tidak, arahkan ke halaman login
-            header('Location: login.html');
+            header('Location: login.php');
             exit();
         }
     }

@@ -2,6 +2,9 @@
 include_once 'classes/User.php';
 include_once 'classes/Admin.php';
 include_once 'config/Database.php';
+include_once 'classes/Auth.php';
+
+Auth::checkLogin();
 
 header('Content-Type: application/json'); // Set header JSON
 

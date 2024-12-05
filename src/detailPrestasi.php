@@ -1,12 +1,16 @@
 <?php
 session_start();
-if($_SESSION['role'] == '3'){
-    header('Location: home.php');
-}
 
 include_once 'classes/User.php';
 include_once 'classes/Admin.php';
 include_once 'config/Database.php';
+include_once 'classes/Auth.php';
+
+Auth::checkLogin();
+
+if($_SESSION['role'] == '3'){
+    header('Location: home.php');
+}
 
 $db = new Database();
 
@@ -58,7 +62,7 @@ $username = $_SESSION['username'];
         ?>
         <!-- CARD Detail Prestasi -->
         <section class="flex justify-between items-center bg-gradient-to-r from-orange-500 to-orange-400 text-white px-6 py-8 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 mb-6">
-            <p class="text-2xl font-bold tracking-wide">Juara <?php echo htmlspecialchars($detail['juara']);?>
+            <p class="text-2xl font-bold tracking-wide"> <?php echo htmlspecialchars($detail['juara']);?>
                                                     <?php echo htmlspecialchars($detail['nama_kompetisi']);?>
                                                     <?php echo htmlspecialchars($detail['kategori']);?></p>
             <div>

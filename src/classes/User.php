@@ -12,5 +12,8 @@ abstract class User {
 
     abstract public function mainContent($username);
 
+    abstract function profile($username);
+
+    abstract function listPrestasi($search = '', $filterKategori = '', $filterJuara = '', $filterJurusan = '', $sort = 'newest');
 }
 ?>

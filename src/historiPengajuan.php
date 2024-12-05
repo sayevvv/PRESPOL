@@ -4,6 +4,9 @@ session_start();
 include_once 'classes/User.php';
 include_once 'classes/Mahasiswa.php';
 include_once 'config/Database.php';
+include_once 'classes/Auth.php';
+
+Auth::checkLogin();
 
 // Cek apakah user memiliki akses
 if ($_SESSION['role'] != '3') {

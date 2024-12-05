@@ -1,22 +1,23 @@
 <?php 
 session_start();
 include_once 'classes/User.php';
-if (!isset($_SESSION['role']) || !isset($_SESSION['username'])) {
-    header('Location: login.html');
-    exit();
-}
+include_once 'classes/Auth.php';
+Auth::checkLogin();
+
 if($_SESSION['role'] == '2'){
     header('Location: home.php');
 }
 $user = null;
     
-    if($_SESSION['role'] == '1'){
-        include_once 'classes/Admin.php';
-        $user = new Admin();
-    } else if($_SESSION['role'] == '3'){
-        include_once 'classes/Mahasiswa.php';
-        $user = new Mahasiswa();
-    }
+if($_SESSION['role'] == '1'){
+    include_once 'classes/Admin.php';
+    $user = new Admin();
+} else if($_SESSION['role'] == '3'){
+    include_once 'classes/Mahasiswa.php';
+    $user = new Mahasiswa();
+    $nim = $_SESSION['no_induk'];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,11 +63,26 @@ $user = null;
             </header>
             <!-- Form -->
             <form id="prestasiForm" class="space-y-4" action="InputProses.php" method="POST" enctype="multipart/form-data">
-            <div>
-                <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
-                <input type="text" id="nim" name="nim" placeholder="Masukkan NIM" class="w-full p-3 border border-gray-300 rounded-lg">
-                <p class="text-red-500 text-sm hidden" id="error-nim">NIM tidak boleh kosong!</p>
-            </div>
+
+            <?php 
+            if($user instanceof Mahasiswa){
+                echo <<<HTML
+                        <div>
+                            <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
+                            <input type="text" id="nim" name="nim" value="$nim" readonly class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                            <p class="text-red-500 text-sm hidden" id="error-nim">NIM tidak boleh kosong!</p>
+                        </div>
+                    HTML;
+            } else {
+                echo <<<HTML
+                        <div>
+                            <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
+                            <input type="text" id="nim" name="nim" placeholder="Masukkan NIM" class="w-full p-3 border border-gray-300 rounded-lg">
+                            <p class="text-red-500 text-sm hidden" id="error-nim">NIM tidak boleh kosong!</p>
+                        </div>
+                    HTML;
+            }
+            ?>
 
             <div>
                 <label for="nama_kompetisi" class="block text-sm font-medium text-gray-700">Nama Kompetisi</label>
@@ -85,7 +101,8 @@ $user = null;
                     <option value="4">Harapan 1</option>
                     <option value="5">Harapan 2</option>
                     <option value="6">Harapan 3</option>
-                    <option value="7">Lainnya</option>
+                    <option value="7">Best Of</option>
+                    <option value="7">Finalis</option>
                 </select>
                 <p class="text-red-500 text-sm hidden" id="error-kategori">Kategori Juara tidak boleh kosong!</p>
                 <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2"></i>

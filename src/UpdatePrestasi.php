@@ -1,5 +1,8 @@
 <?php
 include_once 'config/Database.php';
+include_once 'classes/Auth.php';
+
+Auth::checkLogin();
 
 class UpdatePrestasi {
     private $db;
