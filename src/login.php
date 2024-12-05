@@ -76,9 +76,8 @@ $csrf = new CSRFToken();
                 <div class="flex-1">
                     <div class="text-center">
                         <div class="flex justify-center mx-auto">
-
-                            <img onclick="navigateToPage('../indexLead.html')" class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
-
+                        <a href="../indexLead.php"><img class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
+                        </a>    
                         </div>
     
                         <p class="text-l mt-3 text-gray-500">Masuk untuk mengakses akun yang sudah terdaftar</p>

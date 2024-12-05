@@ -52,7 +52,7 @@
     
     <div id="app" class="w-full h-full">
         <!-- Page 1 -->
-        <div id="page1" class="page">
+        <div id="page1" class="page hidden">
             <!-- Navbar -->
             <nav 
                 x-data="{
@@ -538,7 +538,7 @@
         </div>
 
         <!-- Page 2 -->
-        <div id="page2" class="page hidden">
+        <div id="page2" class="page">
             <!-- Navbar -->
             <nav 
                 x-data="{
@@ -673,13 +673,13 @@
             
                     <section class="mt-8 space-y-8 lg:mt-12">
                         <section class="lg:flex lg:items-center">
-                            <div class="lg:w-1/2 ">
-                                <p class="text-lg tracking-wider text-orange-500 uppercase ">Home Page</p>
-                                <h2 class="mt-2 text-2xl font-semibold text-gray-800 capitalize">Block
-                                    of Ui kit collections</h2>
+                            <div class="lg:w-1/2 text-wrap">
+                                <p class="text-lg tracking-wider text-orange-500 uppercase pl-10 pr-10 text-right">Home Page</p>
+                                <h2 class="mt-2 text-md text-gray-600 pl-10 pr-10 text-justify">
+                                Halaman Homepage adalah halaman utama dari PRESPOL yang akan menampilkan informasi umum tentang platform ini, tujuan penggunaannya, serta fitur-fitur utama yang tersedia. Di sini, pengguna dapat melihat gambaran singkat tentang sistem pencatatan prestasi. Halaman ini juga akan menyertakan tombol untuk masuk (login) atau mendaftar (signup) ke dalam platform bagi pengguna yang baru.</h2>
                             </div>
             
-                            <div class="mt-4 lg:w-1/2 lg:mt-0">
+                            <div class="mt-4 lg:w-1/2 lg:mt-0 pr-6">
                                 <img class="object-cover w-full h-64 rounded-lg md:h-96"
                                     src="src/img/homepage.png"
                                     alt="">
