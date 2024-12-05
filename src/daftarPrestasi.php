@@ -8,7 +8,7 @@ include_once 'classes/Mahasiswa.php';
 $role = $_SESSION['role'];
 
 $user = null;
-    
+
 if ($role == '1') {
     include_once 'classes/Admin.php';
     $user = new Admin();
@@ -36,6 +36,7 @@ $username = $_SESSION['username'];
 ?>
 
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,15 +44,19 @@ $username = $_SESSION['username'];
     <!-- Tailwin CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <style>
         body {
-            background: url('img/homepageGradient.png') no-repeat center center fixed; /* Fixed background */
-            background-size: cover; /* Ensures the image covers the entire area */
-            flex: 1; /* Makes the main content expand to fill the space */
+            background: url('img/homepageGradient.png') no-repeat center center fixed;
+            /* Fixed background */
+            background-size: cover;
+            /* Ensures the image covers the entire area */
+            flex: 1;
+            /* Makes the main content expand to fill the space */
         }
     </style>
 </head>
+
 <body class=" min-h-screen flex flex-col lg:flex-row">
 
     <!-- Sidebar -->
@@ -60,11 +65,13 @@ $username = $_SESSION['username'];
     </aside>
 
     <!-- Main Content -->
-    <main class="ml-[20%] w-[80%] p-8">
-        <?php $user->profile($username); ?>
+    <main class="ml-[20%] w-[80%] p-6 pt-8">
+        <div>
+            <?php $user->profile($username); ?>
+        </div>
 
         <h1 class="text-2xl font-bold mb-10 mt-6">Daftar Prestasi Mahasiswa</h1>
-        
+
         <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
             <!-- Sorting: Pojok Kiri -->
             <div class="w-full md:w-auto">
@@ -82,8 +89,7 @@ $username = $_SESSION['username'];
                     type="text"
                     id="searchInput"
                     placeholder="Cari berdasarkan nama mahasiswa, kompetisi, atau event"
-                    class="border rounded-l p-2 w-full md:w-96"
-                />
+                    class="border rounded-l p-2 w-full md:w-96" />
                 <button id="searchButton" class="bg-blue-500 text-white px-4 py-2 rounded-r">Cari</button>
             </div>
 
@@ -120,21 +126,21 @@ $username = $_SESSION['username'];
             </div>
         </div>
 
-        <table class="w-full bg-white rounded shadow-md">
+        <table class="w-full bg-white rounded-3xl overflow-hidden">
             <thead>
                 <tr class="bg-orange-500 text-white">
-                    <th class="py-3 px-6 border">No</th>
-                    <th class="py-3 px-6 border">Nama Mahasiswa</th>
-                    <th class="py-3 px-6 border">Jurusan</th>
-                    <th class="py-3 px-6 border">Nama Kompetisi</th>
-                    <th class="py-3 px-6 border">Event</th>
-                    <th class="py-3 px-6 border">Juara</th>
-                    <th class="py-3 px-6 border">Tingkat Kompetisi</th>
-                    <th class="py-3 px-6 border">Tahun</th>
-                    <?php 
-                        if($user instanceof Kajur  || $user instanceof Admin){
-                            echo "<th class='py-3 px-6 border'>Aksi</th>";
-                        }
+                    <th class="py-3 px-6 border-r">No</th>
+                    <th class="py-3 px-6 border-r">Nama Mahasiswa</th>
+                    <th class="py-3 px-6 border-r">Jurusan</th>
+                    <th class="py-3 px-6 border-r">Nama Kompetisi</th>
+                    <th class="py-3 px-6 border-r">Event</th>
+                    <th class="py-3 px-6 border-r">Juara</th>
+                    <th class="py-3 px-6">Tingkat Kompetisi</th>
+                    <th class="py-3 px-6 border-l">Tahun</th>
+                    <?php
+                    if ($user instanceof Kajur  || $user instanceof Admin) {
+                        echo "<th class='py-3 px-6 border'>Aksi</th>";
+                    }
                     ?>
                 </tr>
             </thead>
@@ -145,43 +151,44 @@ $username = $_SESSION['username'];
     </main>
 
     <script>
-    function loadTable() {
-        const search = $('#searchInput').val();
-        const sort = $('#sortBy').val();
-        const filterKategori = $('#filterKategori').val();
-        const filterJuara = $('#filterJuara').val();
-        const filterJurusan = $('#filterJurusan').val();
+        function loadTable() {
+            const search = $('#searchInput').val();
+            const sort = $('#sortBy').val();
+            const filterKategori = $('#filterKategori').val();
+            const filterJuara = $('#filterJuara').val();
+            const filterJurusan = $('#filterJurusan').val();
 
-        $.ajax({
-            url: 'daftarPrestasi.php',
-            method: 'POST',
-            data: {
-                search: search,
-                sort: sort,
-                filterKategori: filterKategori,
-                filterJuara: filterJuara,
-                filterJurusan: filterJurusan
-            },
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'  // Add this to differentiate AJAX requests
-            },
-            success: function (response) {
-                $('#tableBody').html(response);
-            },
-            error: function () {
-                $('#tableBody').html('<tr><td colspan="8" class="text-center">Gagal memuat data.</td></tr>');
-            }
+            $.ajax({
+                url: 'daftarPrestasi.php',
+                method: 'POST',
+                data: {
+                    search: search,
+                    sort: sort,
+                    filterKategori: filterKategori,
+                    filterJuara: filterJuara,
+                    filterJurusan: filterJurusan
+                },
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest' // Add this to differentiate AJAX requests
+                },
+                success: function(response) {
+                    $('#tableBody').html(response);
+                },
+                error: function() {
+                    $('#tableBody').html('<tr><td colspan="8" class="text-center">Gagal memuat data.</td></tr>');
+                }
+            });
+        }
+
+        $('#searchButton').on('click', loadTable);
+        $('#sortBy, #filterKategori, #filterJuara, #filterJurusan').on('change', loadTable);
+
+        // Muat tabel pertama kali
+        $(document).ready(function() {
+            loadTable();
         });
-    }
-
-    $('#searchButton').on('click', loadTable);
-    $('#sortBy, #filterKategori, #filterJuara, #filterJurusan').on('change', loadTable);
-
-    // Muat tabel pertama kali
-    $(document).ready(function() {
-        loadTable();
-    });
-</script>
+    </script>
 
 </body>
+
 </html>
