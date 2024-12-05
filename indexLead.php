@@ -20,9 +20,10 @@ $leaderboardData = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRESPOL</title>
+    <title>Homepage | PRESPOL</title>
     <link rel="icon" href="src/img/pres.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
@@ -39,6 +40,30 @@ $leaderboardData = [
             height: 100%;
             top: 0;
             left: 0;
+        }
+
+        /* Smooth tab transition styles */
+        .tab-content {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            position: absolute;
+            width: 100%;
+        }
+
+        .tab-content.active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+        }
+
+        .tab-content.hidden {
+            display: none;
+        }
+
+        /* Ensure parent container is relatively positioned for absolute positioning */
+        section[id="panduan"] .space-y-20 {
+            position: relative;
         }
     </style>
 </head>
@@ -654,71 +679,331 @@ $leaderboardData = [
 
         <!-- Panduan Halaman -->
         <section id="panduan" class="mt-36">
-            <div class="container px-6 py-10 mx-auto">
-                <h1 class="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl">Panduan</h1>
+            <h1 class="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl">Panduan</h1>
+            <div class="flex justify-center mx-auto mt-6">
+                <span class="inline-block w-24 h-1 bg-orange-500 rounded-full"></span>
+                <span class="inline-block w-3 h-1 mx-1 bg-orange-500 rounded-full"></span>
+                <span class="inline-block w-1 h-1 bg-orange-500 rounded-full"></span>
+            </div>
 
-                <div class="flex justify-center mx-auto mt-6">
-                    <span class="inline-block w-24 h-1 bg-orange-500 rounded-full"></span>
-                    <span class="inline-block w-3 h-1 mx-1 bg-orange-500 rounded-full"></span>
-                    <span class="inline-block w-1 h-1 bg-orange-500 rounded-full"></span>
+            <!-- Tab Switch -->
+            <div x-data="{ selectedTab: 'homepage' }" class="w-screen py-4 mt-4 overflow-x-auto overflow-y-hidden space-y-16 justify-center">
+                <div @keydown.right.prevent="$focus.wrap().next()" @keydown.left.prevent="$focus.wrap().previous()" class="flex gap-2 overflow-x-auto border-b border-neutral-300 justify-center" role="tablist" aria-label="tab options">
+                    <button @click="selectedTab = 'homepage'" :aria-selected="selectedTab === 'homepage'" :tabindex="selectedTab === 'homepage' ? '0' : '-1'" :class="selectedTab === 'homepage' ? 'font-semibold text-orange-700 border-b-2 border-orange-500' : 'text-neutral-600 font-medium hover:border-b-2 hover:border-b-neutral-800 hover:text-neutral-900'" class="h-min px-4 py-2 text-md" type="button" role="tab" aria-controls="tabpanelHomepage" >Homepage</button>
+                    <button @click="selectedTab = 'mahasiswa'" :aria-selected="selectedTab === 'mahasiswa'" :tabindex="selectedTab === 'mahasiswa' ? '0' : '-1'" :class="selectedTab === 'mahasiswa' ? 'font-semibold text-orange-700 border-b-2 border-orange-500' : 'text-neutral-600 font-medium hover:border-b-2 hover:border-b-neutral-800 hover:text-neutral-900'" class="h-min px-4 py-2 text-md" type="button" role="tab" aria-controls="tabpanelMahasiswa" >Mahasiswa</button>
+                    <button @click="selectedTab = 'admin'" :aria-selected="selectedTab === 'admin'" :tabindex="selectedTab === 'admin' ? '0' : '-1'" :class="selectedTab === 'admin' ? 'font-semibold text-orange-700 border-b-2 border-orange-500' : 'text-neutral-600 font-medium hover:border-b-2 hover:border-b-neutral-800 hover:text-neutral-900'" class="h-min px-4 py-2 text-md" type="button" role="tab" aria-controls="tabpanelAdmin" >Admin</button>
+                    <button @click="selectedTab = 'kajur'" :aria-selected="selectedTab === 'kajur'" :tabindex="selectedTab === 'kajur' ? '0' : '-1'" :class="selectedTab === 'kajur' ? 'font-semibold text-orange-700 border-b-2 border-orange-500' : 'text-neutral-600 font-medium    hover:border-b-2 hover:border-b-neutral-800 hover:text-neutral-900'" class="h-min px-4 py-2 text-md" type="button" role="tab" aria-controls="tabpanelKajur" >Ketua Jurusan</button>
                 </div>
 
-                <div class="flex py-4 mt-4 overflow-x-auto overflow-y-hidden md:justify-center ">
-                    <button
-                        class="h-12 px-8 py-2 -mb-px text-sm text-center text-orange-600 bg-transparent border-b-2 border-orange-500 sm:text-base whitespace-nowrap focus:outline-none">
-                        Home Page
-                    </button>
-
-                    <button
-                        class="h-12 px-8 py-2 -mb-px text-sm text-center text-gray-700 bg-transparent border-b-2 border-gray-200 sm:text-base whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400">
-                        Mahasiswa
-                    </button>
-
-                    <button
-                        class="h-12 px-8 py-2 -mb-px text-sm text-center text-gray-700 bg-transparent border-b-2 border-gray-200 sm:text-base whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400">
-                        Admin
-                    </button>
-
-                    <button
-                        class="h-12 px-8 py-2 -mb-px text-sm text-center text-gray-700 bg-transparent border-b-2 border-gray-200 sm:text-base whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400">
-                        Ketua Jurusan
-                    </button>
-                </div>
-
-                <section class="mt-8 space-y-8 lg:mt-12">
+                <!-- homepage -->
+                <div x-show="selectedTab === 'homepage'" class="space-y-20" id="tabpanelHomepage" role="tabpanel" aria-label="homepage">
                     <section class="lg:flex lg:items-center">
-                        <div class="lg:w-1/2 ">
-                            <p class="text-lg tracking-wider text-orange-500 uppercase ">Home Page</p>
-                            <h2 class="mt-2 text-2xl font-semibold text-gray-800 capitalize">Block
-                                of Ui kit collections</h2>
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Homepage</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman Homepage adalah halaman utama dari PRESPOL yang akan menampilkan informasi umum tentang platform ini, tujuan penggunaannya, serta fitur-fitur utama yang tersedia. Di sini, pengguna dapat melihat gambaran singkat tentang sistem pencatatan prestasi. Halaman ini juga akan menyertakan tombol untuk masuk (login) atau mendaftar (signup) ke dalam platform bagi pengguna yang baru.</h2>
                         </div>
-
-                        <div class="mt-4 lg:w-1/2 lg:mt-0">
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
                             <img class="object-cover w-full h-64 rounded-lg md:h-96"
                                 src="src/img/homepage.png"
                                 alt="">
                         </div>
                     </section>
-
                     <section class="lg:flex lg:items-center">
-                        <div class="lg:w-1/2 ">
-                            <p class="text-lg tracking-wider text-orange-500 uppercase">Wareframe</p>
-                            <h2 class="mt-2 text-2xl font-semibold text-gray-800 capitalize">Best
-                                free website layout </h2>
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Panduan</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman ini berisi petunjuk lengkap untuk menggunakan platform PRESPOL. Termasuk penjelasan tentang fitur-fitur untuk setiap jenis pengguna (Mahasiswa, Admin, dan Ketua Jurusan).</h2>
                         </div>
-
-                        <div class="mt-4 lg:w-1/2 lg:mt-0">
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
                             <img class="object-cover w-full h-64 rounded-lg md:h-96"
-                                src="https://images.unsplash.com/photo-1600132806608-231446b2e7af?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"
+                                src="src/img/homepage.png"
                                 alt="">
                         </div>
                     </section>
-                </section>
+                </div>
+
+                <!-- mahasiswa -->
+                <div x-show="selectedTab === 'mahasiswa'" class="space-y-20" id="tabpanelMahasiswa" role="tabpanel" aria-label="mahasiswa">
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Masuk / Log in</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Fitur untuk mahasiswa masuk ke dalam sistem menggunakan akun yang telah terdaftar.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Daftar / Sign up</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Fitur pendaftaran bagi mahasiswa baru yang belum memiliki akun. Mahasiswa perlu meng-input-kan data seperti username, kata sandi, nama, NIM, jurusan, program studi, dan juga foto profil untuk membuat akun.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Beranda</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman setelah login berhasil yang menampilkan ucapan selamat datang dan leaderboard terkini. Leaderboard memperlihatkan peringkat mahasiswa berdasarkan jumlah poin prestasi.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Profil</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman untuk melihat dan mengedit informasi pribadi mahasiswa, seperti nama, email, foto profil, dan total poin prestasi.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Tambah Prestasi</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Formulir untuk menambahkan data prestasi yang telah diraih, seperti lomba atau penghargaan. Mahasiswa dapat meng-input-kan data perlombaan dan mengunggah bukti prestasi seperti sertifikat, foto kompetisi, dan lain lain dalam format dokumen atau gambar.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Pengajuan</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Menampilkan status dari prestasi yang diajukan sebelumnya. Status prestasi bisa berupa:
+                                <ul class="list-disc pl-6">
+                                    <li>Pending: Sedang menunggu validasi oleh admin.</li>
+                                    <li>Ditolak: Prestasi tidak disetujui dengan alasan yang tercantum.</li>
+                                    <li>Valid: Prestasi telah disetujui dan ditampilkan dalam list prestasi juga dihitung dalam leaderboard.</li>
+                                </ul>
+                            </h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>List Prestasi</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman yang menampilkan daftar seluruh prestasi mahasiswa yang telah terdaftar dalam sistem. Dilengkapi dengan fitur search, sort, dan filter untuk mempermudah pencarian berdasarkan kriteria seperti kategori prestasi, tanggal, atau status.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Keluar / Log out</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Fitur untuk keluar dari sistem dan mengakhiri sesi login dengan aman.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    
+                </div>
+
+                <!-- admin -->
+                <div x-show="selectedTab === 'admin'" class="space-y-20" id="tabpanelAdmin" role="tabpanel" aria-label="admin">
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Masuk / Log in</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Fitur untuk admin masuk ke dalam sistem menggunakan akun yang telah disediakan.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Beranda</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman setelah login berhasil yang menampilkan ucapan selamat datang dan leaderboard terkini. Leaderboard memperlihatkan peringkat mahasiswa berdasarkan jumlah poin prestasi.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Tambah Prestasi</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Fitur untuk admin menambahkan data prestasi secara manual, misalnya jika terdapat prestasi yang belum diajukan oleh mahasiswa tetapi sudah diketahui.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>List Prestasi</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman daftar seluruh prestasi mahasiswa yang dapat dikelola oleh admin. Dilengkapi dengan fitur search, sort, dan filter untuk mempermudah pencarian dan pengelolaan data.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Profil</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman untuk melihat dan memperbarui informasi akun admin.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Validasi Prestasi</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman untuk memproses prestasi yang diajukan oleh mahasiswa. Admin dapat memvalidasi atau menolak pengajuan dengan memberikan keterangan alasan.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Keluar / Log out</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Fitur untuk keluar dari sistem dan mengakhiri sesi login dengan aman.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                </div>
+
+                <!-- kajur -->
+                <div x-show="selectedTab === 'kajur'" class="space-y-20" id="tabpanelKajur" role="tabpanel" aria-label="kajur">
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Masuk / Log in</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Fitur untuk ketua jurusan masuk ke dalam sistem menggunakan akun yang telah disediakan.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Beranda</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman setelah login berhasil yang menampilkan ucapan selamat datang dan leaderboard terkini. Leaderboard memperlihatkan peringkat mahasiswa berdasarkan jumlah poin prestasi.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Profil</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman untuk melihat dan memperbarui informasi akun ketua jurusan.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>List Prestasi</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman daftar seluruh prestasi mahasiswa yang dapat dilihat oleh ketua jurusan. Dilengkapi dengan fitur search, sort, dan filter untuk mempermudah pencarian dan analisis data.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Ekspor Data</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman untuk mengunduh laporan data prestasi mahasiswa dalam format Excel. Data ini mencakup seluruh informasi dari tabel prestasi mahasiswa sesuai dengan jurusan yang dipilih.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                    <section class="lg:flex lg:items-center">
+                        <div class="lg:w-1/2 pl-10 pr-10">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Keluar / Log out</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Fitur untuk keluar dari sistem dan mengakhiri sesi login dengan aman.</h2>
+                        </div>
+                        <div class="mt-4 lg:w-1/2 lg:mt-0 mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                src="src/img/homepage.png"
+                                alt="">
+                        </div>
+                    </section>
+                </div>
             </div>
+
+            <div class="flex justify-center mx-auto mt-16">
+                        <span class="inline-block w-96 h-1 bg-orange-500 rounded-full"></span>
+                        <span class="inline-block w-9 h-1 mx-1 bg-orange-500 rounded-full"></span>
+                        <span class="inline-block w-1 h-1 bg-orange-500 rounded-full"></span>
+                    </div>
         </section>
 
         <!-- Advertised -->
-        <section class="mt-20">
+        <section class="mt-24 mb-36">
             <div class="container px-6 py-10 mx-auto text-center animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500">
                 <div>
                     <h1 class="text-6xl font-bold text-orange-800 tracking-normal">Mulai Sekarang!</h1>
@@ -757,71 +1042,8 @@ $leaderboardData = [
                 </div>
 
                 <hr class="my-6 border-gray-200 md:my-10 animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500" />
-
-            <!-- Panduan Halaman -->
-            <section id="panduan" class="mt-36">
-                <div class="container px-6 py-10 mx-auto">
-                    <h1 class="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl">Panduan</h1>
-            
-                        <div class="flex justify-center mx-auto mt-6">
-                            <span class="inline-block w-24 h-1 bg-orange-500 rounded-full"></span>
-                            <span class="inline-block w-3 h-1 mx-1 bg-orange-500 rounded-full"></span>
-                            <span class="inline-block w-1 h-1 bg-orange-500 rounded-full"></span>
-                        </div>
-            
-                    <div class="flex py-4 mt-4 overflow-x-auto overflow-y-hidden md:justify-center ">
-                        <button
-                            class="h-12 px-8 py-2 -mb-px text-sm text-center text-orange-600 bg-transparent border-b-2 border-orange-500 sm:text-base whitespace-nowrap focus:outline-none">
-                            Home Page
-                        </button>
-            
-                        <button
-                            class="h-12 px-8 py-2 -mb-px text-sm text-center text-gray-700 bg-transparent border-b-2 border-gray-200 sm:text-base whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400">
-                            Mahasiswa
-                        </button>
-            
-                        <button
-                            class="h-12 px-8 py-2 -mb-px text-sm text-center text-gray-700 bg-transparent border-b-2 border-gray-200 sm:text-base whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400">
-                            Admin
-                        </button>
-            
-                        <button
-                            class="h-12 px-8 py-2 -mb-px text-sm text-center text-gray-700 bg-transparent border-b-2 border-gray-200 sm:text-base whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400">
-                            Ketua Jurusan
-                        </button>
-                    </div>
-            
-                    <section class="mt-8 space-y-8 lg:mt-12">
-                        <section class="lg:flex lg:items-center">
-                            <div class="lg:w-1/2 text-wrap">
-                                <p class="text-lg tracking-wider text-orange-500 uppercase pl-10 pr-10 text-right">Home Page</p>
-                                <h2 class="mt-2 text-md text-gray-600 pl-10 pr-10 text-justify">
-                                Halaman Homepage adalah halaman utama dari PRESPOL yang akan menampilkan informasi umum tentang platform ini, tujuan penggunaannya, serta fitur-fitur utama yang tersedia. Di sini, pengguna dapat melihat gambaran singkat tentang sistem pencatatan prestasi. Halaman ini juga akan menyertakan tombol untuk masuk (login) atau mendaftar (signup) ke dalam platform bagi pengguna yang baru.</h2>
-                            </div>
-            
-                            <div class="mt-4 lg:w-1/2 lg:mt-0 pr-6">
-                                <img class="object-cover w-full h-64 rounded-lg md:h-96"
-                                    src="src/img/homepage.png"
-                                    alt="">
-                            </div>
-                        </section>
-            
-                        <section class="lg:flex lg:items-center">
-                            <div class="lg:w-1/2 ">
-                                <p class="text-lg tracking-wider text-orange-500 uppercase">Wareframe</p>
-                                <h2 class="mt-2 text-2xl font-semibold text-gray-800 capitalize">Best
-                                    free website layout </h2>
-                            </div>
-            
-                            <div class="mt-4 lg:w-1/2 lg:mt-0">
-                                <img class="object-cover w-full h-64 rounded-lg md:h-96"
-                                    src="https://images.unsplash.com/photo-1600132806608-231446b2e7af?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"
-                                    alt="">
-                            </div>
-                        </section>
-                    </section>
-                </div>
-            </section>
+                    <div class="flex flex-col items-center sm:flex-row sm:justify-between animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500">
+                    <p class="text-sm">© Prespol 2024. All Rights Reserved.</p>
 
                     <a href="https://github.com/Archin0/PRESPOL" class="mx-2 transition-colors duration-300 hover:text-orange-500" aria-label="Github">
                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" fill="none"
