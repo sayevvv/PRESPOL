@@ -96,7 +96,7 @@ class Mahasiswa extends User {
                 <<<HTML
                         <div class="flex justify-between items-center p-4" style="margin: 0; background: none;">
                             <div class="flex items-center ml-auto"> <!-- Added ml-auto to push this div to the right -->
-                                <h3 class="text-xl font-bold">  $nama</h3>
+                                <h3 class="text-xl">  $nama</h3>
                                 <img src="{$fotoProfile}" alt="Profile Picture" class="w-10 h-10 rounded-full ml-2">
                             </div>
                         </div>
