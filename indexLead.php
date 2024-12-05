@@ -55,7 +55,7 @@ $leaderboardData = [
 
     <div id="app" class="w-full h-full">
         <!-- Page 1 -->
-        <div id="page1" class="page">
+        <div id="page1" class="page hidden">
             <!-- Navbar -->
             <nav
                 x-data="{
@@ -551,11 +551,11 @@ $leaderboardData = [
         </footer>
     </div>
 
-    <!-- Page 2 -->
-    <div id="page2" class="page hidden">
-        <!-- Navbar -->
-        <nav
-            x-data="{
+        <!-- Page 2 -->
+        <div id="page2" class="page">
+            <!-- Navbar -->
+            <nav 
+                x-data="{
                     isOpen: false, 
                     hasShadow: false,
                     prevScrollPos: window.pageYOffset,
@@ -758,8 +758,70 @@ $leaderboardData = [
 
                 <hr class="my-6 border-gray-200 md:my-10 animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500" />
 
-                <div class="flex flex-col items-center sm:flex-row sm:justify-between animate-fadeIn opacity-0 ease-in-out transition-opacity duration-4500">
-                    <p class="text-sm">© Prespol 2024. All Rights Reserved.</p>
+            <!-- Panduan Halaman -->
+            <section id="panduan" class="mt-36">
+                <div class="container px-6 py-10 mx-auto">
+                    <h1 class="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl">Panduan</h1>
+            
+                        <div class="flex justify-center mx-auto mt-6">
+                            <span class="inline-block w-24 h-1 bg-orange-500 rounded-full"></span>
+                            <span class="inline-block w-3 h-1 mx-1 bg-orange-500 rounded-full"></span>
+                            <span class="inline-block w-1 h-1 bg-orange-500 rounded-full"></span>
+                        </div>
+            
+                    <div class="flex py-4 mt-4 overflow-x-auto overflow-y-hidden md:justify-center ">
+                        <button
+                            class="h-12 px-8 py-2 -mb-px text-sm text-center text-orange-600 bg-transparent border-b-2 border-orange-500 sm:text-base whitespace-nowrap focus:outline-none">
+                            Home Page
+                        </button>
+            
+                        <button
+                            class="h-12 px-8 py-2 -mb-px text-sm text-center text-gray-700 bg-transparent border-b-2 border-gray-200 sm:text-base whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400">
+                            Mahasiswa
+                        </button>
+            
+                        <button
+                            class="h-12 px-8 py-2 -mb-px text-sm text-center text-gray-700 bg-transparent border-b-2 border-gray-200 sm:text-base whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400">
+                            Admin
+                        </button>
+            
+                        <button
+                            class="h-12 px-8 py-2 -mb-px text-sm text-center text-gray-700 bg-transparent border-b-2 border-gray-200 sm:text-base whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400">
+                            Ketua Jurusan
+                        </button>
+                    </div>
+            
+                    <section class="mt-8 space-y-8 lg:mt-12">
+                        <section class="lg:flex lg:items-center">
+                            <div class="lg:w-1/2 text-wrap">
+                                <p class="text-lg tracking-wider text-orange-500 uppercase pl-10 pr-10 text-right">Home Page</p>
+                                <h2 class="mt-2 text-md text-gray-600 pl-10 pr-10 text-justify">
+                                Halaman Homepage adalah halaman utama dari PRESPOL yang akan menampilkan informasi umum tentang platform ini, tujuan penggunaannya, serta fitur-fitur utama yang tersedia. Di sini, pengguna dapat melihat gambaran singkat tentang sistem pencatatan prestasi. Halaman ini juga akan menyertakan tombol untuk masuk (login) atau mendaftar (signup) ke dalam platform bagi pengguna yang baru.</h2>
+                            </div>
+            
+                            <div class="mt-4 lg:w-1/2 lg:mt-0 pr-6">
+                                <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                    src="src/img/homepage.png"
+                                    alt="">
+                            </div>
+                        </section>
+            
+                        <section class="lg:flex lg:items-center">
+                            <div class="lg:w-1/2 ">
+                                <p class="text-lg tracking-wider text-orange-500 uppercase">Wareframe</p>
+                                <h2 class="mt-2 text-2xl font-semibold text-gray-800 capitalize">Best
+                                    free website layout </h2>
+                            </div>
+            
+                            <div class="mt-4 lg:w-1/2 lg:mt-0">
+                                <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                                    src="https://images.unsplash.com/photo-1600132806608-231446b2e7af?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80"
+                                    alt="">
+                            </div>
+                        </section>
+                    </section>
+                </div>
+            </section>
 
                     <a href="https://github.com/Archin0/PRESPOL" class="mx-2 transition-colors duration-300 hover:text-orange-500" aria-label="Github">
                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" fill="none"
