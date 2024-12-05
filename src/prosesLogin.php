@@ -1,6 +1,7 @@
 <?php 
 include_once 'classes/Auth.php';
 include_once 'classes/CSRFToken.php';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $csrf = new CSRFToken();
     if (!$csrf->validateToken($_POST['csrf_token'])) {

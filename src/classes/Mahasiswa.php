@@ -14,33 +14,39 @@ class Mahasiswa extends User {
             <nav class="space-y-4 gap-4">
             <ul class="space-y-2">
                 <li>
-                    <a href="home.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'home.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                    <a href="home.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'home.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-home"></i>
                         <span class="ml-4">Beranda</span>
                     </a>
                 </li>
                 <li>
-                    <a href="inputPrestasi.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'inputPrestasi.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                    <a href="inputPrestasi.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'inputPrestasi.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-trophy"></i>
                         <span class="ml-4">Tambah prestasi</span>
                     </a>
                 </li>
                 <li>
-                    <a href="daftarPrestasi.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPrestasi.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                    <a href="daftarPrestasi.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPrestasi.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-list"></i>
                         <span class="ml-4">List Prestasi</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'profile.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                    <a href="#" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'profile.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-user"></i>
                         <span class="ml-4">Profil</span>
                     </a>
                 </li>
                 <li>
-                    <a href="historiPengajuan.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-500 hover:text-white rounded-lg transition duration-200">
+                    <a href="historiPengajuan.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-file-alt"></i>
                         <span class="ml-4">Pengajuan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="logout.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="ml-4">Logout</span>
                     </a>
                 </li>
             </ul>
@@ -106,21 +112,16 @@ class Mahasiswa extends User {
     }
 
     public function listPrestasi($search = '', $filterKategori = '', $filterJuara = '', $filterJurusan = '', $sort = 'newest') {
-        $query = "SELECT 
-                    [nama mahasiswa] AS nama,
-                    jurusan,
-                    nama_kompetisi,
-                    event,
-                    juara,
-                    kategori,
-                    tahun
-                  FROM vw_daftar_prestasi WHERE 1=1";
+        $page = isset($_POST['page']) ? (int)$_POST['page'] : 1; // Change from $_GET to $_POST
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
     
+        $totalQuery = "SELECT COUNT(*) AS total FROM vw_daftar_prestasi WHERE 1=1";
         $params = [];
     
-        // Filter berdasarkan search
+        // Filter conditions (keep existing code)
         if (!empty($search)) {
-            $query .= " AND (
+            $totalQuery .= " AND (
                 [nama mahasiswa] LIKE ? OR 
                 nama_kompetisi LIKE ? OR 
                 event LIKE ?
@@ -130,25 +131,56 @@ class Mahasiswa extends User {
             $params[] = '%' . $search . '%';
         }
     
-        // Filter berdasarkan kategori
         if (!empty($filterKategori)) {
-            $query .= " AND kategori = ?";
+            $totalQuery .= " AND kategori = ?";
             $params[] = $filterKategori;
         }
-    
-        // Filter berdasarkan juara
         if (!empty($filterJuara)) {
-            $query .= " AND juara = ?";
+            $totalQuery .= " AND juara = ?";
             $params[] = $filterJuara;
         }
-    
-        // Filter berdasarkan jurusan
         if (!empty($filterJurusan)) {
-            $query .= " AND jurusan = ?";
+            $totalQuery .= " AND jurusan = ?";
             $params[] = $filterJurusan;
         }
     
-        // Sorting
+        $totalRow = $this->db->fetchOne($totalQuery, $params);
+        $totalData = $totalRow['total'];
+        $totalPages = ceil($totalData / $limit);
+    
+        // Query data (keep existing query structure)
+        $query = "SELECT 
+                    id_prestasi,
+                    [nama mahasiswa] AS nama,
+                    jurusan,
+                    nama_kompetisi,
+                    event,
+                    juara,
+                    kategori,
+                    tahun
+                  FROM vw_daftar_prestasi 
+                  WHERE 1=1";
+    
+        // Add filter conditions to the main query (similar to total query)
+        if (!empty($search)) {
+            $query .= " AND (
+                [nama mahasiswa] LIKE ? OR 
+                nama_kompetisi LIKE ? OR 
+                event LIKE ?
+            )";
+        }
+        
+        if (!empty($filterKategori)) {
+            $query .= " AND kategori = ?";
+        }
+        if (!empty($filterJuara)) {
+            $query .= " AND juara = ?";
+        }
+        if (!empty($filterJurusan)) {
+            $query .= " AND jurusan = ?";
+        }
+    
+        // Sorting (keep existing sorting logic)
         switch ($sort) {
             case 'newest':
                 $query .= " ORDER BY created_date DESC";
@@ -164,34 +196,37 @@ class Mahasiswa extends User {
                 break;
         }
     
-        // Return the results instead of directly echoing
-        $db = new Database();
-        try {
-            $result = $db->fetchAll($query, $params);
-            
-            // Generate table rows as a string
-            $rows = '';
-            if ($result) {
-                foreach ($result as $index => $row) {
-                    $rows .= '<tr>';
-                    $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($index + 1) . "</td>";
-                    $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['nama'] ?? '') . "</td>";
-                    $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['jurusan'] ?? '') . "</td>";
-                    $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['nama_kompetisi'] ?? '') . "</td>";
-                    $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['event'] ?? '') . "</td>";
-                    $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['juara'] ?? '') ."</td>";
-                    $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['kategori'] ?? '') . "</td>";
-                    $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['tahun'] ?? '') . "</td>";
-                    $rows .= '</tr>';
-                }
-                return $rows;
-            } else {
-                return '<tr><td colspan="8" class="text-center">Tidak ada data ditemukan</td></tr>';
+        $query .= " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        $params[] = $offset;
+        $params[] = $limit;
+    
+        $result = $this->db->fetchAll($query, $params);
+    
+        $rows = '';
+        if ($result) {
+            foreach ($result as $index => $row) {
+                $rows .= '<tr>';
+                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($index + 1 + $offset) . "</td>";
+                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['nama'] ?? '') . "</td>";
+                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['jurusan'] ?? '') . "</td>";
+                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['nama_kompetisi'] ?? '') . "</td>";
+                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['event'] ?? '') . "</td>";
+                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['juara'] ?? '') ."</td>";
+                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['kategori'] ?? '') . "</td>";
+                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['tahun'] ?? '') . "</td>";
             }
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-            return '<tr><td colspan="8" class="text-center">Error fetching data</td></tr>';
+        } else {
+            $rows = '<tr><td colspan="9" class="text-center">Tidak ada data ditemukan</td></tr>';
         }
+    
+        return json_encode([
+            'rows' => $rows,
+            'pagination' => [
+                'current_page' => $page,
+                'total_pages' => $totalPages,
+                'total_data' => $totalData
+            ]
+        ]);
     }
 }
 ?>

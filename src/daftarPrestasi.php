@@ -3,6 +3,10 @@ session_start();
 
 include_once 'classes/User.php';
 include_once 'classes/Mahasiswa.php';
+include_once 'classes/Auth.php';
+
+Auth::checkLogin();
+
 
 // Cek apakah user memiliki akses
 $role = $_SESSION['role'];
@@ -65,10 +69,9 @@ $username = $_SESSION['username'];
     </aside>
 
     <!-- Main Content -->
-    <main class="ml-[20%] w-[80%] p-6 pt-8">
-        <div>
-            <?php $user->profile($username); ?>
-        </div>
+
+    <main class="ml-[20%] w-[80%] p-8 pb-12 min-h-screen">
+        <?php $user->profile($username); ?>
 
         <h1 class="text-2xl font-bold mb-10 mt-6">Daftar Prestasi Mahasiswa</h1>
 
@@ -148,46 +151,69 @@ $username = $_SESSION['username'];
                 <!-- Data akan dimuat oleh AJAX -->
             </tbody>
         </table>
+
+        <div class="flex justify-between items-center mt-4 mb-12 pb-12">
+            <button id="prevPage" class="bg-gray-400 text-white px-4 py-2 rounded" disabled>Previous</button>
+            <span id="paginationInfo"></span>
+            <button id="nextPage" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+        </div>
+
     </main>
 
     <script>
-        function loadTable() {
-            const search = $('#searchInput').val();
-            const sort = $('#sortBy').val();
-            const filterKategori = $('#filterKategori').val();
-            const filterJuara = $('#filterJuara').val();
-            const filterJurusan = $('#filterJurusan').val();
 
-            $.ajax({
-                url: 'daftarPrestasi.php',
-                method: 'POST',
-                data: {
-                    search: search,
-                    sort: sort,
-                    filterKategori: filterKategori,
-                    filterJuara: filterJuara,
-                    filterJurusan: filterJurusan
-                },
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest' // Add this to differentiate AJAX requests
-                },
-                success: function(response) {
-                    $('#tableBody').html(response);
-                },
-                error: function() {
-                    $('#tableBody').html('<tr><td colspan="8" class="text-center">Gagal memuat data.</td></tr>');
-                }
-            });
-        }
+    function loadTable(page = 1) {
+        const search = $('#searchInput').val();
+        const sort = $('#sortBy').val();
+        const filterKategori = $('#filterKategori').val();
+        const filterJuara = $('#filterJuara').val();
+        const filterJurusan = $('#filterJurusan').val();
 
-        $('#searchButton').on('click', loadTable);
-        $('#sortBy, #filterKategori, #filterJuara, #filterJurusan').on('change', loadTable);
+        $.ajax({
+            url: 'daftarPrestasi.php',
+            method: 'POST',
+            data: {
+                search: search,
+                sort: sort,
+                filterKategori: filterKategori,
+                filterJuara: filterJuara,
+                filterJurusan: filterJurusan,
+                page: page
+            },
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function (response) {
+                const data = JSON.parse(response);
+                $('#tableBody').html(data.rows);
 
-        // Muat tabel pertama kali
-        $(document).ready(function() {
-            loadTable();
+                // Update pagination
+                const { current_page, total_pages } = data.pagination;
+                $('#paginationInfo').text(`Page ${current_page} of ${total_pages}`);
+                $('#prevPage').prop('disabled', current_page <= 1);
+                $('#nextPage').prop('disabled', current_page >= total_pages);
+
+                // Attach new page handlers
+                $('#prevPage').off('click').on('click', function () {
+                    if (current_page > 1) loadTable(current_page - 1);
+                });
+                $('#nextPage').off('click').on('click', function () {
+                    if (current_page < total_pages) loadTable(current_page + 1);
+                });
+            },
+            error: function () {
+                $('#tableBody').html('<tr><td colspan="9" class="text-center">Gagal memuat data.</td></tr>');
+            }
         });
-    </script>
+    }
+
+    $(document).ready(function() {
+        loadTable();
+
+        $('#searchButton').on('click', () => loadTable());
+        $('#sortBy, #filterKategori, #filterJuara, #filterJurusan').on('change', () => loadTable());
+    });
+</script>
 
 </body>
 

@@ -1,12 +1,17 @@
 <?php
 session_start();
-if($_SESSION['role'] != '1'){
-    header('Location: home.php');
-}
 
 include_once 'classes/User.php';
 include_once 'classes/Admin.php';
 include_once 'config/Database.php';
+include_once 'classes/Auth.php';
+
+Auth::checkLogin();
+
+if($_SESSION['role'] != '1'){
+    header('Location: home.php');
+}
+
 
 $db = new Database();
 $user = new Admin($db);
@@ -20,7 +25,7 @@ $no = 1; // Inisialisasi variabel nomor urut
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Prestasi Pending</title>
+    <title>Daftar Pengajuan Prestasi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>

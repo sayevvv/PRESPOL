@@ -1,12 +1,16 @@
 <?php
 session_start();
-if($_SESSION['role'] != '1'){
-    header('Location: home.php');
-}
 
 include_once 'classes/User.php';
 include_once 'classes/Admin.php';
 include_once 'config/Database.php';
+include_once 'classes/Auth.php';
+
+Auth::checkLogin();
+
+if($_SESSION['role'] != '1'){
+    header('Location: home.php');
+}
 
 $db = new Database();
 $user = new Admin($db);
