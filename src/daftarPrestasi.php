@@ -126,17 +126,17 @@ $username = $_SESSION['username'];
             </div>
         </div>
 
-        <table class="w-full bg-white rounded shadow-md">
+        <table class="w-full bg-white rounded-3xl overflow-hidden">
             <thead>
                 <tr class="bg-orange-500 text-white">
-                    <th class="py-3 px-6 border">No</th>
-                    <th class="py-3 px-6 border">Nama Mahasiswa</th>
-                    <th class="py-3 px-6 border">Jurusan</th>
-                    <th class="py-3 px-6 border">Nama Kompetisi</th>
-                    <th class="py-3 px-6 border">Event</th>
-                    <th class="py-3 px-6 border">Juara</th>
-                    <th class="py-3 px-6 border">Tingkat Kompetisi</th>
-                    <th class="py-3 px-6 border">Tahun</th>
+                    <th class="py-3 px-6 border-r">No</th>
+                    <th class="py-3 px-6 border-r">Nama Mahasiswa</th>
+                    <th class="py-3 px-6 border-r">Jurusan</th>
+                    <th class="py-3 px-6 border-r">Nama Kompetisi</th>
+                    <th class="py-3 px-6 border-r">Event</th>
+                    <th class="py-3 px-6 border-r">Juara</th>
+                    <th class="py-3 px-6">Tingkat Kompetisi</th>
+                    <th class="py-3 px-6 border-l">Tahun</th>
                     <?php
                     if ($user instanceof Kajur  || $user instanceof Admin) {
                         echo "<th class='py-3 px-6 border'>Aksi</th>";
