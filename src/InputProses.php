@@ -70,16 +70,12 @@ class InputProses {
 
         $subDir = $subDirMap[$key];
 
-        // Membuat nama file unik menggunakan uniqid() dan memastikan nama aman
         $fileName = strtolower(uniqid('file_', true) . "_" . basename($file['name']));
         
-        // Pastikan tidak ada path traversal atau karakter yang berbahaya dalam nama file
         $fileName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $fileName);
 
-        // Tentukan path lengkap file yang akan disimpan
         $filePath = $subDir . $fileName;
 
-        // Periksa apakah file sudah ada, jika ada, tambahkan angka unik
         $counter = 1;
         while (file_exists($filePath)) {
             $fileName = strtolower(uniqid('file_' . $counter . '_', true) . "_" . basename($file['name']));

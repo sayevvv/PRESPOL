@@ -64,7 +64,7 @@ $username = $_SESSION['username'];
     </aside>
 
     <!-- Main Content -->
-    <main class="ml-[20%] w-[80%] p-8 pb-16 min-h-screen">
+    <main class="ml-[20%] w-[80%] p-8 pb-12 min-h-screen">
         <?php $user->profile($username); ?>
 
         <h1 class="text-2xl font-bold mb-10 mt-6">Daftar Prestasi Mahasiswa</h1>
@@ -147,7 +147,7 @@ $username = $_SESSION['username'];
             </tbody>
         </table>
 
-        <div class="flex justify-between items-center mt-4 mb-16 pb-16">
+        <div class="flex justify-between items-center mt-4 mb-12 pb-12">
             <button id="prevPage" class="bg-gray-400 text-white px-4 py-2 rounded" disabled>Previous</button>
             <span id="paginationInfo"></span>
             <button id="nextPage" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
