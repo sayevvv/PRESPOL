@@ -43,7 +43,7 @@ class Kajur extends User {
                     </a>
                 </li>
                 <li>
-                    <a href="logout.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                    <a href="logout.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'historiPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-file-alt"></i>
                         <span class="ml-4">Logout</span>
                     </a>

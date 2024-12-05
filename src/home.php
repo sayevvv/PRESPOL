@@ -1,39 +1,39 @@
 <?php
-    session_start();
-    include_once 'config/Database.php';
-    include_once 'classes/User.php';
-    include_once 'classes/Auth.php';
-    Auth::checkLogin();
+session_start();
+include_once 'config/Database.php';
+include_once 'classes/User.php';
+include_once 'classes/Auth.php';
+Auth::checkLogin();
 
-    // Ambil koneksi dari class Database
-    $db = new Database();
-    $connection = $db->getConnection();
+// Ambil koneksi dari class Database
+$db = new Database();
+$connection = $db->getConnection();
 
-    // Ambil data dari session
-    $role = $_SESSION['role'];
-    $username = $_SESSION['username'];
+// Ambil data dari session
+$role = $_SESSION['role'];
+$username = $_SESSION['username'];
 
-    // Data dummy untuk leaderboard (bisa diganti dengan query database)
-    $leaderboardData = [
-        ['rank' => 1, 'name' => 'Dwi Ahmad Khairy', 'points' => 180],
-        ['rank' => 2, 'name' => 'Abdullah Shamil Basayev', 'points' => 120],
-        ['rank' => 3, 'name' => 'Rizki Rahmat', 'points' => 96],
-        ['rank' => 4, 'name' => 'Adinda Lova', 'points' => 68],
-        ['rank' => 5, 'name' => 'Amanda M.', 'points' => 45],
-    ];
+// Data dummy untuk leaderboard (bisa diganti dengan query database)
+$leaderboardData = [
+    ['rank' => 1, 'name' => 'Dwi Ahmad Khairy', 'points' => 180],
+    ['rank' => 2, 'name' => 'Abdullah Shamil Basayev', 'points' => 120],
+    ['rank' => 3, 'name' => 'Rizki Rahmat', 'points' => 96],
+    ['rank' => 4, 'name' => 'Adinda Lova', 'points' => 68],
+    ['rank' => 5, 'name' => 'Amanda M.', 'points' => 45],
+];
 
-    $user = null;
-    
-    if($role == '1'){
-        include_once 'classes/Admin.php';
-        $user = new Admin();
-    } else if($role == '2'){
-        include_once 'classes/Kajur.php';
-        $user = new Kajur();
-    } else if($role == '3'){
-        include_once 'classes/Mahasiswa.php';
-        $user = new Mahasiswa();
-    }
+$user = null;
+
+if ($role == '1') {
+    include_once 'classes/Admin.php';
+    $user = new Admin();
+} else if ($role == '2') {
+    include_once 'classes/Kajur.php';
+    $user = new Kajur();
+} else if ($role == '3') {
+    include_once 'classes/Mahasiswa.php';
+    $user = new Mahasiswa();
+}
 
 ?>
 <!DOCTYPE html>
@@ -115,5 +115,4 @@
         </section>
     </main>
 </body>
-
 </html>
