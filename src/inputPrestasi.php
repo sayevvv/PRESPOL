@@ -208,8 +208,11 @@ if ($_SESSION['role'] == '1') {
         <aside class="w-1/5 p-10 py-32 fixed right-0">
             <div class="bg-white p-6 border border-gray-300 rounded-lg">
                 <h2 class="text-xl font-bold text-orange-500">Note!</h2>
-                <p class="mt-4 text-gray-700">Lorem Ipsum dolor Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor</p>
-                <p class="mt-4 text-gray-700">Lorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolorLorem Ipsum dolor</p>
+                    <p class="mt-4 text-gray-700">(1) Semua kolom wajib diisi</p>
+                    <p class="mt-4 text-gray-700">(2) Lampiran File : </p>
+                    <p class="mt-1 text-gray-700">- Format file yang didukung : <i>JPEG, PNG,</i> dan <i>PDF</i></p>
+                    <p class="mt-1 text-gray-700">- Ukuran file tidak boleh melebihi batas maksimum</p>
+                    <p class="mt-4 text-gray-700">(3) Pasikan sebelum klik tombol <b>SIMPAN</b>, cek terlebih dahulu datanya</p>
             </div>
         </aside>
     </div>
