@@ -15,6 +15,7 @@ class Mahasiswa extends User
             </div>
             <nav class="space-y-4 gap-4 flex flex-col h-full">
             <ul class="space-y-2">
+            <!-- sidebar mahasiswa -->
             <li>
                     <a href="home.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'home.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-home"></i>
@@ -54,6 +55,7 @@ class Mahasiswa extends User
             </ul>
             </nav>
     
+
             <!-- Logout Modal HTML -->
             <div id="logoutModal" class="fixed inset-0 z-[9999] hidden bg-black bg-opacity-50 overflow-y-auto h-full w-full px-4" style="backdrop-filter: blur(5px);">
             <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
