@@ -46,7 +46,7 @@ class Admin extends User
                     </a>
                 </li>
                 <li>
-                    <a href="logout.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                    <a href="logout.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'logout.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-file-alt"></i>
                         <span class="ml-6">Logout</span>
                     </a>
@@ -178,20 +178,29 @@ class Admin extends User
             WHERE status_validasi <> 'tolak'";
 
         // Eksekusi query
-        $stmt = sqlsrv_query($this->db->getConnection(), $query);
+        $result = $this->db->fetchAll($query);
 
-        if ($stmt === false) {
+        if ($result === false) {
             throw new Exception('Gagal mengambil data prestasi pending: ' . print_r(sqlsrv_errors(), true));
-        }
-
-        $result = [];
-        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-            $result[] = $row;
         }
 
         return $result;
     }
 
+    public function getPrestasiVerifiedList($no_induk){
+        $query = "SELECT status_validasi, nama_mahasiswa, nama_kompetisi, nama_kategori, jenis_juara 
+            FROM vw_daftar_pengajuan_terlayani
+            WHERE no_induk_pegawai = ?";
+            $params = [$no_induk];
+            
+            $result = $this->db->fetchAll($query, $params);
+
+            if ($result === false) {
+                throw new Exception('Gagal mengambil data prestasi pending: ' . print_r(sqlsrv_errors(), true));
+            }
+
+            return $result;
+    }
 
 
     public function getPrestasiPendingDetail($id_pending)

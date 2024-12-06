@@ -151,7 +151,8 @@ $username = $_SESSION['username'];
             <?php endif; ?>
         </div>
 
-            <!-- Edit Form -->
+            <?php if ($user instanceof Admin): ?>
+                <!-- Edit Form -->
             <div id="editForm" class="bg-white p-6 rounded-lg shadow-lg border border-gray-300 hidden">
                 <form action="UpdatePrestasi.php" method="POST" id="editPrestasiForm" enctype="multipart/form-data">
                     <input type="hidden" name="id_prestasi" value="<?php echo $id_prestasi; ?>">
@@ -244,7 +245,7 @@ $username = $_SESSION['username'];
                     </div>
                 </form>
             </div>
-
+            <?php endif; ?>
         <?php } else { ?>
         <p class="text-red-600">ID tidak ditemukan!</p>
         <?php } ?>
