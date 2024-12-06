@@ -293,4 +293,64 @@ class Mahasiswa extends User
             ]
         ]);
     }
+
+    //Profil
+    public function profilDetail($username) {
+        try {
+            $sql = "SELECT 
+                m.nim,
+                m.nama,
+                m.foto_profile,
+                p.nama_prodi,
+                j.nama_jurusan
+            FROM mahasiswa m 
+            JOIN prodi p ON m.id_prodi = p.id_prodi
+            JOIN jurusan j ON m.id_jurusan = j.id_jurusan
+            WHERE m.nim = ?";
+            $data = [ $username ];
+
+            // Ambil hasil query
+            $row = $this->db->fetchOne( $sql, $data );
+            if ( $row ) {
+                $nim = $row[ 'nim' ] ?? 'Unknown';
+                $nama = $row[ 'nama' ] ?? 'Unknown';
+                $fotoProfile = $row[ 'foto_profile' ] ?? 'default-profile.png';
+                $prodi = $row[ 'nama_prodi' ] ?? 'Unknown';
+                $jurusan = $row[ 'nama_jurusan' ] ?? 'Unknown';
+                echo
+                <<<HTML
+                    <div class = 'flex items-center mb-8'>
+                        <img alt = 'User profile picture' class = 'space-y-8 rounded-full mr-4' height = '100' src = 'https://storage.googleapis.com/a1aa/image/A6X3am9dLVLTFB2dIWDdqFsZbidJo0uLoDyOufFC8n6Ddh7JA.jpg' width = '100'/>
+                        <div class="space-y-2">
+                            <h1 class = 'text-3xl font-bold'> $nama </h1>
+                            <div class = 'flex items-center'>
+                            <!-- <span class = 'bg-orange-200 text-orange-600 px-2 py-1 rounded-full text-sm'> $nim </span> -->
+                            <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $nim </span>
+                        </div>
+                        <div class="space-y-12">
+                            <div class="flex justify-between items-center rounded-lg gap-4">
+                                <div class="text-left">
+                                    <h4 class="text-xl text-gray-500 font-bold">Program Studi</h4>
+                                    <p class="text-xl text-black">$prodi</p>
+                                </div>
+                                <!-- Jurusan -->
+                                <div class="text-left">
+                                    <h4 class="text-xl text-gray-500 font-bold">Jurusan</h4>
+                                    <p class="text-xl text-black">$jurusan</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <img src = "img/setting.svg" alt = 'Profile Picture' class = 'w-10 h-10 rounded-full ml-2'>
+                HTML;
+
+            } else {
+                throw new Exception( 'Data tidak ditemukan untuk username: ' . htmlspecialchars( $username ) );
+            }
+        } catch ( Exception $e ) {
+            // Log kesalahan dan lempar ulang
+            error_log( $e->getMessage() );
+            echo 'Akun tidak ditemukan';
+        }
+    }
 }
