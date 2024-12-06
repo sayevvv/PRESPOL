@@ -68,7 +68,6 @@ class Kajur extends User {
                         <div class="text-center lg:text-left">
                             <h1 class="text-3xl font-bold">Selamat Datang</h1>
                             <h2 class="text-5xl font-bold text-black">Kepala Jurusan!</h2>
-                            <p class="text-orange-500 mt-2">Kamu peringkat</p>
                             <button onclick="window.location.href='#'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
                                 Lihat Prestasi
                             </button>

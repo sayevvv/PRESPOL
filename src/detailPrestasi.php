@@ -174,23 +174,23 @@ $username = $_SESSION['username'];
                     <div class="mb-4">
                         <label for="kategori" class="block font-semibold">Kategori</label>
                         <select id="kategori" name="id_kategori" class="w-full border rounded-md p-2">
-                            <option value="1" <?php echo ($detail['kategori'] === '1') ? 'selected' : ''; ?>>Internasional</option>
-                            <option value="2" <?php echo ($detail['kategori'] === '2') ? 'selected' : ''; ?>>Nasional</option>
-                            <option value="3" <?php echo ($detail['kategori'] === '3') ? 'selected' : ''; ?>>Regional</option>
-                            <option value="4" <?php echo ($detail['kategori'] === '4') ? 'selected' : ''; ?>>Lokal</option>
+                            <option value="1" <?php echo ($detail['kategori'] == 'Internasional') ? 'selected' : ''; ?>>Internasional</option>
+                            <option value="2" <?php echo ($detail['kategori'] == 'Nasional') ? 'selected' : ''; ?>>Nasional</option>
+                            <option value="3" <?php echo ($detail['kategori'] == 'Regional') ? 'selected' : ''; ?>>Regional</option>
+                            <option value="4" <?php echo ($detail['kategori'] == 'Lokal') ? 'selected' : ''; ?>>Lokal</option>
                         </select>
                     </div>
-
                     <div class="mb-4">
                         <label for="juara" class="block font-semibold">Juara</label>
                         <select id="juara" name="id_juara" class="w-full border rounded-md p-2">
-                            <option value="1" <?php echo ($detail['juara'] === '1') ? 'selected' : ''; ?>>Juara 1</option>
-                            <option value="2" <?php echo ($detail['juara'] === '2') ? 'selected' : ''; ?>>Juara 2</option>
-                            <option value="3" <?php echo ($detail['juara'] === '3') ? 'selected' : ''; ?>>Juara 3</option>
-                            <option value="4" <?php echo ($detail['juara'] === '4') ? 'selected' : ''; ?>>Harapan 1</option>
-                            <option value="5" <?php echo ($detail['juara'] === '5') ? 'selected' : ''; ?>>Harapan 2</option>
-                            <option value="6" <?php echo ($detail['juara'] === '6') ? 'selected' : ''; ?>>Harapan 3</option>
-                            <option value="7" <?php echo ($detail['juara'] === '7') ? 'selected' : ''; ?>>Lainnya</option>
+                            <option value="1" <?php echo ($detail['juara'] == 'Juara 1') ? 'selected' : ''; ?>>Juara 1</option>
+                            <option value="2" <?php echo ($detail['juara'] == 'Juara 2') ? 'selected' : ''; ?>>Juara 2</option>
+                            <option value="3" <?php echo ($detail['juara'] == 'Juara 3') ? 'selected' : ''; ?>>Juara 3</option>
+                            <option value="4" <?php echo ($detail['juara'] == 'Harapan 1') ? 'selected' : ''; ?>>Harapan 1</option>
+                            <option value="5" <?php echo ($detail['juara'] == 'Harapan 2') ? 'selected' : ''; ?>>Harapan 2</option>
+                            <option value="6" <?php echo ($detail['juara'] == 'Harapan 3') ? 'selected' : ''; ?>>Harapan 3</option>
+                            <option value="7" <?php echo ($detail['juara'] == 'Best Of') ? 'selected' : ''; ?>>Best Of</option>
+                            <option value="8" <?php echo ($detail['juara'] == 'Finalis') ? 'selected' : ''; ?>>Finalis</option>
                         </select>
                     </div>
                     <div class="mb-4">
@@ -198,16 +198,24 @@ $username = $_SESSION['username'];
                         <input type="text" id="jumlah_peserta" name="jumlah_peserta" value="<?php echo htmlspecialchars($detail['jumlah_peserta']); ?>" class="w-full border rounded-md p-2">
                     </div>
                     <div class="mb-4">
-                        <label for="dosen_pembimbing_1" class="block font-semibold">Dosen Pembimbing 1</label>
-                        <input type="text" id="dosen_pembimbing_1" name="dosen_pembimbing_1" 
-                            value="<?php echo htmlspecialchars($detail['dosen_pembimbing_1'] ?? ''); ?>" 
-                            class="w-full border rounded-md p-2">
+                        <label for="dosen_pembimbing_2" class="block font-semibold">Dosen Pembimbing 1</label>
+                        <?php if($detail['dosen_pembimbing_1'] != NULL): ?>
+                            <input type="text" id="dosen_pembimbing_1" name="dosen_pembimbing_1" 
+                                value="<?php echo htmlspecialchars($detail['dosen_pembimbing_1']); ?>" 
+                                class="w-full border rounded-md p-2">
+                        <?php else: ?>
+                            <input type="text" id="dosen_pembimbing_1" name="dosen_pembimbing_1" class="w-full border rounded-md p-2">
+                        <?php endif ?>
                     </div>
                     <div class="mb-4">
                         <label for="dosen_pembimbing_2" class="block font-semibold">Dosen Pembimbing 2</label>
-                        <input type="text" id="dosen_pembimbing_2" name="dosen_pembimbing_2" 
-                            value="<?php echo htmlspecialchars($detail['dosen_pembimbing_2'] ?? ''); ?>" 
-                            class="w-full border rounded-md p-2">
+                        <?php if($detail['dosen_pembimbing_2'] != NULL): ?>
+                            <input type="text" id="dosen_pembimbing_2" name="dosen_pembimbing_2" 
+                                value="<?php echo htmlspecialchars($detail['dosen_pembimbing_2']); ?>" 
+                                class="w-full border rounded-md p-2">
+                        <?php else: ?>
+                            <input type="text" id="dosen_pembimbing_2" name="dosen_pembimbing_2" class="w-full border rounded-md p-2">
+                        <?php endif ?>
                     </div>
                     <div class="mb-4">
                         <label for="foto_lomba" class="block font-semibold">Foto Lomba</label>
@@ -215,7 +223,7 @@ $username = $_SESSION['username'];
                     </div>
                     <div class="mb-4">
                         <label for="flyer_lomba" class="block font-semibold">Poster Lomba</label>
-                        <input type="file" id="flyer_lomba" name="flyer_lom" accept=".pdf,image/*" class="w-full border rounded-md p-2">
+                        <input type="file" id="flyer_lomba" name="flyer" accept=".pdf,image/*" class="w-full border rounded-md p-2">
                     </div>
                     <div class="mb-4">
                         <label for="sertifikat" class="block font-semibold">Sertifikat</label>

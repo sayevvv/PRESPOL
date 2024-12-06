@@ -68,7 +68,6 @@ class Admin extends User{
                         <div class="text-center lg:text-left">
                             <h1 class="text-3xl font-bold">Selamat Datang</h1>
                             <h2 class="text-5xl font-bold text-black">Admin!</h2>
-                            <p class="text-orange-500 mt-2">Kamu peringkat</p>
                             <button onclick="window.location.href='daftarPengajuan.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
                                 Validasi Prestasi
                             </button>
@@ -79,8 +78,7 @@ class Admin extends User{
 
     public function profile($username){
         try{
-            $db = new Database();
-            // Ambil query yang sesuai
+            
             $sql = "SELECT 
                 nama,
                 foto_profile
@@ -258,7 +256,7 @@ class Admin extends User{
         $params[] = $limit;
     
         $result = $this->db->fetchAll($query, $params);
-    
+
         $rows = '';
         if ($result) {
             foreach ($result as $index => $row) {
@@ -268,22 +266,35 @@ class Admin extends User{
                 $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['jurusan'] ?? '') . "</td>";
                 $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['nama_kompetisi'] ?? '') . "</td>";
                 $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['event'] ?? '') . "</td>";
-                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['juara'] ?? '') ."</td>";
+                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['juara'] ?? '') . "</td>";
                 $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['kategori'] ?? '') . "</td>";
                 $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['tahun'] ?? '') . "</td>";
+        
+                // URL untuk tombol Detail dan Hapus
                 $detailUrl = "detailPrestasi.php?id_prestasi=" . urlencode($row['id_prestasi']);
+                $deleteUrl = "#" . urlencode($row['id_prestasi']);
+        
+                // Tambahkan tombol Detail dan Hapus
                 $rows .= "<td class='py-3 px-6 border text-center'>
-                            <a href='$detailUrl'>
-                                <button class='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'>
-                                    Detail
-                                </button>
-                            </a>
-                        </td>";
+                            <div class='flex justify-center space-x-2'>
+                                <a href='" . htmlspecialchars($detailUrl) . "'>
+                                    <button class='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'>
+                                        Detail
+                                    </button>
+                                </a>
+                                <form action='" . htmlspecialchars($deleteUrl) . "' method='POST' onsubmit='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\");'>
+                                    <button type='submit' class='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700'>
+                                        Hapus
+                                    </button>
+                                </form>
+                            </div>
+                          </td>";
                 $rows .= '</tr>';
             }
         } else {
             $rows = '<tr><td colspan="9" class="text-center">Tidak ada data ditemukan</td></tr>';
         }
+        
     
         return json_encode([
             'rows' => $rows,
