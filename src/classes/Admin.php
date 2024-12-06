@@ -14,10 +14,17 @@ class Admin extends User
             </div>
             <nav class="space-y-4 gap-4 flex flex-col h-full">
             <ul class="space-y-2">
-                <li>
+            <!-- sidebar admin -->
+            <li>
                     <a href="home.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'home.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-home"></i>
                         <span class="ml-4">Beranda</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'profile.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-user"></i>
+                        <span class="ml-5">Profil</span>
                     </a>
                 </li>
                 <li>
@@ -27,27 +34,21 @@ class Admin extends User
                     </a>
                 </li>
                 <li>
-                    <a href="daftarPrestasi.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPrestasi.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
-                        <i class="fas fa-list"></i>
-                        <span class="ml-4">List Prestasi</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'profile.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
-                        <i class="fas fa-user"></i>
-                        <span class="ml-4">Profil</span>
-                    </a>
-                </li>
-                <li>
                     <a href="daftarPengajuan.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-file-alt"></i>
-                        <span class="ml-4">Validasi</span>
+                        <span class="ml-6">Validasi</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" onclick="openModal('logoutModal')" class="flex items-center py-2 px-8 hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span class="ml-4">Keluar</span>
+                    <a href="daftarPrestasi.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPrestasi.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-list"></i>
+                        <span class="ml-5">List Prestasi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="logout.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="ml-6">Logout</span>
                     </a>
                 </li>
             </ul>
