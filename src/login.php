@@ -1,4 +1,4 @@
-<?php 
+<?php
 include_once 'classes/CSRFToken.php';
 
 $csrf = new CSRFToken();
@@ -6,6 +6,7 @@ $csrf = new CSRFToken();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,8 +15,8 @@ $csrf = new CSRFToken();
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet" />
     <style>
         /* slideshow */
         .bg-slideshow {
@@ -23,6 +24,7 @@ $csrf = new CSRFToken();
             width: 100%;
             height: 100%;
         }
+
         .bg-slide {
             position: absolute;
             top: 0;
@@ -34,11 +36,13 @@ $csrf = new CSRFToken();
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
         }
+
         .bg-slide.active {
             opacity: 1;
         }
     </style>
 </head>
+
 <body class="overflow-x-hidden m-0 p-0 font-helvetica text-stone-900 
             bg-cover bg-center bg-no-repeat bg-fixed
             max-h-[400px] overflow-y-auto
@@ -47,7 +51,7 @@ $csrf = new CSRFToken();
             [&::-webkit-scrollbar-track]:bg-neutral-100
             [&::-webkit-scrollbar-thumb]:rounded-full
             [&::-webkit-scrollbar-thumb]:bg-neutral-300"
-            style="background-image: url('img/homepageGradient.png')">
+    style="background-image: url('img/homepageGradient.png')">
 
     <div class="font-helvetica">
         <div class="flex justify-center min-h-screen">
@@ -71,18 +75,18 @@ $csrf = new CSRFToken();
                     </div>
                 </div>
             </div>
-    
+            <div id="alert-container"></div>
             <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
                 <div class="flex-1">
                     <div class="text-center">
                         <div class="flex justify-center mx-auto">
-                        <a href="../indexLead.php"><img class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
-                        </a>    
+                            <a href="../indexLead.php"><img class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
+                            </a>
                         </div>
-    
+
                         <p class="text-l mt-3 text-gray-500">Masuk untuk mengakses akun yang sudah terdaftar</p>
                     </div>
-    
+
                     <div class="mt-8">
                         <form action="prosesLogin.php" method="post">
 
@@ -92,10 +96,10 @@ $csrf = new CSRFToken();
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                 </span>
-                
+
                                 <input type="text" name="username" id="username" required class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Username">
                             </div>
-    
+
                             <div class="relative flex items-center mt-4">
                                 <span class="absolute">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -112,19 +116,17 @@ $csrf = new CSRFToken();
                                         <path
                                             stroke-linecap="round"
                                             stroke-linejoin="round"
-                                            d="M15 12c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z"
-                                        />
+                                            d="M15 12c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z" />
                                         <path
                                             stroke-linecap="round"
                                             stroke-linejoin="round"
-                                            d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z"
-                                        />
+                                            d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z" />
                                     </svg>
                                 </span>
                             </div>
-    
+
                             <div class="mt-6">
-                              <input type="hidden" name="csrf_token" value="<?= $csrf->generateToken(); ?>">
+                                <input type="hidden" name="csrf_token" value="<?= $csrf->generateToken(); ?>">
 
                                 <button type="submit" class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:bg-orange-400 focus:ring focus:ring-orange-300 focus:ring-opacity-50">
                                     Masuk
@@ -147,7 +149,7 @@ $csrf = new CSRFToken();
                 const password = document.querySelector(passwordSelector);
 
                 if (togglePassword && password) {
-                    togglePassword.addEventListener('click', function () {
+                    togglePassword.addEventListener('click', function() {
                         // Toggle the type attribute
                         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
                         password.setAttribute('type', type);
@@ -175,10 +177,10 @@ $csrf = new CSRFToken();
             function changeSlide() {
                 // Remove active class from current slide
                 slides[currentSlide].classList.remove('active');
-                
+
                 // Move to next slide, wrap around to start if at end
                 currentSlide = (currentSlide + 1) % slides.length;
-                
+
                 // Add active class to new slide
                 slides[currentSlide].classList.add('active');
             }
@@ -187,5 +189,80 @@ $csrf = new CSRFToken();
             setInterval(changeSlide, 5000);
         });
     </script>
+    <script>
+        function createErrorOverlay() {
+            // Create overlay container
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur-sm';
+            overlay.setAttribute('aria-modal', 'true');
+            overlay.setAttribute('role', 'dialog');
+
+            // Create alert card
+            const card = document.createElement('div');
+            card.className = 'w-full max-w-md rounded-2xl bg-white shadow-2xl ring-1 ring-gray-200 transition-all duration-300 ease-in-out transform hover:scale-105';
+
+            // Create alert content
+            card.innerHTML = `
+                <div class="p-6 space-y-4">
+                    <div class="flex items-center justify-center w-16 h-16 mx-auto bg-orange-100 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Login Gagal</h3>
+                        <p class="text-sm text-gray-600">
+                            Terdapat kesalahan pada username atau password. 
+                            <br>
+                            Mohon coba lagi.
+                        </p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button id="dismiss-error" class="w-full px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors">
+                            Coba lagi
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            overlay.appendChild(card);
+
+            // Add to body
+            document.body.appendChild(overlay);
+
+            // Function to dismiss overlay
+            function dismissOverlay() {
+                window.location.href = 'login.php';
+            }
+
+            // Add click events to dismiss
+            overlay.addEventListener('click', function(event) {
+                // Dismiss if clicking outside the card
+                if (event.target === overlay) {
+                    dismissOverlay();
+                }
+            });
+
+            // Add click event to the button
+            const dismissButton = card.querySelector('#dismiss-error');
+            dismissButton.addEventListener('click', dismissOverlay);
+
+            // Prevent card click from closing the overlay
+            card.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+        }
+
+        // Check for the error query parameter
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('error')) {
+                createErrorOverlay();
+            }
+        });
+    </script>
 </body>
+
 </html>
