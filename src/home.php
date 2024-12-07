@@ -11,16 +11,12 @@
 
     // Ambil data dari session
     $role = $_SESSION['role'];
-    $username = $_SESSION['username'];
+    $no_induk = $_SESSION['no_induk'];
 
-    // Data dummy untuk leaderboard (bisa diganti dengan query database)
-    $leaderboardData = [
-        ['rank' => 1, 'name' => 'Dwi Ahmad Khairy', 'points' => 180],
-        ['rank' => 2, 'name' => 'Abdullah Shamil Basayev', 'points' => 120],
-        ['rank' => 3, 'name' => 'Rizki Rahmat', 'points' => 96],
-        ['rank' => 4, 'name' => 'Adinda Lova', 'points' => 68],
-        ['rank' => 5, 'name' => 'Amanda M.', 'points' => 45],
-    ];
+    $sql = "SELECT TOP 5 * FROM leaderboard_view";
+    $params = [];
+
+    $leaderboardData = $db->fetchAll($sql, $params);
 
     $user = null;
     
@@ -49,11 +45,7 @@
     <style>
         body {
             background: url('img/homepageGradient.png') no-repeat center center fixed;
-            /* Fixed background */
             background-size: cover;
-            /* Ensures the image covers the entire area */
-            flex: 1;
-            /* Makes the main content expand to fill the space */
         }
     </style>
 </head>
@@ -61,18 +53,14 @@
 <body class="min-h-screen overflow-hidden flex flex-col lg:flex-row">
     <!-- Sidebar -->
     <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r min-h-screen">
-        <?php
-        echo $user->sidebar();
-        ?>
+        <?php echo $user->sidebar(); ?>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-6 pt-8"> <!-- Added pt-8 for top padding -->
+    <main class="flex-1 p-6 pt-8">
         <!-- Top Navigation Section -->
         <div>
-            <?php
-            $user->mainContent($username);
-            ?>
+            <?php $user->mainContent($no_induk); ?>
         </div>
 
         <!-- Leaderboard Section -->
@@ -80,37 +68,44 @@
             <h3 class="text-2xl mb-8">Peringkat Prestasi</h3>
             <div class="space-y-3">
                 <?php
-                // Find the maximum points in the leaderboard for normalization
-                $maxPoints = max(array_column($leaderboardData, 'points'));
+                if (!empty($leaderboardData)) {
+                    // Find the maximum points in the leaderboard for normalization
+                    $maxPoints = max(array_column($leaderboardData, 'total_poin'));
 
-                // Define an array of orange gradient colors
-                $orangeGradient = [
-                    'bg-orange-500',   // 1st place
-                    'bg-orange-400',   // 2nd place
-                    'bg-orange-300',   // 3rd place
-                    'bg-orange-300',   // 4th place
-                    'bg-orange-300'    // 5th and below
-                ];
-                foreach ($leaderboardData as $index => $data):
-                    // Calculate the width as a percentage of the maximum points
-                    $widthPercentage = ($data['points'] / $maxPoints) * 100;
+                    // Define an array of orange gradient colors
+                    $orangeGradient = [
+                        'bg-orange-600',   // 1st place
+                        'bg-orange-500',   // 2nd place
+                        'bg-orange-400',   // 3rd place
+                        'bg-orange-300',   // 4th place
+                        'bg-orange-200'    // 5th and below
+                    ];
 
-                    // Select background color based on rank (use last color for ranks beyond the gradient)
-                    $bgColor = $orangeGradient[$index] ?? end($orangeGradient);
-                ?>
-                    <div class="flex flex-col space-y-1">
-                        <div class="w-full bg-gray-200 rounded-full h-12 relative">
-                            <div class="<?php echo $bgColor; ?> h-12 rounded-full flex items-center justify-between px-4 relative" style="width: <?php echo $widthPercentage; ?>%;">
-                                <span class="text-white font-bold text-base truncate">
-                                    <?php echo $data['rank']; ?> - <?php echo $data['name']; ?>
-                                </span>
-                                <span class="text-white font-bold text-base bg-white bg-opacity-20 px-2 py-1 rounded-full">
-                                    <?php echo $data['points']; ?>
-                                </span>
+                    foreach ($leaderboardData as $index => $data) {
+                        // Calculate the width as a percentage of the maximum points
+                        $widthPercentage = $maxPoints > 0 ? ($data['total_poin'] / $maxPoints) * 100 : 0;
+
+                        // Select background color based on rank
+                        $bgColor = $orangeGradient[$index] ?? end($orangeGradient);
+                        ?>
+                        <div class="flex flex-col space-y-1">
+                            <div class="w-full bg-gray-200 rounded-full h-12 relative">
+                                <div class="<?php echo $bgColor; ?> h-12 rounded-full flex items-center justify-between px-4 relative" style="width: <?php echo $widthPercentage; ?>%;">
+                                    <span class="text-white font-bold text-base truncate">
+                                        <?php echo $data['peringkat']; ?> - <?php echo $data['nama']; ?>
+                                    </span>
+                                    <span class="text-white font-bold text-base bg-white bg-opacity-20 px-2 py-1 rounded-full">
+                                        <?php echo $data['total_poin']; ?>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                        <?php
+                    }
+                } else {
+                    echo '<p class="text-gray-600">Data leaderboard tidak tersedia.</p>';
+                }
+                ?>
             </div>
         </section>
     </main>

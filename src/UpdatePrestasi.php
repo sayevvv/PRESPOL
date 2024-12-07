@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once 'config/Database.php';
 include_once 'classes/Auth.php';
 
@@ -111,6 +112,9 @@ class UpdatePrestasi {
                 karya_kompetisi = ?
             WHERE id_prestasi = ?
         ";
+        
+        $dosenPembimbing1 = trim($data['dosen_pembimbing_1']) !== '' ? $data['dosen_pembimbing_1'] : NULL;
+        $dosenPembimbing2 = trim($data['dosen_pembimbing_2']) !== '' ? $data['dosen_pembimbing_2'] : NULL;
 
         $params = [
             $id_mahasiswa['id_mahasiswa'],
@@ -120,13 +124,13 @@ class UpdatePrestasi {
             $data['id_kategori'],
             $data['id_juara'],
             $data['jumlah_peserta'],
-            $data['dosen_pembimbing_1'],
-            $data['dosen_pembimbing_2'],
-            $fotoLomba['path'],
-            $flyerLomba['path'],
-            $sertifikat['path'],
-            $suratTugas['path'],
-            $karyaKompetisi['path'],
+            $dosenPembimbing1,
+            $dosenPembimbing2,
+            $fotoLomba['path'] ?? NULL,
+            $flyerLomba['path'] ?? NULL,
+            $sertifikat['path'] ?? NULL,
+            $suratTugas['path'] ?? NULL,
+            $karyaKompetisi['path'] ?? NULL,
             $id_prestasi
         ];
 

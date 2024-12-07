@@ -123,16 +123,20 @@ class Mahasiswa extends User
             : 'text-gray-700';
     }
 
-    public function mainContent($username)
-    {
-        $this->profile($username);
-        echo
+    public function mainContent($no_induk){
+        $this->profile($no_induk);
+        $sql = "SELECT * FROM leaderboard_view WHERE nim = ?";
+        $params = [$no_induk];
+        $stmt = $this->db->fetchOne($sql, $params);
+        $peringkat = $stmt['peringkat'];
+
+        echo 
         <<<HTML
             <header class="flex flex-col lg:flex-row justify-between items-center mb-8">
                 <div class="text-center lg:text-left">
                     <h1 class="text-3xl font-bold">Selamat Datang</h1>
                     <h2 class="text-5xl font-bold text-black">Champions!</h2>
-                    <p class="text-orange-500 mt-2">Kamu peringkat</p>
+                    <p class="text-orange-500 mt-2">Kamu peringkat $peringkat</p>
                     <button onclick="window.location.href='inputPrestasi.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
                         Tambah Prestasi
                     </button>
@@ -141,15 +145,14 @@ class Mahasiswa extends User
         HTML;
     }
 
-    public function profile($username)
-    {
-        try {
+    public function profile($no_induk){
+        try{
             $sql = "SELECT 
                 nama,
                 foto_profile
             FROM mahasiswa
             WHERE nim = ?";
-            $params = [$username];
+            $params = [$no_induk];
 
             // Ambil hasil query
             $row = $this->db->fetchOne($sql, $params);
@@ -166,7 +169,7 @@ class Mahasiswa extends User
                         </div>
                 HTML;
             } else {
-                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($username));
+                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($no_induk));
             }
         } catch (Exception $e) {
             // Log kesalahan dan lempar ulang
