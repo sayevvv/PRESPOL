@@ -169,7 +169,7 @@ $leaderboardData = [
                                 <a
                                     @click="activeLink = 'signup'"
                                     :class="activeLink === 'signup' ? 'text-orange-500 font-semibold border-orange-500' : 'text-stone-600 border-stone-300'"
-                                    class="block px-5 py-2 mt-4 text-sm text-center capitalize transition-colors duration-300 transform border rounded-md hover:bg-orange-100 lg:mt-0 lg:w-auto cursor-pointer whitespace-nowrap"
+                                    class="block px-5 py-2 mt-4 text-sm text-center capitalize transition-colors duration-300 transform border rounded-md hover:bg-orange-400 hover:text-white lg:mt-0 lg:w-auto cursor-pointer whitespace-nowrap"
                                     href="src/signup.html">
                                     Sign Up</a>
                             </div>
@@ -418,7 +418,7 @@ $leaderboardData = [
                             <div class="w-3/4 md:w-full">
                                 <img
                                     class="w-full h-full object-cover"
-                                    src="../PRESPOL/src/img/shamel.jpg"
+                                    src="src/img/shamel.jpg"
                                     alt="Portrait of Abdullah Shamil Basayev" />
                             </div>
                             <!-- Content Section -->
@@ -602,9 +602,11 @@ $leaderboardData = [
                         </p>
                     </div>
                     <div class="flex justify-center space-x-4 mt-4">
-                        <button href="src/signup.html" class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
-                            Gabung!
-                        </button>
+                        <a href="src/signup.html">
+                            <button class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
+                                Gabung!
+                            </button>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -618,10 +620,10 @@ $leaderboardData = [
                         </a>
 
                         <div class="flex flex-wrap justify-center mt-6 space-x-4">
-                            <a onclick="transitionToPage(1)" class="cursor-pointer text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Home</a>
-                            <a href="#tentang" class="text-sm md:text-base transition-colors duration-300 hover:text-orange-500">About</a>
-                            <a onclick="transitionToPage(1)" href="#tentangKami" class="text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Teams</a>
-                            <a href="#panduan" class="cursor-pointer text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Guide</a>
+                            <a href="#" class="cursor-pointer text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Home</a>
+                            <a href="#about" class="text-sm md:text-base transition-colors duration-300 hover:text-orange-500">About</a>
+                            <a href="#tentangKami" class="text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Teams</a>
+                            <a onclick="transitionToPage(2)" href="#panduan" class="cursor-pointer text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Guide</a>
                             <a href="https://www.polinema.ac.id/" class="text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Polinema</a>
                         </div>
 
@@ -1103,10 +1105,11 @@ $leaderboardData = [
                         Catatkan Prestasimu di PRESPOL.
                     </p>
                 </div>
-                <div class="flex justify-center space-x-4 mt-4">
-                    <button href="src/signup.html" class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
+                <div class="flex justify-center space-x-4 mt-4"><a href="src/signup.html">
+                    <button class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
                         Gabung!
                     </button>
+                </a>
                 </div>
             </div>
         </section>
@@ -1120,8 +1123,8 @@ $leaderboardData = [
                     </a>
 
                     <div class="flex flex-wrap justify-center mt-6 space-x-4">
-                        <a onclick="transitionToPage(1)" class="cursor-pointer text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Home</a>
-                        <a href="#tentang" class="text-sm md:text-base transition-colors duration-300 hover:text-orange-500">About</a>
+                        <a href="#" class="cursor-pointer text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Home</a>
+                        <a onclick="transitionToPage(1)" href="#about" class="text-sm md:text-base transition-colors duration-300 hover:text-orange-500">About</a>
                         <a onclick="transitionToPage(1)" href="#tentangKami" class="text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Teams</a>
                         <a href="#panduan" class="cursor-pointer text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Guide</a>
                         <a href="https://www.polinema.ac.id/" class="text-sm md:text-base transition-colors duration-300 hover:text-orange-500">Polinema</a>
