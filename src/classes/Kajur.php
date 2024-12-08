@@ -26,7 +26,7 @@ class Kajur extends User {
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'profile.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                    <a href="profil.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'profil.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-user"></i>
                         <span class="ml-4">Profil</span>
                     </a>
@@ -308,6 +308,45 @@ class Kajur extends User {
     
         $params = [$id_prestasi];
         return $this->db->fetchOne($query, $params);
+    }
+
+    public function profilDetail($no_induk) {
+        try {
+            $sql = "SELECT 
+                p.no_induk,
+                p.nama,
+                p.foto_profile
+            FROM pegawai p
+            WHERE p.no_induk = ?";
+            $params = [ $no_induk];
+
+            // Ambil hasil query
+            $row = $this->db->fetchOne( $sql, $params );
+            if ( $row ) {
+                $nama = $row[ 'nama' ] ?? 'Unknown';
+                $fotoProfile = $row[ 'foto_profile' ] ?? 'default-profile.png';
+                echo
+                <<<HTML
+                    <div class = 'flex items-center mb-8'>
+                        <img alt = 'User profile picture' class = 'space-y-8 rounded-full mr-4' height = '100' src = '$fotoProfile' width = '100'/>
+                        <div class="space-y-2">
+                            <h1 class = 'text-3xl font-bold'> $nama </h1>
+                            <div class = 'flex items-center'>
+                            <!-- <span class = 'bg-orange-200 text-orange-600 px-2 py-1 rounded-full text-sm'> $no_induk </span> -->
+                            <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $no_induk </span>
+                        </div>
+                    </div>
+                    <img src = "img/setting.svg" alt = 'Profile Picture' class = 'w-10 h-10 rounded-full ml-2'>
+                HTML;
+
+            } else {
+                throw new Exception( 'Data tidak ditemukan untuk username: ' . htmlspecialchars( $no_induk ) );
+            }
+        } catch ( Exception $e ) {
+            // Log kesalahan dan lempar ulang
+            error_log( $e->getMessage() );
+            echo 'Akun tidak ditemukan';
+        }
     }
 
     public function eksporData($export_type = 'all', $kategori = '', $jurusan = '') {
