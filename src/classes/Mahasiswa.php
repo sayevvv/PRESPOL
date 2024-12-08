@@ -35,7 +35,7 @@ class Mahasiswa extends User
                     </a>
                 </li>
                 <li>
-                    <a href="historiPengajuan.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                    <a href="historiPengajuan.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'historiPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-file-alt"></i>
                         <span class="ml-5">Pengajuan</span>
                     </a>
@@ -47,9 +47,9 @@ class Mahasiswa extends User
                     </a>
                 </li>
                 <li>
-                    <a href="logout.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
-                        <i class="fas fa-file-alt"></i>
-                        <span class="ml-5">Logout</span>
+                    <a href="#" onclick="openModal('logoutModal')" class="flex items-center py-2 px-8 hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="ml-4">Keluar</span>
                     </a>
                 </li>
             </ul>
@@ -298,7 +298,7 @@ class Mahasiswa extends User
     }
 
     //Profil
-    public function profilDetail($username) {
+    public function profilDetail($no_induk) {
         try {
             $sql = "SELECT 
                 m.nim,
@@ -310,10 +310,10 @@ class Mahasiswa extends User
             JOIN prodi p ON m.id_prodi = p.id_prodi
             JOIN jurusan j ON m.id_jurusan = j.id_jurusan
             WHERE m.nim = ?";
-            $data = [ $username ];
+            $params = [ $no_induk ];
 
             // Ambil hasil query
-            $row = $this->db->fetchOne( $sql, $data );
+            $row = $this->db->fetchOne( $sql, $params );
             if ( $row ) {
                 $nim = $row[ 'nim' ] ?? 'Unknown';
                 $nama = $row[ 'nama' ] ?? 'Unknown';
@@ -323,7 +323,7 @@ class Mahasiswa extends User
                 echo
                 <<<HTML
                     <div class = 'flex items-center mb-8'>
-                        <img alt = 'User profile picture' class = 'space-y-8 rounded-full mr-4' height = '100' src = 'https://storage.googleapis.com/a1aa/image/A6X3am9dLVLTFB2dIWDdqFsZbidJo0uLoDyOufFC8n6Ddh7JA.jpg' width = '100'/>
+                        <img alt = 'User profile picture' class = 'space-y-8 rounded-full mr-4' height = '100' src = '$fotoProfile' width = '100'/>
                         <div class="space-y-2">
                             <h1 class = 'text-3xl font-bold'> $nama </h1>
                             <div class = 'flex items-center'>
@@ -348,7 +348,7 @@ class Mahasiswa extends User
                 HTML;
 
             } else {
-                throw new Exception( 'Data tidak ditemukan untuk username: ' . htmlspecialchars( $username ) );
+                throw new Exception( 'Data tidak ditemukan untuk username: ' . htmlspecialchars( $no_induk ) );
             }
         } catch ( Exception $e ) {
             // Log kesalahan dan lempar ulang
@@ -356,4 +356,57 @@ class Mahasiswa extends User
             echo 'Akun tidak ditemukan';
         }
     }
+
+    public function listPrestasiByNim($no_induk, $page = 1, $limit = 10, $search = '') {
+        $offset = ($page - 1) * $limit;
+    
+        $query = "SELECT 
+                    id_prestasi, 
+                    nama_kompetisi, 
+                    event, 
+                    juara,
+                    total_poin
+                  FROM vw_daftar_prestasi
+                  WHERE nim = ? 
+                  AND (
+                      LOWER(nama_kompetisi) LIKE LOWER(?) OR 
+                      LOWER(event) LIKE LOWER(?) OR 
+                      LOWER(juara) LIKE LOWER(?)
+                  )
+                  ORDER BY id_prestasi
+                  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+    
+        $searchTerm = "%$search%";
+        $params = [$no_induk, $searchTerm, $searchTerm, $searchTerm, $offset, $limit];
+    
+        $result = $this->db->fetchAll($query, $params);
+    
+        // Hitung total data untuk pagination
+        $countQuery = "SELECT COUNT(*) as total FROM vw_daftar_prestasi WHERE nim = ? 
+                        AND (
+                            LOWER(nama_kompetisi) LIKE LOWER(?) OR 
+                            LOWER(event) LIKE LOWER(?) OR 
+                            LOWER(juara) LIKE LOWER(?)
+                        );";
+        $countResult = $this->db->fetchOne($countQuery, [$no_induk, $searchTerm, $searchTerm, $searchTerm]);
+    
+        return [
+            'data' => $result,
+            'total' => $countResult['total']
+        ];
+    }
+
+    public function getPrestasiDetail($id_prestasi)
+    {
+        // Query untuk mendapatkan data detail dari VIEW
+        $query = "
+            SELECT * 
+            FROM vw_daftar_prestasi 
+            WHERE id_prestasi = ?
+        ";
+
+        $params = [$id_prestasi];
+        return $this->db->fetchOne($query, $params);
+    }
+    
 }

@@ -154,7 +154,7 @@ if ($_SESSION['role'] == '1') {
                         </select>
                         <i class="fas fa-chevron-down text-gray-500"></i>
                     </div>
-                    <p class="text-red-500 text-sm hidden" id="error-kategori">Kategori Kompetisi tidak boleh kosong!</p>
+                    <p class="text-red-500 text-sm hidden" id="error-tingkat">Kategori Kompetisi tidak boleh kosong!</p>
                 </div>
 
                 <div>
