@@ -22,7 +22,7 @@ class Admin extends User
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'profile.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                    <a href="profil.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'profile.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                         <i class="fas fa-user"></i>
                         <span class="ml-5">Profil</span>
                     </a>
@@ -46,9 +46,9 @@ class Admin extends User
                     </a>
                 </li>
                 <li>
-                    <a href="logout.php" class="flex items-center py-2 px-8 {$this->getActiveClass($currentPage, 'logout.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
-                        <i class="fas fa-file-alt"></i>
-                        <span class="ml-6">Logout</span>
+                    <a href="#" onclick="openModal('logoutModal')" class="flex items-center py-2 px-8 hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="ml-4">Keluar</span>
                     </a>
                 </li>
             </ul>
@@ -170,36 +170,76 @@ class Admin extends User
         }
     }
 
-    public function getPrestasiPendingList()
+    public function getPrestasiPendingList($page = 1, $limit = 10)
     {
-        // Query untuk mendapatkan data dari VIEW
+        // Calculate offset
+        $offset = ($page - 1) * $limit;
+    
+        // Query to get paginated data from VIEW
         $query = "SELECT id_pending, nama_mahasiswa, nama_kompetisi, nama_kategori, jenis_juara 
             FROM vw_PrestasiPending
-            WHERE status_validasi <> 'tolak'";
-
-        // Eksekusi query
-        $result = $this->db->fetchAll($query);
-
+            WHERE status_validasi <> 'tolak'
+            ORDER BY id_pending
+            OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    
+        // Parameters for query
+        $params = [$offset, $limit];
+    
+        // Execute query
+        $result = $this->db->fetchAll($query, $params);
+    
         if ($result === false) {
             throw new Exception('Gagal mengambil data prestasi pending: ' . print_r(sqlsrv_errors(), true));
         }
-
-        return $result;
+    
+        // Get total count for pagination
+        $countQuery = "SELECT COUNT(*) as total 
+            FROM vw_PrestasiPending 
+            WHERE status_validasi <> 'tolak'";
+        $countResult = $this->db->fetchOne($countQuery);
+        $totalItems = $countResult['total'];
+        $totalPages = ceil($totalItems / $limit);
+    
+        return [
+            'data' => $result,
+            'totalPages' => $totalPages,
+            'currentPage' => $page
+        ];
     }
-
-    public function getPrestasiVerifiedList($no_induk){
+    
+    public function getPrestasiVerifiedList($no_induk, $page = 1, $limit = 10)
+    {
+        // Calculate offset
+        $offset = ($page - 1) * $limit;
+    
         $query = "SELECT status_validasi, nama_mahasiswa, nama_kompetisi, nama_kategori, jenis_juara 
             FROM vw_daftar_pengajuan_terlayani
+            WHERE no_induk_pegawai = ?
+            ORDER BY id_validasi
+            OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        
+        $params = [$no_induk, $offset, $limit];
+        
+        $result = $this->db->fetchAll($query, $params);
+    
+        if ($result === false) {
+            throw new Exception('Gagal mengambil data prestasi pending: ' . print_r(sqlsrv_errors(), true));
+        }
+    
+        // Get total count for pagination
+        $countQuery = "SELECT COUNT(*) as total 
+            FROM vw_daftar_pengajuan_terlayani 
             WHERE no_induk_pegawai = ?";
-            $params = [$no_induk];
-            
-            $result = $this->db->fetchAll($query, $params);
-
-            if ($result === false) {
-                throw new Exception('Gagal mengambil data prestasi pending: ' . print_r(sqlsrv_errors(), true));
-            }
-
-            return $result;
+        $countParams = [$no_induk];
+        $countResult = $this->db->fetchOne($countQuery, $countParams);
+        $totalItems = $countResult['total'];
+        $totalPages = ceil($totalItems / $limit);
+    
+        return [
+            'data' => $result,
+            'totalPages' => $totalPages,
+            'currentPage' => $page
+        ];
     }
 
 
@@ -217,22 +257,55 @@ class Admin extends User
     }
 
 
-    public function validatePrestasi($id_pending, $status, $deskripsi)
-    {
+    public function validatePrestasi($id_pending, $status, $deskripsi, $no_induk) {
         try {
-            // Panggil prosedur untuk memindahkan atau memperbarui data
-            $queryMove = "EXEC sp_ValidatePrestasi @id_pending = ?, @status_validasi = ?, @deskripsi = ?";
-            $params = [$id_pending, $status, $deskripsi];
+            // mengambil path kelima file dari tabel prestasi_pending
+            $queryFetchFiles = "SELECT foto_kompetisi, flyer, sertifikat, surat_tugas, karya_kompetisi 
+                                FROM prestasi_pending WHERE id_pending = ?";
+            $filesResult = $this->db->fetchOne($queryFetchFiles, [$id_pending]);
 
+            if (!$filesResult) {
+                throw new Exception("Data dengan ID tersebut tidak ditemukan.");
+            }
+            //mengambil id_pegawai
+            $sql = 'SELECT id_pegawai FROM pegawai WHERE no_induk = ?';
+            $stmt = $this->db->fetchOne($sql, [$no_induk]);
+            $id_pegawai = $stmt['id_pegawai'];
+
+            // Panggil prosedur untuk memindahkan atau memperbarui data
+            $queryMove = "EXEC sp_ValidatePrestasi @id_pending = ?, @status_validasi = ?, @deskripsi = ?, @id_pegawai = ?";
+            $params = [$id_pending, $status, $deskripsi, $id_pegawai];
+    
             // Jalankan prosedur
             $this->db->executeProcedure($queryMove, $params);
+            
+            // Jika status 'tolak', hapus semua file yang terkait
+            if ($status === 'tolak') {
+                $filePaths = [
+                    $filesResult['foto_kompetisi'],
+                    $filesResult['flyer'],
+                    $filesResult['sertifikat'],
+                    $filesResult['surat_tugas'],
+                    $filesResult['karya_kompetisi']
+                ];
+
+                $deletedFiles = [];
+                foreach ($filePaths as $filePath) {
+                    if (!empty($filePath) && file_exists($filePath)) {
+                        if (unlink($filePath)) {
+                            $deletedFiles[] = basename($filePath); // Simpan nama file yang berhasil dihapus
+                        } else {
+                            throw new Exception("Gagal menghapus file: " . basename($filePath));
+                        }
+                    }
+                }
+
+                // Berikan konfirmasi penghapusan
+                return "Prestasi ditolak. File yang dihapus: " . implode(", ", $deletedFiles);
+            }
 
             // Periksa hasil dan kembalikan pesan sesuai status
-            if ($status === 'valid') {
-                return "Validasi berhasil dilakukan dan data dipindahkan ke tabel prestasi.";
-            } else {
-                return "Prestasi ditolak. Status validasi diperbarui.";
-            }
+            return "Validasi berhasil dilakukan dan data dipindahkan ke tabel prestasi.";
         } catch (Exception $e) {
             // Tangani kesalahan
             throw new Exception("Kesalahan validasi: " . $e->getMessage());
@@ -346,7 +419,6 @@ class Admin extends User
         
                 // URL untuk tombol Detail dan Hapus
                 $detailUrl = "detailPrestasi.php?id_prestasi=" . urlencode($row['id_prestasi']);
-                $deleteUrl = "#" . urlencode($row['id_prestasi']);
         
                 // Tambahkan tombol Detail dan Hapus
                 $rows .= "<td class='py-3 px-6 border text-center'>
@@ -356,11 +428,11 @@ class Admin extends User
                                         Detail
                                     </button>
                                 </a>
-                                <form action='" . htmlspecialchars($deleteUrl) . "' method='POST' onsubmit='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\");'>
-                                    <button type='submit' class='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700'>
-                                        Hapus
-                                    </button>
-                                </form>
+                                 <button 
+                                    class='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 delete-button' 
+                                    data-id='" . htmlspecialchars($row['id_prestasi']) . "'>
+                                    Hapus
+                                </button>
                             </div>
                           </td>";
                 $rows .= '</tr>';
@@ -391,6 +463,123 @@ class Admin extends User
         $params = [$id_prestasi];
         return $this->db->fetchOne($query, $params);
     }
+
+    public function profilDetail($no_induk) {
+        try {
+            $sql = "SELECT 
+                p.no_induk,
+                p.nama,
+                p.foto_profile
+            FROM pegawai p
+            WHERE p.no_induk = ?";
+            $params = [ $no_induk];
+
+            // Ambil hasil query
+            $row = $this->db->fetchOne( $sql, $params );
+            if ( $row ) {
+                $nama = $row[ 'nama' ] ?? 'Unknown';
+                $fotoProfile = $row[ 'foto_profile' ] ?? 'default-profile.png';
+                echo
+                <<<HTML
+                    <div class = 'flex items-center mb-8'>
+                        <img alt = 'User profile picture' class = 'space-y-8 rounded-full mr-4' height = '100' src = '$fotoProfile' width = '100'/>
+                        <div class="space-y-2">
+                            <h1 class = 'text-3xl font-bold'> $nama </h1>
+                            <div class = 'flex items-center'>
+                            <!-- <span class = 'bg-orange-200 text-orange-600 px-2 py-1 rounded-full text-sm'> $no_induk </span> -->
+                            <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $no_induk </span>
+                        </div>
+                    </div>
+                    <img src = "img/setting.svg" alt = 'Profile Picture' class = 'w-10 h-10 rounded-full ml-2'>
+                HTML;
+
+            } else {
+                throw new Exception( 'Data tidak ditemukan untuk username: ' . htmlspecialchars( $no_induk ) );
+            }
+        } catch ( Exception $e ) {
+            // Log kesalahan dan lempar ulang
+            error_log( $e->getMessage() );
+            echo 'Akun tidak ditemukan';
+        }
+    }
+
+    public function softDelete($id_prestasi, $deskripsi) {
+        $queryFetchPath = 'SELECT foto_kompetisi, sertifikat, flyer, karya_kompetisi, surat_tugas FROM prestasi WHERE id_prestasi = ?';
+        $row = $this->db->fetchOne($queryFetchPath, [$id_prestasi]);
+    
+        $mapDirectories = [
+            'foto_kompetisi' => 'archive/kompetisi/',
+            'karya_kompetisi' => 'archive/karya/',
+            'flyer' => 'archive/flyer/',
+            'sertifikat' => 'archive/sertifikat/',
+            'surat_tugas' => 'archive/surat-tugas/'
+        ];
+    
+        $newPaths = []; // Array untuk menyimpan path baru
+        $rollbackPaths = []; // Array untuk menyimpan rollback file
+    
+        try {
+            // Loop untuk memindahkan file
+            foreach ($row as $column => $filePath) {
+                if (!empty($filePath)) {
+                    $fileName = basename($filePath);
+                    $destinationDir = $mapDirectories[$column] ?? '';
+    
+                    if (!empty($destinationDir)) {
+                        if (!is_dir($destinationDir)) {
+                            mkdir($destinationDir, 0777, true);
+                        }
+    
+                        $destinationPath = $destinationDir . $fileName;
+    
+                        if (file_exists($filePath)) {
+                            if (rename($filePath, $destinationPath)) {
+                                $newPaths[$column] = $destinationPath; // Simpan path baru
+                                $rollbackPaths[$column] = $filePath; // Simpan path asli untuk rollback
+                            } else {
+                                throw new Exception("Gagal memindahkan file $filePath ke $destinationPath");
+                            }
+                        } else {
+                            throw new Exception("File $filePath tidak ditemukan");
+                        }
+                    }
+                }
+            }
+    
+            // Eksekusi prosedur hanya jika semua file berhasil dipindahkan
+            $querySoftDelete = 'EXEC sp_SoftDeletePrestasi 
+                @id_prestasi = ?,
+                @foto_kompetisi = ?,
+                @sertifikat  = ?,
+                @flyer  = ?,
+                @karya_kompetisi  = ?,
+                @surat_tugas  = ?,
+                @deskripsi  = ?';
+    
+            $params = [
+                $id_prestasi,
+                $newPaths['foto_kompetisi'] ?? null,
+                $newPaths['sertifikat'] ?? null,
+                $newPaths['flyer'] ?? null,
+                $newPaths['karya_kompetisi'] ?? null,
+                $newPaths['surat_tugas'] ?? null,
+                $deskripsi
+            ];
+            $result = $this->db->executeProcedure($querySoftDelete, $params);
+    
+            return $result;
+        } catch (Exception $e) {
+            // Rollback file yang sudah berhasil dipindahkan
+            foreach ($rollbackPaths as $column => $originalPath) {
+                if (isset($newPaths[$column]) && file_exists($newPaths[$column])) {
+                    rename($newPaths[$column], $originalPath); // Kembalikan file ke lokasi semula
+                }
+            }
+            // Lempar ulang exception agar bisa ditangani di luar
+            throw $e;
+        }
+    }
+    
 
     public function closeConnection()
     {

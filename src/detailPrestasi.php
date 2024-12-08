@@ -8,10 +8,6 @@ include_once 'classes/Auth.php';
 
 Auth::checkLogin();
 
-if($_SESSION['role'] == '3'){
-    header('Location: home.php');
-}
-
 $db = new Database();
 
 if($_SESSION['role'] == '1'){
@@ -20,6 +16,9 @@ if($_SESSION['role'] == '1'){
 } else if($_SESSION['role'] == '2'){
     include_once 'classes/Kajur.php';
     $user = new Kajur();
+} else if($_SESSION['role'] == '3'){
+    include_once 'classes/Mahasiswa.php';
+    $user = new Mahasiswa();
 }
 
 $username = $_SESSION['username'];

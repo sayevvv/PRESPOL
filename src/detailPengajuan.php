@@ -12,10 +12,9 @@ if($_SESSION['role'] != '1'){
     header('Location: home.php');
 }
 
-$db = new Database();
-$user = new Admin($db);
+$user = new Admin();
 
-$username = $_SESSION['username'];
+$no_induk= $_SESSION['no_induk'];
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +26,8 @@ $username = $_SESSION['username'];
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
     <!-- Sidebar -->
@@ -119,6 +120,7 @@ $username = $_SESSION['username'];
         <div class="mt-4">
             <form action="validate.php" method="POST" id="validationForm">
                 <input type="hidden" name="id_pending" value="<?php echo $id_pending; ?>">
+                <input type="hidden" name="no_induk" value="<?php echo $no_induk; ?>">
                 <input type="hidden" id="statusInput" name="status" value="">
                 <textarea name="deskripsi" rows="4" class="w-full border rounded-md p-2 mb-4" placeholder="Tambahkan deskripsi..."></textarea>
                 <div class="flex space-x-2">
@@ -139,9 +141,28 @@ $username = $_SESSION['username'];
     $(document).ready(function () {
         // Fungsi untuk menangani klik tombol Validasi atau Tolak
         $('#validBtn, #rejectBtn').on('click', function () {
-            const statusValue = $(this).attr('id') === 'validBtn' ? 'valid' : 'tolak';
-            $('#statusInput').val(statusValue); // Set nilai status sesuai tombol
-            submitForm(); // Panggil fungsi untuk kirim data
+            const isValidasi = $(this).attr('id') === 'validBtn';
+            const statusValue = isValidasi ? 'valid' : 'tolak';
+            const actionText = isValidasi ? 'Validasi' : 'Tolak';
+            const confirmButtonColor = isValidasi ? '#28a745' : '#dc3545';
+
+            // SweetAlert untuk konfirmasi
+            Swal.fire({
+                title: `Konfirmasi ${actionText}`,
+                text: `Apakah Anda yakin ingin ${actionText.toLowerCase()} pengajuan ini?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: confirmButtonColor,
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: `Ya, ${actionText}`,
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Set nilai status dan kirim form jika dikonfirmasi
+                    $('#statusInput').val(statusValue);
+                    submitForm(); // Panggil fungsi untuk kirim data
+                }
+            });
         });
 
         // Fungsi untuk mengirim form dengan AJAX
@@ -153,22 +174,37 @@ $username = $_SESSION['username'];
                 data: formData,
                 dataType: 'json',
                 success: function (response) {
-                    // Menampilkan pesan berdasarkan respons
                     if (response.status === 'success') {
-                        alert(response.message); // Pesan sukses
-                        window.location.href = 'daftarPengajuan.php'; // Redirect jika sukses
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.message,
+                            confirmButtonColor: '#28a745'
+                        }).then(() => {
+                            window.location.href = 'daftarPengajuan.php'; // Redirect jika sukses
+                        });
                     } else {
-                        alert(response.message); // Pesan error
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: response.message,
+                            confirmButtonColor: '#dc3545'
+                        });
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error('Error response:', xhr.responseText); // Debugging error
-                    alert('Terjadi kesalahan saat mengirim data. Silakan coba lagi.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan!',
+                        text: 'Terjadi kesalahan saat mengirim data. Silakan coba lagi.',
+                        confirmButtonColor: '#dc3545'
+                    });
                 }
             });
         }
     });
-    </script>
+</script>
 </body>
 </html>
 

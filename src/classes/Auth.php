@@ -82,6 +82,21 @@ class Auth {
             exit();
         }
     }
+
+    public static function checkLoginJSON() {
+        // Cek apakah 'role' dan 'username' ada dalam sesi
+        if (!isset($_SESSION['role']) || !isset($_SESSION['username'])) {
+            // Jika tidak, kembalikan respons JSON
+            header('Content-Type: application/json');
+            http_response_code(401); // Unauthorized
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Unauthorized: Anda belum login.'
+            ]);
+            exit();
+        }
+    }
+    
 }
 
 ?>
