@@ -84,107 +84,105 @@ $csrf = new CSRFToken();
             <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
                 <div class="flex-1">
                     <div class="mt-16 ">
-                        <form id="signupForm">
-                            <!-- Step 1 - Log in -->
-                            <div id="step1" class="signup-step">
-                                <div class="text-center">
-                                    <div class="flex justify-center mx-auto">
-                                        <a href="../indexLead.php"><img class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
-                                        </a>
-                                    </div>
-
-                                    <p class="text-l mt-3 text-gray-500">Masuk untuk mengakses akun yang sudah terdaftar</p>
+                        <!-- Step 1 - Log in -->
+                        <div id="step1">
+                            <div class="text-center">
+                                <div class="flex justify-center mx-auto">
+                                    <a href="../indexLead.php"><img class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
+                                    </a>
                                 </div>
 
-                                <div class="mt-8">
-                                    <form action="prosesLogin.php" method="post">
+                                <p class="text-l mt-3 text-gray-500">Masuk untuk mengakses akun yang sudah terdaftar</p>
+                            </div>
 
-                                        <div class="relative flex items-center mt-8">
-                                            <span class="absolute">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                </svg>
-                                            </span>
+                            <div class="mt-8">
+                                <form action="prosesLogin.php" method="post">
 
-                                            <input type="text" name="username" id="username" required class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Username">
+                                    <div class="relative flex items-center mt-8">
+                                        <span class="absolute">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                        </span>
+
+                                        <input type="text" name="username" id="username" required class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Username">
+                                    </div>
+
+                                    <div class="relative flex items-center mt-4">
+                                        <span class="absolute">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                            </svg>
+                                        </span>
+
+                                        <input type="password" name="password" id="password" required class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password">
+                                        <span
+                                            id="togglePassword"
+                                            class="absolute right-3 top-4 cursor-pointer text-gray-400 hover:text-orange-600">
+                                            <!-- Tambahkan ikon di sini -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M15 12c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z" />
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <p class="text-sm text-right text-gray-400">Lupa password? <button id="hubungi" class="cursor-pointer text-orange-500 focus:outline-none focus:underline hover:underline">Hubungi Admin!</button></p>
+                                    </div>
+
+                                    <div class="mt-6">
+                                        <input type="hidden" name="csrf_token" value="<?= $csrf->generateToken(); ?>">
+
+                                        <button type="submit" id="submit" class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:bg-orange-400 focus:ring focus:ring-orange-300 focus:ring-opacity-50">
+                                            Masuk
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <p class="mt-6 text-sm text-center text-gray-400">Belum punya akun? <a href="signup.html" class="cursor-pointer text-orange-500 focus:outline-none focus:underline hover:underline">Daftar</a>.</p>
+                            </div>
+                        </div>
+                        <!-- Step 2 -- Hubungi Admin -->
+                        <div id="step2" class="hidden">
+                            <div class="text-center">
+                                <div class="flex justify-center mx-auto">
+                                    <a href="../indexLead.php"><img class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
+                                    </a>
+                                </div>
+            
+                                <p class="text-l mt-3 text-gray-500">Silahkan hubungi Admin untuk menceritakan permasalahan kamu mengenai website PRESPOL</p>
+                            </div>
+                            
+                            <div class="mt-16 ">
+                                <form id="messageForm" action="/submit" method="POST">
+                                    <div class="w-full mb-4 border border-orange-200 rounded-lg bg-orange-50">
+                                        <div class="px-4 py-2 bg-white rounded-t-lg">
+                                            <textarea id="message" rows="4" class="w-full px-0 text-sm text-orange-900 bg-white focus:outline-none" placeholder="p..Atmint!" required ></textarea>
                                         </div>
-
-                                        <div class="relative flex items-center mt-4">
-                                            <span class="absolute">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                                </svg>
-                                            </span>
-
-                                            <input type="password" name="password" id="password" required class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password">
-                                            <span
-                                                id="togglePassword"
-                                                class="absolute right-3 top-4 cursor-pointer text-gray-400 hover:text-orange-600">
-                                                <!-- Tambahkan ikon di sini -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M15 12c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z" />
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z" />
-                                                </svg>
-                                            </span>
-                                        </div>
-
-                                        <div class="mt-0">
-                                            <p class="mt-6 text-sm text-right text-gray-400">Lupa password? <button id="hubungi" class="cursor-pointer text-orange-500 focus:outline-none focus:underline hover:underline">Hubungi Admin!</button></p>
-                                        </div>
-
-                                        <div class="mt-6">
-                                            <input type="hidden" name="csrf_token" value="<?= $csrf->generateToken(); ?>">
-
-                                            <button type="submit" class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:bg-orange-400 focus:ring focus:ring-orange-300 focus:ring-opacity-50">
-                                                Masuk
+                                        <div class="flex items-center justify-between px-3 py-2 border-t ">
+                                            <button type="submit" onclick="sendMessage()" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-orange-700 rounded-lg focus:ring-4 focus:ring-orange-200 hover:bg-orange-800">
+                                                Kirim Pesan
                                             </button>
-                                        </div>
-                                    </form>
-
-                                    <p class="mt-6 text-sm text-center text-gray-400">Belum punya akun? <a href="signup.html" class="cursor-pointer text-orange-500 focus:outline-none focus:underline hover:underline">Daftar</a>.</p>
-                                </div>
-                            </div>
-                            <!-- Step 2 -- Hubungi Admin -->
-                            <div id="step2" class="signup-step hidden">
-                                <div class="text-center">
-                                    <div class="flex justify-center mx-auto">
-                                        <a href="../indexLead.php"><img class="cursor-pointer h-7 sm:h-10" src="img/logoBlack.svg" alt="logo">
-                                        </a>
-                                    </div>
-                
-                                    <p class="text-l mt-3 text-gray-500">Silahkan hubungi Admin untuk menceritakan permasalahan kamu mengenai website PRESPOL</p>
-                                </div>
-                                
-                                <div class="mt-16 ">
-                                    <form>
-                                        <div class="w-full mb-4 border border-orange-200 rounded-lg bg-orange-50">
-                                            <div class="px-4 py-2 bg-white rounded-t-lg">
-                                                <textarea id="message" rows="4" class="w-full px-0 text-sm text-orange-900 bg-white " placeholder="p..Atmint!" required ></textarea>
-                                            </div>
-                                            <div class="flex items-center justify-between px-3 py-2 border-t ">
-                                                <button onclick="sendMessage()" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-orange-700 rounded-lg focus:ring-4 focus:ring-orange-200 hover:bg-orange-800">
-                                                    Kirim Pesan
+                                            <div class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
+                                                <button id="kembali" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-orange-700 rounded-lg focus:ring-4 focus:ring-orange-200 hover:bg-orange-800">
+                                                    Kembali ke Halaman Masuk
                                                 </button>
-                                                <div class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
-                                                    <button id="kembali" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-orange-700 rounded-lg focus:ring-4 focus:ring-orange-200 hover:bg-orange-800">
-                                                        Kembali ke Halaman Masuk
-                                                    </button>
-                                                </div>
                                             </div>
                                         </div>
-                                        <div class="mt-6 text-center ">
-                                            <p class="mt-6 text-sm text-center text-gray-400">atau langsung hubungi pada nomor Whatsapp Admin: <i class="cursor-text focus:outline-none focus:underline hover:text-orange-500">+6281216718180</i></p>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="mt-6 text-center ">
+                                        <p class="mt-6 text-sm text-center text-gray-400">atau langsung hubungi pada nomor Whatsapp Admin: <i class="cursor-text focus:outline-none focus:underline hover:text-orange-500">+6281216718180</i></p>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -192,90 +190,7 @@ $csrf = new CSRFToken();
     </div>
 
     <script>
-        //Chat Admin
-        function sendMessage() {
-            const number = "6281216718180"; // Nomor WhatsApp tujuan
-            const message = document.getElementById("message").value;
-            const encodedMessage = encodeURIComponent(message);
-
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            const waURL = isMobile 
-                ? `https://api.whatsapp.com/send/?phone=${number}&text=${encodedMessage}&type=phone_number&app_absent=0`
-                : `https://web.whatsapp.com/send?phone=${number}&text=${encodedMessage}`;
-
-            window.open(waURL, "_blank");
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Pagination --
-            const signupForm = document.getElementById('signupForm');
-            const step1 = document.getElementById('step1');
-            const step2 = document.getElementById('step2');
-
-            // Step 1 Next Button
-            const step1NextBtn = step1.querySelector('#hubungi');
-            step1NextBtn.addEventListener('click', () => {
-                // If all validations pass, move to step 2
-                step1.classList.add('hidden');
-                step2.classList.remove('hidden');
-            });
-
-            // Step 2 Buttons
-            const step2BackBtn = step2.querySelector('#kembali');
-
-            // Back Button Functionality
-            step2BackBtn.addEventListener('click', () => {
-                step2.classList.add('hidden');
-                step1.classList.remove('hidden');
-            });
-
-            // Function to create password toggle functionality
-            function setupPasswordToggle(toggleSelector, passwordSelector) {
-                const togglePassword = document.querySelector(toggleSelector);
-                const password = document.querySelector(passwordSelector);
-
-                if (togglePassword && password) {
-                    togglePassword.addEventListener('click', function() {
-                        // Toggle the type attribute
-                        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                        password.setAttribute('type', type);
-
-                        // Toggle the eye icon (optional)
-                        this.classList.toggle('text-gray-600');
-
-                        // Optional: Focus back on the password input after toggling
-                        password.focus();
-                    });
-                }
-            }
-
-            // Setup toggles for both password fields
-            setupPasswordToggle('#togglePassword', '#password');
-            setupPasswordToggle('#togglePassword2', '#confirmPw');
-
-            const slides = document.querySelectorAll('.bg-slide');
-            let currentSlide = 0;
-
-            // Initially activate the first slide
-            slides[0].classList.add('active');
-
-            // Function to change slides
-            function changeSlide() {
-                // Remove active class from current slide
-                slides[currentSlide].classList.remove('active');
-
-                // Move to next slide, wrap around to start if at end
-                currentSlide = (currentSlide + 1) % slides.length;
-
-                // Add active class to new slide
-                slides[currentSlide].classList.add('active');
-            }
-
-            // Change slide every 5 seconds
-            setInterval(changeSlide, 5000);
-        });
-    </script>
-    <script>
+        //Alert Kesalahan Input
         function createErrorOverlay() {
             // Create overlay container
             const overlay = document.createElement('div');
@@ -348,7 +263,117 @@ $csrf = new CSRFToken();
                 createErrorOverlay();
             }
         });
+
+        //Chat Admin
+        function sendMessage() {
+            const number = "6281216718180"; // Nomor WhatsApp tujuan
+            const message = document.getElementById("message").value;
+            // Cek apakah textarea kosong
+            if (message.value.trim() === '') {
+                event.preventDefault(); // Mencegah form dikirim
+                alert('Pesan tidak boleh kosong!'); // Menampilkan peringatan
+            }
+            const encodedMessage = encodeURIComponent(message);
+
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            const waURL = isMobile 
+                ? `https://api.whatsapp.com/send/?phone=${number}&text=${encodedMessage}&type=phone_number&app_absent=0`
+                : `https://web.whatsapp.com/send?phone=${number}&text=${encodedMessage}`;
+
+            window.open(waURL, "_blank");
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+
+            // Event listener untuk menangkap Enter pada username
+            usernameInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Mencegah aksi default (submit form)
+                    passwordInput.focus(); // Pindah fokus ke password
+                }
+            });
+
+            const submitButton = document.getElementById('submit');
+
+            // Deteksi tombol Enter pada input password
+            passwordInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Mencegah form dari submit default
+                    submitButton.click();  // Klik tombol submit
+                }
+            });
+
+            // Pagination --
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+
+            // Step 1 Next Button
+            const step1NextBtn = step1.querySelector('#hubungi');
+            step1NextBtn.addEventListener('click', () => {
+                // If all validations pass, move to step 2
+                step1.classList.add('hidden');
+                step2.classList.remove('hidden');
+            });
+
+            // Step 2 Buttons
+            const step2BackBtn = step2.querySelector('#kembali');
+
+            // Back Button Functionality
+            step2BackBtn.addEventListener('click', () => {
+                step2.classList.add('hidden');
+                step1.classList.remove('hidden');
+            });
+
+            const form = document.getElementById('messageForm');
+            const textarea = document.getElementById('message');
+
+            // Function to create password toggle functionality
+            function setupPasswordToggle(toggleSelector, passwordSelector) {
+                const togglePassword = document.querySelector(toggleSelector);
+                const password = document.querySelector(passwordSelector);
+
+                if (togglePassword && password) {
+                    togglePassword.addEventListener('click', function() {
+                        // Toggle the type attribute
+                        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                        password.setAttribute('type', type);
+
+                        // Toggle the eye icon (optional)
+                        this.classList.toggle('text-gray-600');
+
+                        // Optional: Focus back on the password input after toggling
+                        password.focus();
+                    });
+                }
+            }
+
+            // Setup toggles for both password fields
+            setupPasswordToggle('#togglePassword', '#password');
+            setupPasswordToggle('#togglePassword2', '#confirmPw');
+
+            const slides = document.querySelectorAll('.bg-slide');
+            let currentSlide = 0;
+
+            // Initially activate the first slide
+            slides[0].classList.add('active');
+
+            // Function to change slides
+            function changeSlide() {
+                // Remove active class from current slide
+                slides[currentSlide].classList.remove('active');
+
+                // Move to next slide, wrap around to start if at end
+                currentSlide = (currentSlide + 1) % slides.length;
+
+                // Add active class to new slide
+                slides[currentSlide].classList.add('active');
+            }
+
+            // Change slide every 5 seconds
+            setInterval(changeSlide, 5000);
+        });
     </script>
 </body>
-
 </html>
