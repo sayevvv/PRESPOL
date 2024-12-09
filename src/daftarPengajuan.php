@@ -128,7 +128,13 @@ $listDilayani = $user->getPrestasiVerifiedList($no_induk, $dilayaniPage);
                         <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kompetisi']); ?></td>
                         <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kategori']); ?></td>
                         <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['jenis_juara']); ?></td>
-                        <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['status_validasi']); ?></td>
+                        <td class='py-3 px-6 border 
+                            <?php 
+                                echo ($item['status_validasi'] === 'valid') ? 'text-green-600 font-bold' : 
+                                    (($item['status_validasi'] === 'tolak' || $item['status_validasi'] === 'dihapus') ? 'text-red-600 font-bold' : '');
+                            ?>'>
+                            <?php echo htmlspecialchars($item['status_validasi']); ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
