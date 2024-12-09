@@ -41,7 +41,7 @@ if ($role == '1') {
     <title>Prespol - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+    <link rel="icon" href="img/pres.png" type="image/x-icon">
     <style>
         body {
             background: url('img/homepageGradient.png') no-repeat center center fixed;
@@ -61,9 +61,18 @@ if ($role == '1') {
             }
         }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="min-h-screen  flex flex-col md:flex-row">
+<body class="min-h-screen flex flex-col md:flex-row max-h-[400px] overflow-y-auto 
+            [&::-webkit-scrollbar]:w-2
+            [&::-webkit-scrollbar-track]:rounded-full
+            [&::-webkit-scrollbar-track]:bg-neutral-100
+            [&::-webkit-scrollbar-thumb]:rounded-full
+            [&::-webkit-scrollbar-thumb]:bg-neutral-300
+            md:[&::-webkit-scrollbar]:block
+            [&::-webkit-scrollbar]:hidden">
     <!-- Sidebar (from previous implementation) -->
     <div class="flex-1">
         <?php echo $user->sidebar(); ?>
