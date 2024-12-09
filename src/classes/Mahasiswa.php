@@ -162,14 +162,39 @@ return $currentPage === $pageName
         <<<HTML
             <header class="flex flex-col lg:flex-row justify-between items-center mt-24 md:mt-16 mb-16 md:mb-0">
                 <div class="text-center lg:text-left">
-                    <h1 class="text-xl md:text-xl lg:text-3xl font-bold">Selamat Datang</h1>
-                    <h2 class="text-2xl md:text-3xl lg:text-5xl font-bold text-black">Champions!</h2>
-                    <p class="text-orange-500 mt-4">Kamu peringkat ke-$peringkat di Leaderboard Prespol terkini. Teruskan semangatmu!</p>
-                    <button onclick="window.location.href='inputPrestasi.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
-                        Tambah Prestasi
-                    </button>
+                    <h1 class="text-xl md:text-xl lg:text-2xl font-bold">Selamat Datang</h1>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-black">Champions!</h2>
+                    <p class="text-orange-500 mt-2">Kamu peringkat ke-$peringkat di Leaderboard Prespol terkini. Teruskan semangatmu!</p>
                 </div>
             </header>
+            <section class="grid grid-cols-1 md:grid-cols-3 mt-6 md:mt-8 gap-4 mb-4">
+                <!-- Bento Item 1: Total Points -->
+                <div class="bg-white/60 border rounded-xl p-4 md:p-6  flex items-center space-x-4 shadow-sm">
+                    <i class="fas fa-star text-3xl md:text-4xl text-orange-500"></i>
+                    <div>
+                        <h4 class="text-base md:text-lg font-semibold text-gray-800">Total Poin</h4>
+                        <p class="text-xl md:text-2xl font-bold text-orange-600">total poin</p>
+                    </div>
+                </div>
+
+                <!-- Bento Item 2: Achievements -->
+                <div class="bg-white/60 border rounded-xl p-4 md:p-6  flex items-center space-x-4 shadow-sm">
+                    <i class="fas fa-trophy text-3xl md:text-4xl text-green-500"></i>
+                    <div>
+                        <h4 class="text-base md:text-lg font-semibold text-gray-800">Jumlah Prestasi</h4>
+                        <p class="text-xl md:text-2xl font-bold text-green-600">jumlah prestasi</p>
+                    </div>
+                </div>
+
+                <!-- Bento Item 3: Rank -->
+                <div class="bg-white/60 border rounded-xl p-4 md:p-6  flex items-center space-x-4 shadow-sm">
+                    <i class="fas fa-chart-line text-3xl md:text-4xl text-blue-500"></i>
+                    <div>
+                        <h4 class="text-base md:text-lg font-semibold text-gray-800">Peringkat</h4>
+                        <p class="text-xl md:text-2xl font-bold text-blue-600">peringkat</p>
+                    </div>
+                </div>
+            </section>
         HTML;
     }
 
@@ -304,7 +329,39 @@ return $currentPage === $pageName
             echo 'Akun tidak ditemukan';
         }
     }
+    public function dashBoard(){
+        echo
+        <<<HTML
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <!-- Bento Item 1: Total Points -->
+                <div class="bg-white/60 border rounded-xl p-4 md:p-6  flex items-center space-x-4 shadow-sm">
+                    <i class="fas fa-star text-3xl md:text-4xl text-orange-500"></i>
+                    <div>
+                        <h4 class="text-base md:text-lg font-semibold text-gray-800">Total Poin</h4>
+                        <p class="text-xl md:text-2xl font-bold text-orange-600">total poin</p>
+                    </div>
+                </div>
 
+                <!-- Bento Item 2: Achievements -->
+                <div class="bg-white/60 border rounded-xl p-4 md:p-6  flex items-center space-x-4 shadow-sm">
+                    <i class="fas fa-trophy text-3xl md:text-4xl text-green-500"></i>
+                    <div>
+                        <h4 class="text-base md:text-lg font-semibold text-gray-800">Jumlah Prestasi</h4>
+                        <p class="text-xl md:text-2xl font-bold text-green-600">jumlah prestasi</p>
+                    </div>
+                </div>
+
+                <!-- Bento Item 3: Rank -->
+                <div class="bg-white/60 border rounded-xl p-4 md:p-6  flex items-center space-x-4 shadow-sm">
+                    <i class="fas fa-chart-line text-3xl md:text-4xl text-blue-500"></i>
+                    <div>
+                        <h4 class="text-base md:text-lg font-semibold text-gray-800">Peringkat</h4>
+                        <p class="text-xl md:text-2xl font-bold text-blue-600">peringkat</p>
+                    </div>
+                </div>
+            </section>
+        HTML;
+    }
     public function getHistoryPendingList($nim, $page = 1, $limit = 10) {
 
         $offset = ($page - 1) * $limit;
