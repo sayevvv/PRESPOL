@@ -77,7 +77,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
 
     <div id="app" class="w-full h-full">
         <!-- Page 1 -->
-        <div id="page1" class="page">
+        <div id="page1" class="page hidden">
             <!-- Navbar -->
             <nav
                 x-data="{
@@ -652,7 +652,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
     </div>
 
     <!-- Page 2 -->
-    <div id="page2" class="page hidden">
+    <div id="page2" class="page ">
         <!-- navbar -->
         <nav
             x-data="{
@@ -845,7 +845,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Guide Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/panduan.png" alt="Guide Preview">
                         </div>
                     </section>
                 </div>

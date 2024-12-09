@@ -164,7 +164,7 @@ return $currentPage === $pageName
                 <div class="text-center lg:text-left">
                     <h1 class="text-xl md:text-xl lg:text-3xl font-bold">Selamat Datang</h1>
                     <h2 class="text-2xl md:text-3xl lg:text-5xl font-bold text-black">Champions!</h2>
-                    <p class="text-orange-500 mt-2">Kamu peringkat $peringkat</p>
+                    <p class="text-orange-500 mt-4">Kamu peringkat ke-$peringkat di Leaderboard Prespol terkini. Teruskan semangatmu!</p>
                     <button onclick="window.location.href='inputPrestasi.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
                         Tambah Prestasi
                     </button>
