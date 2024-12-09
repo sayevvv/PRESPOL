@@ -2,12 +2,10 @@
 include_once 'config/Database.php';
 
 class Auth {
-    private $connection;
     private $db;
 
     public function __construct() {
         $this->db = new Database();
-        $this->connection = $this->db->getConnection();
     }
 
     public function authenticate($username, $password) {
@@ -79,20 +77,6 @@ class Auth {
         }
     }
 
-    public static function checkLoginJSON() {
-        // Cek apakah 'role' dan 'username' ada dalam sesi
-        if (!isset($_SESSION['role']) || !isset($_SESSION['username'])) {
-            // Jika tidak, kembalikan respons JSON
-            header('Content-Type: application/json');
-            http_response_code(401); // Unauthorized
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Unauthorized: Anda belum login.'
-            ]);
-            exit();
-        }
-    }
-    
 }
 
 ?>

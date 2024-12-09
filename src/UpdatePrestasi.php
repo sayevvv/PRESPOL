@@ -5,148 +5,128 @@ include_once 'classes/Auth.php';
 
 Auth::checkLogin();
 
-class UpdatePrestasi {
-    private $db;
-    private $uploadBaseDir;
-    private $allowedExtensions;
+function uploadFile($fieldName, $currentFilePath, $uploadBaseDir, $subDir, $allowedExtensions) {
+    if (isset($_FILES[$fieldName]) && $_FILES[$fieldName]['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES[$fieldName]['tmp_name'];
+        $fileName = $_FILES[$fieldName]['name'];
+        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-    public function __construct($db, $uploadBaseDir = 'upload/prestasi/', $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf']) {
-        $this->db = $db;
-        $this->uploadBaseDir = $uploadBaseDir;
-        $this->allowedExtensions = $allowedExtensions;
-    }
-
-    // Fungsi untuk mengunggah file
-    private function uploadFile($fieldName, $currentFilePath, $subDir) {
-        if (isset($_FILES[$fieldName]) && $_FILES[$fieldName]['error'] === UPLOAD_ERR_OK) {
-            $fileTmpPath = $_FILES[$fieldName]['tmp_name'];
-            $fileName = $_FILES[$fieldName]['name'];
-            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
-            // Validasi ekstensi file
-            if (!in_array($fileExtension, $this->allowedExtensions)) {
-                return ["error" => "File $fieldName memiliki format tidak valid."];
-            }
-
-            // Direktori target berdasarkan jenis file
-            $targetDir = rtrim($this->uploadBaseDir, '/') . '/' . trim($subDir, '/') . '/';
-
-            // Buat direktori jika belum ada
-            if (!is_dir($targetDir)) {
-                mkdir($targetDir, 0755, true);
-            }
-
-            // Hapus file lama jika ada
-            if (file_exists($currentFilePath)) {
-                unlink($currentFilePath);
-            }
-
-            $fileBaseName = basename($fileName); // Mengambil nama file tanpa path tambahan
-            $uuid = uniqid(); // Membuat ID unik
-            $newFileName = $uuid . '_' . $fileBaseName; // Menggabungkan UUID dan nama file asli
-            $newFilePath = $targetDir . $newFileName;
-
-            if (move_uploaded_file($fileTmpPath, $newFilePath)) {
-                return ["path" => $newFilePath];
-            } else {
-                return ["error" => "Gagal mengunggah file $fieldName."];
-            }
+        if (!in_array($fileExtension, $allowedExtensions)) {
+            return ["error" => "File $fieldName memiliki format tidak valid."];
         }
 
-        // Jika tidak ada file baru, kembalikan path lama
-        return ["path" => $currentFilePath];
-    }
+        $targetDir = rtrim($uploadBaseDir, '/') . '/' . trim($subDir, '/') . '/';
 
-    // Fungsi untuk mendapatkan detail prestasi dari database
-    public function getIdMahasiswa($nim) {
-        $query = "SELECT id_mahasiswa FROM mahasiswa WHERE nim = ?";
-        $params = [$nim];
-        $result = $this->db->fetchOne($query, $params);
-
-        return $result;
-    }
-
-    public function getDetailPrestasi($id_prestasi) {
-        $query = "SELECT * FROM prestasi WHERE id_prestasi = ?";
-        $params = [$id_prestasi];
-        $result = $this->db->fetchOne($query, $params);
-
-        return $result;
-    }
-
-    // Fungsi untuk memperbarui data prestasi
-    public function updatePrestasi($data) {
-        $nim = $data['nim'];
-        $id_mahasiswa = $this->getIdMahasiswa($nim);
-        $id_prestasi = $data['id_prestasi'];
-        $detailPrestasi = $this->getDetailPrestasi($id_prestasi);
-
-        // Upload file baru dan dapatkan path file baru
-        $fotoLomba = $this->uploadFile('foto_kompetisi', $detailPrestasi['foto_kompetisi'], 'kompetisi');
-        $flyerLomba = $this->uploadFile('flyer', $detailPrestasi['flyer'], 'flyer');
-        $sertifikat = $this->uploadFile('sertifikat', $detailPrestasi['sertifikat'], 'sertifikat');
-        $suratTugas = $this->uploadFile('surat_tugas', $detailPrestasi['surat_tugas'], 'surat-tugas');
-        $karyaKompetisi = $this->uploadFile('karya_kompetisi', $detailPrestasi['karya_kompetisi'], 'karya');
-
-        // Jika ada error saat upload
-        if (isset($fotoLomba['error']) || isset($flyerLomba['error']) || isset($sertifikat['error']) || isset($suratTugas['error']) || isset($karyaKompetisi['error'])) {
-            return "Error: " . implode(', ', array_filter([$fotoLomba['error'], $flyerLomba['error'], $sertifikat['error'], $suratTugas['error'], $karyaKompetisi['error']]));
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0755, true);
         }
 
-        // Perbarui database
-        $queryUpdate = "
-            UPDATE prestasi SET
-                id_mahasiswa = ?,
-                nama_kompetisi = ?,
-                penyelenggara = ?,
-                event = ?,
-                id_kategori = ?,
-                id_juara = ?,
-                jumlah_peserta = ?,
-                dosen_pembimbing_1 = ?,
-                dosen_pembimbing_2 = ?,
-                foto_kompetisi = ?,
-                flyer = ?,
-                sertifikat = ?,
-                surat_tugas = ?,
-                karya_kompetisi = ?
-            WHERE id_prestasi = ?
-        ";
-        
-        $dosenPembimbing1 = trim($data['dosen_pembimbing_1']) !== '' ? $data['dosen_pembimbing_1'] : NULL;
-        $dosenPembimbing2 = trim($data['dosen_pembimbing_2']) !== '' ? $data['dosen_pembimbing_2'] : NULL;
-
-        $params = [
-            $id_mahasiswa['id_mahasiswa'],
-            $data['nama_kompetisi'],
-            $data['penyelenggara'],
-            $data['event'],
-            $data['id_kategori'],
-            $data['id_juara'],
-            $data['jumlah_peserta'],
-            $dosenPembimbing1,
-            $dosenPembimbing2,
-            $fotoLomba['path'] ?? NULL,
-            $flyerLomba['path'] ?? NULL,
-            $sertifikat['path'] ?? NULL,
-            $suratTugas['path'] ?? NULL,
-            $karyaKompetisi['path'] ?? NULL,
-            $id_prestasi
-        ];
-
-        $stmt = sqlsrv_query($this->db->getConnection(), $queryUpdate, $params);
-
-        if ($stmt === false) {
-            return "Error: " . print_r(sqlsrv_errors(), true);
+        if (file_exists($currentFilePath)) {
+            unlink($currentFilePath);
         }
 
-        return "Data berhasil diperbarui!";
+        $uuid = uniqid();
+        $newFileName = $uuid . '_' . basename($fileName);
+        $newFilePath = $targetDir . $newFileName;
+
+        if (move_uploaded_file($fileTmpPath, $newFilePath)) {
+            return ["path" => $newFilePath];
+        } else {
+            return ["error" => "Gagal mengunggah file $fieldName."];
+        }
     }
+
+    return ["path" => $currentFilePath];
+}
+
+function getIdMahasiswa($db, $nim) {
+    $query = "SELECT id_mahasiswa FROM mahasiswa WHERE nim = ?";
+    $params = [$nim];
+    return $db->fetchOne($query, $params);
+}
+
+function getDetailPrestasi($db, $id_prestasi) {
+    $query = "SELECT * FROM prestasi WHERE id_prestasi = ?";
+    $params = [$id_prestasi];
+    return $db->fetchOne($query, $params);
+}
+
+function updatePrestasi($db, $data) {
+    $nim = $data['nim'];
+    $id_mahasiswa = getIdMahasiswa($db, $nim);
+    $id_prestasi = $data['id_prestasi'];
+    $detailPrestasi = getDetailPrestasi($db, $id_prestasi);
+
+    $uploadBaseDir = 'upload/prestasi/';
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
+
+    $fotoLomba = uploadFile('foto_kompetisi', $detailPrestasi['foto_kompetisi'], $uploadBaseDir, 'kompetisi', $allowedExtensions);
+    $flyerLomba = uploadFile('flyer', $detailPrestasi['flyer'], $uploadBaseDir, 'flyer', $allowedExtensions);
+    $sertifikat = uploadFile('sertifikat', $detailPrestasi['sertifikat'], $uploadBaseDir, 'sertifikat', $allowedExtensions);
+    $suratTugas = uploadFile('surat_tugas', $detailPrestasi['surat_tugas'], $uploadBaseDir, 'surat-tugas', $allowedExtensions);
+    $karyaKompetisi = uploadFile('karya_kompetisi', $detailPrestasi['karya_kompetisi'], $uploadBaseDir, 'karya', $allowedExtensions);
+
+    if (isset($fotoLomba['error']) || isset($flyerLomba['error']) || isset($sertifikat['error']) || isset($suratTugas['error']) || isset($karyaKompetisi['error'])) {
+        return "Error: " . implode(', ', array_filter([
+            $fotoLomba['error'],
+            $flyerLomba['error'],
+            $sertifikat['error'],
+            $suratTugas['error'],
+            $karyaKompetisi['error']
+        ]));
+    }
+
+    $queryUpdate = "
+        UPDATE prestasi SET
+            id_mahasiswa = ?,
+            nama_kompetisi = ?,
+            penyelenggara = ?,
+            event = ?,
+            id_kategori = ?,
+            id_juara = ?,
+            jumlah_peserta = ?,
+            dosen_pembimbing_1 = ?,
+            dosen_pembimbing_2 = ?,
+            foto_kompetisi = ?,
+            flyer = ?,
+            sertifikat = ?,
+            surat_tugas = ?,
+            karya_kompetisi = ?
+        WHERE id_prestasi = ?
+    ";
+
+    $dosenPembimbing1 = trim($data['dosen_pembimbing_1']) !== '' ? $data['dosen_pembimbing_1'] : NULL;
+    $dosenPembimbing2 = trim($data['dosen_pembimbing_2']) !== '' ? $data['dosen_pembimbing_2'] : NULL;
+
+    $params = [
+        $id_mahasiswa['id_mahasiswa'],
+        $data['nama_kompetisi'],
+        $data['penyelenggara'],
+        $data['event'],
+        $data['id_kategori'],
+        $data['id_juara'],
+        $data['jumlah_peserta'],
+        $dosenPembimbing1,
+        $dosenPembimbing2,
+        $fotoLomba['path'] ?? NULL,
+        $flyerLomba['path'] ?? NULL,
+        $sertifikat['path'] ?? NULL,
+        $suratTugas['path'] ?? NULL,
+        $karyaKompetisi['path'] ?? NULL,
+        $id_prestasi
+    ];
+
+    $stmt = sqlsrv_query($db->getConnection(), $queryUpdate, $params);
+
+    if ($stmt === false) {
+        return "Error: " . print_r(sqlsrv_errors(), true);
+    }
+
+    return "Data berhasil diperbarui!";
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = new Database();
-    $editPrestasi = new UpdatePrestasi($db);
 
     $data = [
         'id_prestasi' => $_POST['id_prestasi'],
@@ -161,13 +141,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'dosen_pembimbing_2' => $_POST['dosen_pembimbing_2']
     ];
 
-    $result = $editPrestasi->updatePrestasi($data);
-    if ($result != NULL) {
-        // Redirect ke halaman detailPrestasi
+    $result = updatePrestasi($db, $data);
+
+    if ($result !== NULL) {
         header('Location: detailPrestasi.php?id_prestasi=' . $data['id_prestasi']);
         exit;
     } else {
-        echo $result; // Menampilkan pesan error
+        echo $result;
     }
 }
 ?>

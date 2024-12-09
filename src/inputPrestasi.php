@@ -71,7 +71,7 @@ if ($_SESSION['role'] == '1') {
                     <p class="mt-4 text-gray-700">(3) Pasikan sebelum klik tombol <b>SIMPAN</b>, cek terlebih dahulu datanya</p>
             </div>
             <!-- Form -->
-            <form id="prestasiForm" class="space-y-4" action="InputProses.php" method="POST" enctype="multipart/form-data">
+            <form id="prestasiForm" class="space-y-4" action="inputProses.php" method="POST" enctype="multipart/form-data">
 
                 <?php
                 if ($user instanceof Mahasiswa) {
@@ -429,7 +429,7 @@ if ($_SESSION['role'] == '1') {
                             var formData = new FormData($("#prestasiForm")[0]);
 
                             $.ajax({
-                                url: "InputProses.php",
+                                url: "inputProses.php",
                                 type: "POST",
                                 data: formData,
                                 processData: false,

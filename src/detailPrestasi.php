@@ -153,7 +153,7 @@ $username = $_SESSION['username'];
             <?php if ($user instanceof Admin): ?>
                 <!-- Edit Form -->
             <div id="editForm" class="bg-white p-6 rounded-lg shadow-lg border border-gray-300 hidden">
-                <form action="UpdatePrestasi.php" method="POST" id="editPrestasiForm" enctype="multipart/form-data">
+                <form action="updatePrestasi.php" method="POST" id="editPrestasiForm" enctype="multipart/form-data">
                     <input type="hidden" name="id_prestasi" value="<?php echo $id_prestasi; ?>">
                     <div class="mb-4">
                         <label for="nim_mahasiswa" class="block font-semibold">NIM Mahasiswa</label>
