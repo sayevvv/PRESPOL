@@ -48,7 +48,7 @@ class Kajur extends User {
                                 <span class="hidden lg:inline ml-6">Ekspor Data</span>
                             </a>
                         </li>
-                        <li>
+                        <li style="margin-top: 300px">
                             <a href="#" onclick="openModal('logoutModal')" class="flex items-center mx-2 py-2 px-4 lg:px-6 hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span class="hidden lg:inline ml-4">Keluar</span>
