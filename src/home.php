@@ -3,7 +3,9 @@ session_start();
 include_once 'config/Database.php';
 include_once 'classes/User.php';
 include_once 'classes/Auth.php';
+
 Auth::checkLogin();
+
 // Ambil koneksi dari class Database
 $db = new Database();
 $connection = $db->getConnection();
