@@ -167,7 +167,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                     @click="activeLink = 'signup'"
                                     :class="activeLink === 'signup' ? 'text-orange-500 font-semibold border-orange-500' : 'text-stone-600 border-stone-300'"
                                     class="block px-5 py-2 mt-4 text-sm text-center capitalize transition-colors duration-300 transform border rounded-md hover:bg-orange-400 hover:text-white lg:mt-0 lg:w-auto cursor-pointer whitespace-nowrap"
-                                    href="src/signup.html">
+                                    href="src/signup.php">
                                     Sign Up</a>
                             </div>
                         </div>
@@ -189,7 +189,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                         </h2>
 
                         <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8 md:mt-12">
-                            <a href="src/signup.html" class="w-auto sm:w-auto inline-block">
+                            <a href="src/signup.php" class="w-auto sm:w-auto inline-block">
                                 <button class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
                                     Gabung Kami!
                                 </button>
@@ -606,7 +606,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                         </p>
                     </div>
                     <div class="flex justify-center space-x-4 mt-4">
-                        <a href="src/signup.html">
+                        <a href="src/signup.php">
                             <button class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
                                 Gabung!
                             </button>
@@ -730,7 +730,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 @click="activeLink = 'signup'"
                                 :class="activeLink === 'signup' ? 'text-orange-500 font-semibold' : 'text-stone-600'"
                                 class="block px-5 py-2 mt-4 text-sm text-center capitalize transition-colors duration-300 transform border rounded-md hover:bg-orange-100 lg:mt-0 lg:w-auto cursor-pointer whitespace-nowrap"
-                                href="src/signup.html">
+                                href="src/signup.php">
                                 Sign Up</a>
                         </div>
                     </div>
@@ -1109,7 +1109,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                         Catatkan Prestasimu di PRESPOL.
                     </p>
                 </div>
-                <div class="flex justify-center space-x-4 mt-4"><a href="src/signup.html">
+                <div class="flex justify-center space-x-4 mt-4"><a href="src/signup.php">
                     <button class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
                         Gabung!
                     </button>
