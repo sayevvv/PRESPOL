@@ -15,7 +15,7 @@ class Auth {
         $sql = "SELECT 
                     u.user_id,
                     u.username,
-                    u.password,
+                    u.password_hash,
                     u.role_id,
                     u.id_pegawai,
                     u.id_mahasiswa
@@ -27,12 +27,12 @@ class Auth {
             $user = $this->db->fetchOne($sql, [$username]);
     
             // Verifikasi password
-            if ($user && password_verify($password, $user['password'])) {
+            if ($user && password_verify($password, $user['password_hash'])) {
                 // Simpan informasi ke sesi
                 $_SESSION['user_id'] = $user['user_id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['role'] = $user['role_id'];
-    
+                
                 // Ambil informasi tambahan berdasarkan role
                 if (in_array($user['role_id'], [1, 2])) {
                     $query = "SELECT 
@@ -55,7 +55,6 @@ class Auth {
                 } else {
                     return false; // Role tidak valid
                 }
-    
                 // Jika data tambahan ditemukan, simpan ke sesi
                 if ($result) {
                     $_SESSION['no_induk'] = $result['no_induk'];
@@ -70,9 +69,6 @@ class Auth {
         // Jika gagal autentikasi
         return false;
     }
-    
-    
-    
 
     public static function checkLogin() {
         // Cek apakah 'role' dan 'username' ada dalam sesi
