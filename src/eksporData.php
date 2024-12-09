@@ -5,15 +5,17 @@ include_once 'classes/User.php';
 include_once 'classes/Kajur.php';
 include_once 'config/Database.php';
 include_once 'classes/Auth.php';
+include_once 'classes/Admin.php';
 
 Auth::checkLogin();
 
-if ($_SESSION['role'] != '2') {
+if ($_SESSION['role'] == '3') {
     header('Location: home.php');
 }
 
 $db = new Database();
 $user = new Kajur($db);
+$user = new Admin($db);
 
 if (isset($_GET['export']) && $_GET['export'] == 'achievements') {
     $export_type = $_GET['export_type'] ?? 'all';

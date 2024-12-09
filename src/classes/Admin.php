@@ -1,4 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Worksheet\Table;
+use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
+
 class Admin extends User
 {
 
@@ -50,6 +56,12 @@ class Admin extends User
                             </a>
                         </li>
                         <li>
+                            <a href="eksporData.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'eksporData.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                                <i class="fas fa-file-alt"></i>
+                                <span class="hidden lg:inline ml-6">Ekspor Data</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="#" onclick="openModal('logoutModal')" class="flex items-center mx-2 py-2 px-4 lg:px-6 hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span class="hidden lg:inline ml-4">Keluar</span>
@@ -76,6 +88,10 @@ class Admin extends User
                 <a href="daftarPengajuan.php" class="flex flex-col items-center rounded-xl {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} px-2 py-1">
                     <i class="fas fa-file-alt text-lg"></i>
                     <span class="text-[10px] mt-1">Validasi</span>
+                </a>
+                <a href="daftarPrestasi.php" class="flex flex-col items-center rounded-xl {$this->getActiveClass($currentPage, 'daftarPrestasi.php')} px-2 py-1">
+                    <i class="fas fa-list text-lg"></i>
+                    <span class="text-[10px] mt-1">List Prestasi</span>
                 </a>
                 <a href="#" onclick="openModal('logoutModal')" class="flex flex-col items-center rounded-xl px-2 py-1">
                     <i class="fas fa-sign-out-alt text-lg"></i>
@@ -713,6 +729,177 @@ class Admin extends User
         }
     }
 
+    public function eksporData($export_type = 'all', $kategori = '', $jurusan = '') {
+        // Set the base query
+        $query = "SELECT 
+            p.id_prestasi AS idpres, m.nama AS namaMhs, m.nim AS nimMhs, jn.nama_jurusan AS namaJur, 
+            j.jenis_juara AS juara, p.nama_kompetisi AS namaKomp, p.event AS eventKomp, p.penyelenggara AS penyelenggara, 
+            k.nama_kategori AS kategori, p.jumlah_peserta AS jlhPeserta, p.dosen_pembimbing_1 AS dosbing1, 
+            p.dosen_pembimbing_2 AS dosbing2, FORMAT(CONVERT(DATE, p.tanggal_mulai, 111), 'dd MMMM yyyy', 'id-ID') AS tanggal_mulai,
+            FORMAT(CONVERT(DATE, p.tanggal_selesai, 111), 'dd MMMM yyyy', 'id-ID') AS tanggal_selesai, p.flyer AS flyer, p.foto_kompetisi AS foto_kompetisi,
+            p.sertifikat AS sertifikat, p.karya_kompetisi AS karya, p.surat_tugas AS surat_tugas
+        FROM prestasi p
+        JOIN mahasiswa m ON p.id_mahasiswa = m.id_mahasiswa
+        JOIN jurusan jn ON m.id_jurusan = jn.id_jurusan
+        JOIN kategori k ON p.id_kategori = k.id_kategori
+        JOIN juara j ON p.id_juara = j.id_juara
+        ";
+        
+        // Filter by date if required
+        if ($export_type == 'recent') {
+            $query .= " WHERE DATEDIFF(day, p.created_date, GETDATE()) <= 30";
+        }
+
+        // Filter by category if provided
+        if (!empty($kategori)) {
+            $query .= " AND k.nama_kategori = ?";
+        }
+
+        // Filter by jurusan if provided
+        if (!empty($jurusan)) {
+            $query .= " AND jn.nama_jurusan = ?";
+        }
+
+        // Prepare the query with potential parameters
+        $params = [];
+        if (!empty($kategori)) {
+            $params[] = $kategori;
+        }
+        if (!empty($jurusan)) {
+            $params[] = $jurusan;
+        }
+
+        $result = $this->db->fetchAll($query, $params);
+
+        // Filename with timestamp
+        $filename = "data_prestasi_" . date('Y-m-d_H-i-s') . ".xlsx";
+
+        // Headers for Excel file
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        // Create a new PHPExcel object
+        require 'vendor/autoload.php'; // Assuming you're using PhpSpreadsheet
+        
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        ob_clean();
+        ob_flush();
+        // Set Excel headers
+        $headers = [
+            'A' => 'ID Prestasi', 
+            'B' => 'Nama Mahasiswa', 
+            'C' => 'NIM',
+            'D' => 'Jurusan',
+            'E' => 'Peringkat', 
+            'F' => 'Nama Kompetisi', 
+            'G' => 'Event', 
+            'H' => 'Penyelenggara', 
+            'I' => 'Kategori', 
+            'J' => 'Jumlah Peserta',
+            'K' => 'Dosen Pembimbing 1',
+            'L' => 'Dosen Pembimbing 2',
+            'M' => 'Tanggal Mulai',
+            'N' => 'Tanggal Selesai',
+            'O' => 'Poster Kompetisi',
+            'P' => 'Foto Kompetisi',
+            'Q' => 'Sertifikat Kompetisi',
+            'R' => 'Karya Kompetisi',
+            'S' => 'Surat Tugas'
+        ];
+        
+        // Write headers
+        foreach ($headers as $col => $header) {
+            $sheet->setCellValue($col . '1', $header);
+        }
+
+        // Write data rows
+        $rowCount = 2;
+        foreach ($result as $row) {
+            // Set basic data
+            $sheet->setCellValue('A' . $rowCount, isset($row['idpres']) ? $row['idpres'] : 'N/A');
+            $sheet->setCellValue('B' . $rowCount, isset($row['namaMhs']) ? $row['namaMhs'] : 'N/A');
+            $sheet->setCellValue('C' . $rowCount, isset($row['nimMhs']) ? $row['nimMhs'] : 'N/A');
+            $sheet->setCellValue('D' . $rowCount, isset($row['namaJur']) ? $row['namaJur'] : 'N/A');
+            $sheet->setCellValue('E' . $rowCount, isset($row['juara']) ? $row['juara'] : 'N/A');
+            $sheet->setCellValue('F' . $rowCount, isset($row['namaKomp']) ? $row['namaKomp'] : 'N/A');
+            $sheet->setCellValue('G' . $rowCount, isset($row['eventKomp']) ? $row['eventKomp'] : 'N/A');
+            $sheet->setCellValue('H' . $rowCount, isset($row['penyelenggara']) ? $row['penyelenggara'] : 'N/A');
+            $sheet->setCellValue('I' . $rowCount, isset($row['kategori']) ? $row['kategori'] : 'N/A');
+            $sheet->setCellValue('J' . $rowCount, isset($row['jlhPeserta']) ? $row['jlhPeserta'] : 'N/A');
+            $sheet->setCellValue('K' . $rowCount, isset($row['dosbing1']) ? $row['dosbing1'] : 'N/A');
+            $sheet->setCellValue('L' . $rowCount, isset($row['dosbing2']) ? $row['dosbing2'] : 'N/A');
+            $sheet->setCellValue('M' . $rowCount, isset($row['tanggal_mulai']) ? $row['tanggal_mulai'] : 'N/A');
+            $sheet->setCellValue('N' . $rowCount, isset($row['tanggal_selesai']) ? $row['tanggal_selesai'] : 'N/A');
+            
+            $sheet->setCellValue('O' . $rowCount, isset($row['flyer']) ? $row['flyer'] : 'N/A');
+            $filePath = isset($row['flyer']) ? $row['flyer'] : null;
+            $fileName = $filePath ? basename($filePath) : 'No file';
+            $link_flyer = 'http://localhost/Programs/src/upload/prestasi/flyer/' . $fileName;
+            $sheet->getCell('O' . $rowCount)->getHyperlink()->setUrl($link_flyer);
+
+            $sheet->setCellValue('P' . $rowCount, isset($row['foto_kompetisi']) ? $row['foto_kompetisi'] : 'N/A');
+            $filePath = isset($row['foto_kompetisi']) ? $row['foto_kompetisi'] : null;
+            $fileName = $filePath ? basename($filePath) : 'No file';
+            $link_foto = 'http://localhost/Programs/src/upload/prestasi/kompetisi/' . $fileName;
+            $sheet->getCell('P' . $rowCount)->getHyperlink()->setUrl($link_foto);
+            
+            $sheet->setCellValue('Q' . $rowCount, isset($row['sertifikat']) ? $row['sertifikat'] : 'N/A');
+            $filePath = isset($row['sertifikat']) ? $row['sertifikat'] : null;
+            $fileName = $filePath ? basename($filePath) : 'No file';
+            $link_sertif = 'http://localhost/Programs/src/upload/prestasi/sertifikat/' . $fileName;
+            $sheet->getCell('Q' . $rowCount)->getHyperlink()->setUrl($link_sertif);
+
+            $sheet->setCellValue('R' . $rowCount, isset($row['karya']) ? $row['karya'] : 'N/A');
+            $filePath = isset($row['karya']) ? $row['karya'] : null;
+            $fileName = $filePath ? basename($filePath) : 'No file';
+            $link_karya = 'http://localhost/Programs/src/upload/prestasi/karya/' . $fileName;
+            $sheet->getCell('R' . $rowCount)->getHyperlink()->setUrl($link_karya);
+
+            $sheet->setCellValue('S' . $rowCount, isset($row['surat_tugas']) ? $row['surat_tugas'] : 'N/A');
+            $filePath = isset($row['surat_tugas']) ? $row['surat_tugas'] : null;
+            $fileName = $filePath ? basename($filePath) : 'No file';
+            $link_surat = 'http://localhost/Programs/src/upload/prestasi/surat-tugas/' . $fileName;
+            $sheet->getCell('S' . $rowCount)->getHyperlink()->setUrl($link_surat);
+            
+            $rowCount++;
+        }
+        
+        // Set non-header cells 
+        $sheet->getStyle('A:S')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+        // Set header to center alignment
+        $sheet->getStyle('A1:S1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        foreach (range('A', 'S') as $column) {
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        // Mendapatkan lokasi sel terakhir yang terisi
+        $lastRow = $sheet->getHighestRow(); // Mendapatkan baris terakhir
+        $lastColumn = $sheet->getHighestColumn(); // Mendapatkan kolom terakhir (dalam format huruf)
+        $lastCell = $lastColumn . $lastRow; // Gabungkan kolom dan baris untuk mendapatkan sel terakhir
+
+        // Create a table range
+        $tableRange = 'A1:'.$lastCell; // Adjust based on your data range
+        $table = new Table($tableRange);
+
+        // Add table style
+        $tableStyle = new TableStyle();
+        $tableStyle->setShowRowStripes(true); // Add alternating row colors
+        $table->setName('Table'); // Set table name
+        $table->setStyle($tableStyle);
+
+        // Add the table to the worksheet
+        $sheet->addTable($table);
+
+        // Save Excel file
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit();
+    }
 
     public function closeConnection()
     {
