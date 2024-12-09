@@ -15,9 +15,17 @@ if ($_SESSION['role'] != '1') {
 $no_induk = $_SESSION['no_induk'];
 $db = new Database();
 $user = new Admin($db);
-$list = $user->getPrestasiPendingList();
 
-$no = 1; // Inisialisasi variabel nomor urut
+// Get current page from URL, default to 1
+$pengajuanPage = isset($_GET['pengajuan_page']) ? intval($_GET['pengajuan_page']) : 1;
+$dilayaniPage = isset($_GET['dilayani_page']) ? intval($_GET['dilayani_page']) : 1;
+
+// Determine active tab
+$activeTab = isset($_GET['active_tab']) ? $_GET['active_tab'] : 'pengajuan';
+
+// Get paginated lists
+$listPengajuan = $user->getPrestasiPendingList($pengajuanPage);
+$listDilayani = $user->getPrestasiVerifiedList($no_induk, $dilayaniPage);
 ?>
 
 <!DOCTYPE html>
@@ -44,86 +52,111 @@ $no = 1; // Inisialisasi variabel nomor urut
     
     <!-- Main Content -->
     <main class="ml-[20%] w-[80%] p-8">
-        <button id="btnPengajuan" class="bg-blue-600 text-white px-4 py-2 rounded-md mt-4">Pengajuan</button>
-        <button id="btnDilayani" class="bg-green-600 text-white px-4 py-2 rounded-md mt-4">Dilayani</button>
-        
-        <!-- Table Pengajuan -->
-        <div id="tablePengajuan" class="container mx-auto py-8">
-            <h1 class="text-2xl font-bold mb-4">Daftar Pengajuan Prestasi</h1>
-            <table class="min-w-full bg-white rounded-lg shadow-md">
-                <thead>
-                    <tr class="bg-orange-500 text-white">
-                        <th class="py-2 px-4">No</th>
-                        <th class="py-2 px-4">Nama Mahasiswa</th>
-                        <th class="py-2 px-4">Nama Kompetisi</th>
-                        <th class="py-2 px-4">Kategori</th>
-                        <th class="py-2 px-4">Juara</th>
-                        <th class="py-2 px-4">Aksi</th>
+    <button id="btnPengajuan" class="bg-blue-600 text-white px-4 py-2 rounded-md mt-4" 
+            onclick="switchTab('pengajuan')">Pengajuan</button>
+    <button id="btnDilayani" class="bg-green-600 text-white px-4 py-2 rounded-md mt-4" 
+            onclick="switchTab('dilayani')">Dilayani</button>
+    
+    <!-- Table Pengajuan -->
+    <div id="tablePengajuan" class="container mx-auto py-8 <?php echo $activeTab === 'dilayani' ? 'hidden' : ''; ?>">
+        <h1 class="text-2xl font-bold mb-4">Daftar Pengajuan Prestasi</h1>
+        <table class="min-w-full bg-white rounded-lg shadow-md">
+            <thead>
+                <tr class="bg-orange-500 text-white">
+                    <th class="py-2 px-4">No</th>
+                    <th class="py-2 px-4">Nama Mahasiswa</th>
+                    <th class="py-2 px-4">Nama Kompetisi</th>
+                    <th class="py-2 px-4">Kategori</th>
+                    <th class="py-2 px-4">Juara</th>
+                    <th class="py-2 px-4">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                $no = ($listPengajuan['currentPage'] - 1) * 10 + 1;
+                foreach ($listPengajuan['data'] as $item): 
+                ?>
+                    <tr class="border-b">
+                        <td class='py-3 px-6 border'><?php echo $no++; ?></td>
+                        <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_mahasiswa']); ?></td>
+                        <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kompetisi']); ?></td>
+                        <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kategori']); ?></td>
+                        <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['jenis_juara']); ?></td>
+                        <td class='py-3 px-6 border text-center'>
+                            <a href="detailPengajuan.php?id_pending=<?php echo $item['id_pending']; ?>">
+                                <button class='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'>Detail</button>
+                            </a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($list as $item): ?>
-                        <tr class="border-b">
-                            <td class='py-3 px-6 border'><?php echo $no++; ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_mahasiswa']); ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kompetisi']); ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kategori']); ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['jenis_juara']); ?></td>
-                            <td class='py-3 px-6 border text-center'>
-                                <a href="detailPengajuan.php?id_pending=<?php echo $item['id_pending']; ?>">
-                                    <button class='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'>Detail</button>
-                                </a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
         
-        <!-- Table Dilayani -->
-        <div id="tableDilayani" class="container mx-auto py-8 hidden">
-            <h1 class="text-2xl font-bold mb-4">Daftar Prestasi Dilayani</h1>
-            <table class="min-w-full bg-white rounded-lg shadow-md">
-                <thead>
-                    <tr class="bg-orange-500 text-white">
-                        <th class="py-2 px-4">No</th>
-                        <th class="py-2 px-4">Nama Mahasiswa</th>
-                        <th class="py-2 px-4">Nama Kompetisi</th>
-                        <th class="py-2 px-4">Kategori</th>
-                        <th class="py-2 px-4">Juara</th>
-                        <th class="py-2 px-4">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $verifiedList = $user->getPrestasiVerifiedList($no_induk);
-                    $no = 1;
-                    foreach ($verifiedList as $item): ?>
-                        <tr class="border-b">
-                            <td class='py-3 px-6 border'><?php echo $no++; ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_mahasiswa']); ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kompetisi']); ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kategori']); ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['jenis_juara']); ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['status_validasi']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <!-- Pagination for Pengajuan -->
+        <div class="flex justify-center mt-4">
+            <?php for ($i = 1; $i <= $listPengajuan['totalPages']; $i++): ?>
+                <a href="?pengajuan_page=<?php echo $i; ?>&dilayani_page=<?php echo $dilayaniPage; ?>&active_tab=pengajuan" 
+                   class="mx-1 px-3 py-1 mb-12 <?php echo $i == $listPengajuan['currentPage'] ? 'bg-blue-500 text-white' : 'bg-gray-200'; ?> rounded">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
         </div>
-    </main>
+    </div>
+    
+    <!-- Table Dilayani -->
+    <div id="tableDilayani" class="container mx-auto py-8 <?php echo $activeTab === 'pengajuan' ? 'hidden' : ''; ?>">
+        <h1 class="text-2xl font-bold mb-4">Daftar Prestasi Dilayani</h1>
+        <table class="min-w-full bg-white rounded-lg shadow-md">
+            <thead>
+                <tr class="bg-orange-500 text-white">
+                    <th class="py-2 px-4">No</th>
+                    <th class="py-2 px-4">Nama Mahasiswa</th>
+                    <th class="py-2 px-4">Nama Kompetisi</th>
+                    <th class="py-2 px-4">Kategori</th>
+                    <th class="py-2 px-4">Juara</th>
+                    <th class="py-2 px-4">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                $no = ($listDilayani['currentPage'] - 1) * 10 + 1;
+                foreach ($listDilayani['data'] as $item): 
+                ?>
+                    <tr class="border-b">
+                        <td class='py-3 px-6 border'><?php echo $no++; ?></td>
+                        <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_mahasiswa']); ?></td>
+                        <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kompetisi']); ?></td>
+                        <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kategori']); ?></td>
+                        <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['jenis_juara']); ?></td>
+                        <td class='py-3 px-6 border 
+                            <?php 
+                                echo ($item['status_validasi'] === 'valid') ? 'text-green-600 font-bold' : 
+                                    (($item['status_validasi'] === 'tolak' || $item['status_validasi'] === 'dihapus') ? 'text-red-600 font-bold' : '');
+                            ?>'>
+                            <?php echo htmlspecialchars($item['status_validasi']); ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        
+        <!-- Pagination for Dilayani -->
+        <div class="flex justify-center mt-4">
+            <?php for ($i = 1; $i <= $listDilayani['totalPages']; $i++): ?>
+                <a href="?pengajuan_page=<?php echo $pengajuanPage; ?>&dilayani_page=<?php echo $i; ?>&active_tab=dilayani" 
+                   class="mx-1 px-3 py-1 mb-12 <?php echo $i == $listDilayani['currentPage'] ? 'bg-blue-500 text-white' : 'bg-gray-200'; ?> rounded">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+        </div>
+    </div>
+</main>
 <script>
-    // Handle Pengajuan Button
-    document.getElementById('btnPengajuan').addEventListener('click', function () {
-        document.getElementById('tablePengajuan').classList.remove('hidden');
-        document.getElementById('tableDilayani').classList.add('hidden');
-    });
-
-    // Handle Dilayani Button
-    document.getElementById('btnDilayani').addEventListener('click', function () {
-        document.getElementById('tablePengajuan').classList.add('hidden');
-        document.getElementById('tableDilayani').classList.remove('hidden');
-    });
+    function switchTab(tab) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('active_tab', tab);
+        window.location.search = urlParams.toString();
+    }
 </script>
 </body>
 </html>

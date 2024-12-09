@@ -15,5 +15,9 @@ abstract class User {
     abstract function profile($username);
 
     abstract function listPrestasi($search = '', $filterKategori = '', $filterJuara = '', $filterJurusan = '', $sort = 'newest');
+
+    abstract public function profilDetail($no_induk);
+
+    abstract public function getPrestasiDetail($id_prestasi);
 }
 ?>

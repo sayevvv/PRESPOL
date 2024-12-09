@@ -151,6 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
         step1.classList.remove('hidden');
     });
 
+    
+
     // Tooltip functionality
     const tooltipButton = document.getElementById('tooltipButton');
     const tooltip = document.getElementById('tooltip');

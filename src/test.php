@@ -1,25 +1,17 @@
-$rows = '';
-        if ($result) {
-            foreach ($result as $index => $row) {
-                $rows .= '<tr>';
-                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($index + 1 + $offset) . "</td>";
-                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['nama'] ?? '') . "</td>";
-                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['jurusan'] ?? '') . "</td>";
-                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['nama_kompetisi'] ?? '') . "</td>";
-                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['event'] ?? '') . "</td>";
-                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['juara'] ?? '') ."</td>";
-                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['kategori'] ?? '') . "</td>";
-                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['tahun'] ?? '') . "</td>";
-                $detailUrl = "detailPrestasi.php?id_prestasi=" . urlencode($row['id_prestasi']);
-                $rows .= "<td class='py-3 px-6 border text-center'>
-                            <a href='$detailUrl'>
-                                <button class='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'>
-                                    Detail
-                                </button>
-                            </a>
-                        </td>";
-                $rows .= '</tr>';
-            }
-        } else {
-            $rows = '<tr><td colspan="9" class="text-center">Tidak ada data ditemukan</td></tr>';
-        }
+<div class="flex flex-col space-y-1">
+                                        <div class="block md:hidden flex flex-col items-start space-y-1 mb-1">
+                                            <span class="text-sm font-semibold block">
+                                                <?php echo $data['rank']; ?> - <?php echo $data['name']; ?>
+                                            </span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-10 md:h-12 relative">
+                                            <div class="<?php echo $bgColor; ?> h-10 md:h-12 rounded-full flex items-center justify-between px-2 md:px-4 relative" style="width: <?php echo $widthPercentage; ?>%;">
+                                                <span class="hidden md:block text-white font-bold text-xs md:text-base truncate">
+                                                    <?php echo $data['rank']; ?> - <?php echo $data['name']; ?>
+                                                </span>
+                                                <span class="text-sm md:text-base text-white font-bold bg-white bg-opacity-20 px-2 py-1 rounded-full whitespace-nowrap">
+                                                    <?php echo $data['points']; ?> &#9734;
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>

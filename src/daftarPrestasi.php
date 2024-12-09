@@ -49,6 +49,7 @@ $username = $_SESSION['username'];
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             background: url('img/homepageGradient.png') no-repeat center center fixed;
@@ -152,16 +153,13 @@ $username = $_SESSION['username'];
             </tbody>
         </table>
 
-        <div class="flex justify-between items-center mt-4 mb-12 pb-12">
-            <button id="prevPage" class="bg-gray-400 text-white px-4 py-2 rounded" disabled>Previous</button>
-            <span id="paginationInfo"></span>
-            <button id="nextPage" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+        <div id="pagination" class="flex justify-center mt-4">
+            <!-- Pagination angka akan dimuat oleh AJAX -->
         </div>
 
     </main>
 
     <script>
-
     function loadTable(page = 1) {
         const search = $('#searchInput').val();
         const sort = $('#sortBy').val();
@@ -189,20 +187,18 @@ $username = $_SESSION['username'];
 
                 // Update pagination
                 const { current_page, total_pages } = data.pagination;
-                $('#paginationInfo').text(`Page ${current_page} of ${total_pages}`);
-                $('#prevPage').prop('disabled', current_page <= 1);
-                $('#nextPage').prop('disabled', current_page >= total_pages);
+                let paginationHtml = '';
 
-                // Attach new page handlers
-                $('#prevPage').off('click').on('click', function () {
-                    if (current_page > 1) loadTable(current_page - 1);
-                });
-                $('#nextPage').off('click').on('click', function () {
-                    if (current_page < total_pages) loadTable(current_page + 1);
-                });
+                for (let i = 1; i <= total_pages; i++) {
+                    paginationHtml += `<button 
+                        class="px-4 py-2 mx-1 mb-12 ${i === current_page ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded" 
+                        onclick="loadTable(${i})">${i}</button>`;
+                }
+
+                $('#pagination').html(paginationHtml);
             },
             error: function () {
-                $('#tableBody').html('<tr><td colspan="9" class="text-center">Gagal memuat data.</td></tr>');
+                $('#tableBody').html('<tr><td colspan="8" class="text-center">Gagal memuat data.</td></tr>');
             }
         });
     }
@@ -210,11 +206,60 @@ $username = $_SESSION['username'];
     $(document).ready(function() {
         loadTable();
 
+        $(document).on('click', '.delete-button', function() {
+    const prestasiId = $(this).data('id'); // Ambil ID Prestasi
+
+    // SweetAlert untuk Konfirmasi Hapus
+    Swal.fire({
+        title: 'Konfirmasi Hapus',
+        text: 'Masukkan alasan untuk penghapusan data ini.',
+        input: 'text',
+        inputPlaceholder: 'Alasan penghapusan',
+        showCancelButton: true,
+        confirmButtonText: 'Hapus',
+        cancelButtonText: 'Batal',
+        inputValidator: (value) => {
+            if (!value) {
+                return 'Alasan penghapusan diperlukan!';
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Kirim data ke server
+            $.ajax({
+                url: 'hapusPrestasi.php',
+                method: 'POST',
+                data: {
+                    'id_prestasi': prestasiId,
+                    'alasan': result.value
+                },
+                success: function(response) {
+                    // SweetAlert menampilkan pesan sukses atau error
+                    Swal.fire({
+                        title: 'Respon Server',
+                        text: response, // Tampilkan respons teks dari server
+                        icon: 'success'
+                    }).then(() => {
+                        loadTable(); // Refresh tabel setelah penghapusan
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Terjadi kesalahan pada server.',
+                        icon: 'error'
+                    });
+                    console.error('Server error:', error);
+                    console.error('Response:', xhr.responseText);
+                }
+            });
+        }
+    });
+});
+
         $('#searchButton').on('click', () => loadTable());
         $('#sortBy, #filterKategori, #filterJuara, #filterJurusan').on('change', () => loadTable());
     });
-</script>
-
+    </script>
 </body>
-
 </html>
