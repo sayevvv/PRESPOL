@@ -38,7 +38,7 @@ class Mahasiswa extends User
                         </a>
                     </li>
                     <li>
-                        <a href="daftarPengajuan.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                        <a href="historiPengajuan.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'historiPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                             <i class="fas fa-file-alt"></i>
                             <span class="hidden lg:inline ml-6">Pengajuan</span>
                         </a>
