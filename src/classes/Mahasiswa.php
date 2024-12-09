@@ -178,6 +178,69 @@ class Mahasiswa extends User
         }
     }
 
+    public function getHistoryPendingList($nim, $page = 1, $limit = 10) {
+
+        $offset = ($page - 1) * $limit;
+
+        $sql = " SELECT 
+            nama_kompetisi, 
+            event, 
+            status, 
+            deskripsi
+        FROM vw_prestasi_list_by_nim
+        WHERE nim = ? AND status ='pending'
+        ORDER BY nim
+            OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        $params = [$nim, $offset, $limit];
+
+        $result = $this->db->fetchAll($sql, $params); // Ambil data prestasi berdasarkan NIM
+
+        $countQuery = "SELECT COUNT(*) as total 
+            FROM vw_prestasi_list_by_nim 
+            WHERE nim = ? AND status ='pending'";
+        $countResult = $this->db->fetchOne($countQuery, [$nim]); // Ambil total data prestasi berdasarkan NIM
+        $totalItems = $countResult['total'];
+        $totalPages = ceil($totalItems / $limit);
+    
+        return [
+            'data' => $result,
+            'totalPages' => $totalPages,
+            'currentPage' => $page
+        ];
+    }
+
+    public function getHistoryPrestasiList($nim, $page = 1, $limit = 10){
+        $offset = ($page - 1) * $limit;
+
+        $sql = " SELECT 
+            nama_kompetisi, 
+            event, 
+            status, 
+            deskripsi
+        FROM vw_prestasi_list_by_nim
+        WHERE nim = ? AND status IN ('valid', 'tolak', 'dihapus')
+        ORDER BY nim
+            OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        $params = [$nim, $offset, $limit];
+
+        $result = $this->db->fetchAll($sql, $params); // Ambil data prestasi berdasarkan NIM
+
+        $countQuery = "SELECT COUNT(*) as total 
+            FROM vw_prestasi_list_by_nim 
+            WHERE nim = ? AND status IN ('valid', 'tolak', 'dihapus')";
+        $countResult = $this->db->fetchOne($countQuery, [$nim]);
+        $totalItems = $countResult['total'];
+        $totalPages = ceil($totalItems / $limit);
+    
+        return [
+            'data' => $result,
+            'totalPages' => $totalPages,
+            'currentPage' => $page
+        ];
+    }
+
     public function listPrestasi($search = '', $filterKategori = '', $filterJuara = '', $filterJurusan = '', $sort = 'newest')
     {
         $page = isset($_POST['page']) ? (int)$_POST['page'] : 1; // Change from $_GET to $_POST
