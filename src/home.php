@@ -77,7 +77,7 @@ if ($role == '1') {
             </div>
             <!-- Leaderboard Section -->
             <section id="leaderb" class="">
-                <div class="bg-white/60 md:bg-opacity-80 p-4 md:p-6 rounded-xl border-2 mb-24 lg:mb-0">
+                <div class="bg-white/60 md:bg-opacity-80 p-4 md:p-6 rounded-xl border mb-24 lg:mb-0">
                     <h3 class="text-base font-bold md:text-xl mb-6 md:mb-8">Peringkat Prestasi</h3>
                     <div class="space-y-3">
                         <?php
