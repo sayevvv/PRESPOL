@@ -25,7 +25,7 @@ $activeTab = isset($_GET['active_tab']) ? $_GET['active_tab'] : 'pengajuan';
 
 // Get paginated lists
 $listPengajuan = $user->getPrestasiPendingList($pengajuanPage);
-$listDilayani = $user->getPrestasiVerifiedList($no_induk, $dilayaniPage);
+$listDilayani = $user->getPrestasiVerifiedList($dilayaniPage);
 ?>
 
 <!DOCTYPE html>

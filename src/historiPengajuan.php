@@ -147,7 +147,7 @@ $listSudahDiproses = $user->getHistoryPrestasiList($sudahDiprosesPage);
                                 <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['event']); ?></td>
                                 <td class='py-3 px-6 border 
                                 <?php
-                                echo ($item['status'] === 'Valid') ? 'text-green-600 font-bold' : (($item['status'] === 'tolak' || $item['status'] === 'dihapus') ? 'text-red-600 font-bold' : '');
+                                echo ($item['status'] === 'valid') ? 'text-green-600 font-bold' : (($item['status'] === 'tolak' || $item['status'] === 'dihapus') ? 'text-red-600 font-bold' : '');
                                 ?>'>
                                     <?php echo htmlspecialchars($item['status']); ?>
                                 </td>

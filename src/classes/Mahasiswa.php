@@ -168,6 +168,7 @@ return $currentPage === $pageName
         $params = [$this->nim];
         $stmt = $this->db->fetchOne($queryLeaderboard, $params);
         $total_poin = $stmt['total_poin'];
+
         $peringkat = $stmt['peringkat'];
 
         $queryJumlahPrestasi = 'SELECT 
@@ -180,7 +181,10 @@ return $currentPage === $pageName
                                 GROUP BY 
                                     nim';
         $result = $this->db->fetchOne($queryJumlahPrestasi, $params);
-        $jumlahPrestasi = $result['jumlah_prestasi'];
+        
+        // $jumlahPrestasi = $result['jumlah_prestasi'];
+        $jumlahPrestasi = $result['jumlah_prestasi'] ?? 0;
+
 
         echo 
         <<<HTML
