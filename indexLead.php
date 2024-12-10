@@ -294,7 +294,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                        <div class="flex flex-col space-y-1">
                                             <div class="block md:hidden flex flex-col items-start space-y-1 mb-1">
                                                 <span class="text-sm font-semibold block">
-                                                    <?php echo $data['rank']; ?> - <?php echo $data['name']; ?>
+                                                    <?php echo $data['peringkat']; ?> - <?php echo $data['nama']; ?>
                                                 </span>
                                             </div>
                                             <div class="w-full bg-gray-200 rounded-full h-10 md:h-12 relative">

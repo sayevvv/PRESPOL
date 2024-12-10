@@ -30,7 +30,7 @@ if ($role == '1') {
 } else if ($role == '3') {
     include_once 'classes/Mahasiswa.php';
     $user = new Mahasiswa();
-    
+
     $sql = 'SELECT total_poin FROM leaderboard_view WHERE nim = ?';
     $params = [$no_induk];
     $stmt = $db->fetchOne($sql, $params);
@@ -55,7 +55,7 @@ if ($role == '1') {
                 . "<span class=\"text-xl font-bold bg-orange-200 text-orange-400 px-4 py-2 rounded\">{$prestasi['total_poin']}</span>"
                 . "</a>";
         }
-        
+
 
         $pagination = '';
         for ($i = 1; $i <= $totalPages; $i++) {
@@ -73,43 +73,47 @@ if ($role == '1') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Profil</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-        <style>
-            body {
-                background: url('img/homepageGradient.png') no-repeat center center fixed;
-                background-size: cover;
-                flex: 1;
-            }
-        </style>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <body class="min-h-screen flex flex-col lg:flex-row">
-        <!-- Sidebar -->
-        <aside class="bg-white p-6 lg:w-1/5 w-full border-b lg:border-b-0 lg:border-r min-h-screen">
-        <?php 
-            echo $user->sidebar();
+    <style>
+        body {
+            background: url('img/homepageGradient.png') no-repeat center center fixed;
+            background-size: cover;
+            flex: 1;
+        }
+    </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="min-h-screen flex flex-col md:flex-row">
+    <!-- Sidebar -->
+    <div class="flex-1">
+        <?php
+        echo $user->sidebar();
         ?>
-        </aside>
+    </div>
 
-        <!-- Main Content -->
-        <main class="flex-1 p-6 pt-8">
+    <!-- Main Content -->
+    <main class="flex-2 lg:overflow-y-auto md:w-[calc(100%-5rem)] lg:w-[calc(100%-16rem)] p-4 md:p-6 pt-8 bg-white/60 md:bg-transparent">
+        <div class="container mx-auto max-w-full space-y-6">
             <div>
                 <?php $user->profilDetail($no_induk); ?>
             </div>
 
-            <?php 
-                if($user instanceof Mahasiswa):
-                    echo 
-                    <<<HTML
-                        <section class="bg-none p-6 rounded-xl border-2 border-orange-400 mx-auto">
+            <?php
+            if ($user instanceof Mahasiswa):
+                echo
+                <<<HTML
+                        <section class="bg-white/60 p-6 rounded-xl border mx-auto">
                             <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-4xl font-bold">Prestasi Saya</h2>
+                                <h2 class="text-base font-bold md:text-xl mb-6 md:mb-8">Prestasi Saya</h2>
                                 <p class='text-xl font-bold bg-orange-200 text-orange-400 px-4 py-2 rounded'>$totalPoin</p>
                             </div>
 
@@ -128,9 +132,9 @@ if ($role == '1') {
                             <div id="pagination" class="flex justify-center mt-4"></div>
                         </section>
                     HTML;
-                elseif($user instanceof Admin):
-                    echo
-                    <<<HTML
+            elseif ($user instanceof Admin):
+                echo
+                <<<HTML
                         <header class="flex flex-col lg:flex-row justify-between items-center mb-8">
                             <div class="text-center lg:text-left">
                                 <h1 class="text-3xl font-bold">Selamat Datang</h1>
@@ -141,9 +145,9 @@ if ($role == '1') {
                             </div>
                         </header>
                     HTML;
-                elseif($user instanceof Kajur):
-                    echo 
-                    <<<HTML
+            elseif ($user instanceof Kajur):
+                echo
+                <<<HTML
                         <header class="flex flex-col lg:flex-row justify-between items-center mb-8">
                             <div class="text-center lg:text-left">
                                 <h1 class="text-3xl font-bold">Selamat Datang</h1>
@@ -154,42 +158,47 @@ if ($role == '1') {
                             </div>
                         </header>
                     HTML;
-                endif;
+            endif;
             ?>
-        </main>
+        </div>
+    </main>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            function loadPrestasi(page = 1) {
-                const search = $('#searchInput').val();
-                $.ajax({
-                    url: '',
-                    method: 'POST',
-                    data: { page, search },
-                    success: function(response) {
-                        const data = JSON.parse(response);
-                        $('#prestasiContainer').html(data.html);
-                        $('#pagination').html(data.pagination);
-                    },
-                    error: function() {
-                        $('#prestasiContainer').html('<div class="text-center">Gagal memuat data.</div>');
-                    }
-                });
-            }
-
-            $(document).ready(function() {
-                loadPrestasi();
-
-                $('#searchInput').on('keyup', function() {
-                    loadPrestasi();
-                });
-
-                $(document).on('click', '.pagination-link', function(e) {
-                    e.preventDefault();
-                    const page = $(this).data('page');
-                    loadPrestasi(page);
-                });
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function loadPrestasi(page = 1) {
+            const search = $('#searchInput').val();
+            $.ajax({
+                url: '',
+                method: 'POST',
+                data: {
+                    page,
+                    search
+                },
+                success: function(response) {
+                    const data = JSON.parse(response);
+                    $('#prestasiContainer').html(data.html);
+                    $('#pagination').html(data.pagination);
+                },
+                error: function() {
+                    $('#prestasiContainer').html('<div class="text-center">Gagal memuat data.</div>');
+                }
             });
-        </script>
-    </body>
+        }
+
+        $(document).ready(function() {
+            loadPrestasi();
+
+            $('#searchInput').on('keyup', function() {
+                loadPrestasi();
+            });
+
+            $(document).on('click', '.pagination-link', function(e) {
+                e.preventDefault();
+                const page = $(this).data('page');
+                loadPrestasi(page);
+            });
+        });
+    </script>
+</body>
+
 </html>
