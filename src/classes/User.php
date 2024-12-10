@@ -10,13 +10,13 @@ abstract class User {
 
     abstract public function sidebar();
 
-    abstract public function mainContent($username);
+    abstract public function mainContent();
 
-    abstract function profile($username);
+    abstract function profile();
 
     abstract function listPrestasi($search = '', $filterKategori = '', $filterJuara = '', $filterJurusan = '', $sort = 'newest');
 
-    abstract public function profilDetail($no_induk);
+    abstract public function profilDetail();
 
     abstract public function getPrestasiDetail($id_prestasi);
 }

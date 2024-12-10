@@ -13,7 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('ID Prestasi atau alasan tidak valid.');
         }
 
-        $admin = new Admin();
+        $admin = new Admin($_SESSION['no_induk']);
+        
         $result = $admin->softDelete($idPrestasi, $deskripsi);
 
         if ($result === false) {

@@ -194,7 +194,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                     @click="activeLink = 'signup'"
                                     :class="activeLink === 'signup' ? 'text-orange-500 font-semibold border-orange-500' : 'text-stone-600 border-stone-300'"
                                     class="block px-5 py-2 mt-4 text-sm text-center capitalize transition-colors duration-300 transform border rounded-md hover:bg-orange-400 hover:text-white lg:mt-0 lg:w-auto cursor-pointer whitespace-nowrap"
-                                    href="src/signup.html">
+                                    href="src/signup.php">
                                     Sign Up</a>
                             </div>
                         </div>
@@ -203,39 +203,42 @@ $leaderboardData = $db->fetchAll($sql, $params);
             </nav>
 
 
-            <section class="mt-24">
-                <div class="container px-4 py-12 md:py-16 mx-auto text-center">
-                    <!-- Call to Action -->
-                    <div class="flex flex-col md:flex-row max-w-5xl mx-auto items-center space-y-6 md:space-y-0 md:justify-between">
-                        <div class="w-full md:w-2/3 text-center md:text-left md:pr-12">
-                            <h1 class="text-3xl md:text-5xl lg:text-6xl font-semibold text-slate-800 tracking-normal md:tracking-wider">
-                                Selamat Datang <span class="font-bold">Champions!</span>
-                            </h1>
+           <section class="mt-24">
+              <div class="container px-4 py-12 md:py-16 mx-auto text-center">
+                  <!-- Call to Action -->
+                  <div class="flex flex-col md:flex-row max-w-5xl mx-auto items-center space-y-6 md:space-y-0 md:justify-between">
+                      <div class="w-full md:w-2/3 text-center md:text-left md:pr-12">
+                          <h1 class="text-3xl md:text-5xl lg:text-6xl font-semibold text-slate-800 tracking-normal md:tracking-wider">
+                              Selamat Datang <span class="font-bold">Champions!</span>
+                          </h1>
 
-                            <h2 class="text-base md:text-xl mt-4 md:mt-6 text-stone-600">
-                                Torehkan Prestasi, Wujudkan Eksistensi!
-                            </h2>
+                          <h2 class="text-base md:text-xl mt-4 md:mt-6 text-stone-600">
+                              Torehkan Prestasi, Wujudkan Eksistensi!
+                          </h2>
 
-                            <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mt-8 md:mt-12">
-                                <a href="src/signup.html" class="w-auto sm:w-auto inline-block">
-                                    <button class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
-                                        Gabung Kami!
-                                    </button>
-                                </a>
-                                <div class="w-auto sm:w-auto inline-block">
-                                    <button
-                                        onclick="transitionToPage(2)"
-                                        class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
-                                        Panduan
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                          <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mt-8 md:mt-12">
+                              <a href="src/signup.php" class="w-auto sm:w-auto inline-block">
+                                  <button class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
+                                      Gabung Kami!
+                                  </button>
+                              </a>
+                              <div class="w-auto sm:w-auto inline-block">
+                                  <button
+                                      onclick="transitionToPage(2)"
+                                      class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
+                                      Panduan
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
 
-                        <div class="hidden md:block w-full md:w-1/3 flex justify-center items-center">
-                            <img src="src/img/iconpiala.png" alt="Champions Icon" class="w-24 h-24 md:w-full md:h-auto object-contain">
-                        </div>
-                    </div>
+                      <div class="hidden md:block w-full md:w-1/3 flex justify-center items-center">
+                          <img src="src/img/iconpiala.png" alt="Champions Icon" class="w-24 h-24 md:w-full md:h-auto object-contain">
+                      </div>
+                  </div>
+              </div>
+          </section>
+
 
                     <!-- Department Logos -->
                     <div class="max-w-screen-xl mx-auto mt-16 overflow-hidden">
@@ -650,7 +653,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                         </p>
                     </div>
                     <div class="flex justify-center space-x-4 mt-4">
-                        <a href="src/signup.html">
+                        <a href="src/signup.php">
                             <button class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
                                 Gabung!
                             </button>
@@ -774,7 +777,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 @click="activeLink = 'signup'"
                                 :class="activeLink === 'signup' ? 'text-orange-500 font-semibold' : 'text-stone-600'"
                                 class="block px-5 py-2 mt-4 text-sm text-center capitalize transition-colors duration-300 transform border rounded-md hover:bg-orange-100 lg:mt-0 lg:w-auto cursor-pointer whitespace-nowrap"
-                                href="src/signup.html">
+                                href="src/signup.php">
                                 Sign Up</a>
                         </div>
                     </div>
@@ -1153,7 +1156,8 @@ $leaderboardData = $db->fetchAll($sql, $params);
                         Catatkan Prestasimu di PRESPOL.
                     </p>
                 </div>
-                <div class="flex justify-center space-x-4 mt-4"><a href="src/signup.html">
+                <div class="flex justify-center space-x-4 mt-4">
+                    <a href="src/signup.php">
                         <button class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
                             Gabung!
                         </button>
@@ -1161,6 +1165,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                 </div>
             </div>
         </section>
+
 
         <!-- Footer -->
         <footer class="mt-8 bg-red-900 text-white">

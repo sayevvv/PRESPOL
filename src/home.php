@@ -23,13 +23,13 @@ $user = null;
 
 if ($role == '1') {
     include_once 'classes/Admin.php';
-    $user = new Admin();
+    $user = new Admin($no_induk);
 } else if ($role == '2') {
     include_once 'classes/Kajur.php';
-    $user = new Kajur();
+    $user = new Kajur($no_induk);
 } else if ($role == '3') {
     include_once 'classes/Mahasiswa.php';
-    $user = new Mahasiswa();
+    $user = new Mahasiswa($no_induk);
 }
 ?>
 <!DOCTYPE html>
@@ -83,7 +83,7 @@ if ($role == '1') {
         <div class="container mx-auto max-w-full space-y-6">
             <!-- Top Navigation Section -->
             <div>
-                <?php $user->mainContent($no_induk); ?>
+                <?php $user->mainContent(); ?>
             </div>
             <!-- Leaderboard Section -->
             <section id="leaderb" class="">

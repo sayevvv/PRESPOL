@@ -49,13 +49,7 @@ $csrf = new CSRFToken();
 </head>
 
 <body class="overflow-x-hidden m-0 p-0 font-helvetica text-stone-900 
-            bg-cover bg-center bg-no-repeat bg-fixed
-            max-h-[400px] overflow-y-auto
-            [&::-webkit-scrollbar]:w-2
-            [&::-webkit-scrollbar-track]:rounded-full
-            [&::-webkit-scrollbar-track]:bg-neutral-100
-            [&::-webkit-scrollbar-thumb]:rounded-full
-            [&::-webkit-scrollbar-thumb]:bg-neutral-300"
+            bg-cover bg-center bg-no-repeat bg-fixed"
     style="background-image: url('img/homepageGradient.png')">
 
     <div class="font-helvetica">
@@ -146,7 +140,7 @@ $csrf = new CSRFToken();
                                     </div>
                                 </form>
 
-                                <p class="mt-6 text-sm text-center text-gray-400">Belum punya akun? <a href="signup.html" class="cursor-pointer text-orange-500 focus:outline-none focus:underline hover:underline">Daftar</a>.</p>
+                                <p class="mt-6 text-sm text-center text-gray-400">Belum punya akun? <a href="signup.php" class="cursor-pointer text-orange-500 focus:outline-none focus:underline hover:underline">Daftar</a>.</p>
                             </div>
                         </div>
                         <!-- Step 2 -- Hubungi Admin -->

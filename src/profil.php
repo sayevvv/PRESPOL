@@ -23,14 +23,14 @@ $user = null;
 
 if ($role == '1') {
     include_once 'classes/Admin.php';
-    $user = new Admin();
+    $user = new Admin($no_induk);
 } else if ($role == '2') {
     include_once 'classes/Kajur.php';
-    $user = new Kajur();
+    $user = new Kajur($no_induk);
 } else if ($role == '3') {
     include_once 'classes/Mahasiswa.php';
-    $user = new Mahasiswa();
-
+    $user = new Mahasiswa($no_induk);
+    
     $sql = 'SELECT total_poin FROM leaderboard_view WHERE nim = ?';
     $params = [$no_induk];
     $stmt = $db->fetchOne($sql, $params);
@@ -42,7 +42,7 @@ if ($role == '1') {
         $page = $_POST['page'] ?? 1;
         $search = $_POST['search'] ?? '';
 
-        $result = $user->listPrestasiByNim($no_induk, $page, 10, $search);
+        $result = $user->listPrestasiByNim($page, 10, $search);
 
         $data = $result['data'];
         $total = $result['total'];
@@ -104,7 +104,7 @@ if ($role == '1') {
     <main class="flex-2 lg:overflow-y-auto md:w-[calc(100%-5rem)] lg:w-[calc(100%-16rem)] p-4 md:p-6 pt-8 bg-white/60 md:bg-transparent">
         <div class="container mx-auto max-w-full space-y-6">
             <div>
-                <?php $user->profilDetail($no_induk); ?>
+                <?php $user->profilDetail(); ?>
             </div>
 
             <?php
