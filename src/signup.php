@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ambil data dari form
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $password_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password_hash = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $nama = $_POST['nama'];
     $foto_profile = $_FILES['dropzone-file']['name'];
     $foto_profile_tmp = $_FILES['dropzone-file']['tmp_name'];

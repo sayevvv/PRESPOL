@@ -7,6 +7,17 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
 
 class Kajur extends User {
 
+    private $nidn;
+
+    public function __construct($nidn) {
+        parent::__construct();
+        $this->nidn = $nidn;
+    }
+
+    public function getNidn(){
+        return $this->nidn;
+    }
+
     public function sidebar()
     {
         // Get the current page filename
@@ -149,8 +160,8 @@ class Kajur extends User {
             : 'text-gray-700';
     }
 
-    public function mainContent($username){
-        $this->profile($username);
+    public function mainContent(){
+        $this->profile();
         echo 
                 <<<HTML
                     <header class="flex flex-col lg:flex-row justify-between items-center mt-24 md:mt-16 mb-16 md:mb-0">
@@ -165,7 +176,7 @@ class Kajur extends User {
                 HTML;
     }
 
-    public function profile($username)
+    public function profile()
     {
         try {
             $sql = "SELECT 
@@ -173,7 +184,7 @@ class Kajur extends User {
                 foto_profile
             FROM pegawai
             WHERE no_induk = ?";
-            $params = [$username];
+            $params = [$this->nidn];
 
             // Ambil hasil query
             $row = $this->db->fetchOne($sql, $params);
@@ -288,7 +299,7 @@ class Kajur extends User {
                         </script>
                 SCRIPT;
             } else {
-                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($username));
+                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($this->nidn));
             }
         } catch (Exception $e) {
             // Log kesalahan dan lempar ulang
@@ -436,7 +447,7 @@ class Kajur extends User {
         return $this->db->fetchOne($query, $params);
     }
 
-    public function profilDetail($no_induk) {
+    public function profilDetail() {
         try {
             $sql = "SELECT 
                 p.no_induk,
@@ -444,7 +455,7 @@ class Kajur extends User {
                 p.foto_profile
             FROM pegawai p
             WHERE p.no_induk = ?";
-            $params = [ $no_induk];
+            $params = [$this->nidn];
 
             // Ambil hasil query
             $row = $this->db->fetchOne( $sql, $params );
@@ -458,15 +469,15 @@ class Kajur extends User {
                         <div class="space-y-2">
                             <h1 class = 'text-3xl font-bold'> $nama </h1>
                             <div class = 'flex items-center'>
-                            <!-- <span class = 'bg-orange-200 text-orange-600 px-2 py-1 rounded-full text-sm'> $no_induk </span> -->
-                            <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $no_induk </span>
+                            <!-- <span class = 'bg-orange-200 text-orange-600 px-2 py-1 rounded-full text-sm'> $this->nidn</span> -->
+                            <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $this->nidn </span>
                         </div>
                     </div>
                     <img src = "img/setting.svg" alt = 'Profile Picture' class = 'w-10 h-10 rounded-full ml-2'>
                 HTML;
 
             } else {
-                throw new Exception( 'Data tidak ditemukan untuk username: ' . htmlspecialchars( $no_induk ) );
+                throw new Exception( 'Data tidak ditemukan untuk username: ' . htmlspecialchars( $this->nidn ) );
             }
         } catch ( Exception $e ) {
             // Log kesalahan dan lempar ulang

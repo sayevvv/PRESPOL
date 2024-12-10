@@ -51,10 +51,7 @@ class Database {
         
         return true;
     }
-
     
-
-
     public function close() {
         sqlsrv_close($this->connection);
     }

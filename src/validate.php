@@ -7,13 +7,14 @@ header('Content-Type: application/json'); // Set header JSON
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $validasiAdmin = new Admin();
-
+        
         $id_pending = isset($_POST['id_pending']) ? (int)$_POST['id_pending'] : 0;
         $no_induk = ($_POST['no_induk']);
         $status = $_POST['status'];
         $deskripsi = $_POST['deskripsi'] ?? '';
-
+        
+        $validasiAdmin = new Admin($no_induk);
+        
         if ($id_pending <= 0) {
             throw new Exception("Invalid ID Pending");
         }

@@ -13,9 +13,11 @@ if ($_SESSION['role'] == '3') {
     header('Location: home.php');
 }
 
+$no_induk = $_SESSION['no_induk'];
+
 $db = new Database();
-$user = new Kajur($db);
-$user = new Admin($db);
+$user = new Kajur($no_induk);
+$user = new Admin($no_induk);
 
 if (isset($_GET['export']) && $_GET['export'] == 'achievements') {
     $export_type = $_GET['export_type'] ?? 'all';

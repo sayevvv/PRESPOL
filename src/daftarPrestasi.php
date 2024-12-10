@@ -10,18 +10,19 @@ Auth::checkLogin();
 
 // Cek apakah user memiliki akses
 $role = $_SESSION['role'];
+$no_induk = $_SESSION['no_induk'];
 
 $user = null;
 
 if ($role == '1') {
     include_once 'classes/Admin.php';
-    $user = new Admin();
+    $user = new Admin($no_induk);
 } elseif ($role == '2') {
     include_once 'classes/Kajur.php';
-    $user = new Kajur();
+    $user = new Kajur($no_induk);
 } elseif ($role == '3') {
     include_once 'classes/Mahasiswa.php';
-    $user = new Mahasiswa();
+    $user = new Mahasiswa($no_induk);
 }
 
 // Check if it's an AJAX request

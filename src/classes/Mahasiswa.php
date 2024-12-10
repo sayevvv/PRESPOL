@@ -3,6 +3,17 @@
 class Mahasiswa extends User
 {
 
+    private $nim; 
+
+    public function __construct($nim) {
+        parent::__construct();
+        $this->nim = $nim;
+    }
+
+    public function getNim() {
+        return $this->nim;
+    }
+
     public function sidebar()
     {
         // Get the current page filename
@@ -151,12 +162,25 @@ return $currentPage === $pageName
 : 'text-gray-700';
 }
 
-    public function mainContent($no_induk){
-        $this->profile($no_induk);
-        $sql = "SELECT * FROM leaderboard_view WHERE nim = ?";
-        $params = [$no_induk];
-        $stmt = $this->db->fetchOne($sql, $params);
+    public function mainContent(){
+        $this->profile();
+        $queryLeaderboard = "SELECT * FROM leaderboard_view WHERE nim = ?";
+        $params = [$this->nim];
+        $stmt = $this->db->fetchOne($queryLeaderboard, $params);
+        $total_poin = $stmt['total_poin'];
         $peringkat = $stmt['peringkat'];
+
+        $queryJumlahPrestasi = 'SELECT 
+                                    nim,
+                                    COUNT(*) AS jumlah_prestasi
+                                FROM 
+                                    vw_daftar_prestasi
+                                WHERE 
+                                    nim = ?
+                                GROUP BY 
+                                    nim';
+        $result = $this->db->fetchOne($queryJumlahPrestasi, $params);
+        $jumlahPrestasi = $result['jumlah_prestasi'];
 
         echo 
         <<<HTML
@@ -173,7 +197,7 @@ return $currentPage === $pageName
                     <i class="fas fa-star text-3xl md:text-4xl text-orange-500"></i>
                     <div>
                         <h4 class="text-base md:text-lg font-semibold text-gray-800">Total Poin</h4>
-                        <p class="text-xl md:text-2xl font-bold text-orange-600">total poin</p>
+                        <p class="text-xl md:text-2xl font-bold text-orange-600">$total_poin</p>
                     </div>
                 </div>
 
@@ -182,7 +206,7 @@ return $currentPage === $pageName
                     <i class="fas fa-trophy text-3xl md:text-4xl text-green-500"></i>
                     <div>
                         <h4 class="text-base md:text-lg font-semibold text-gray-800">Jumlah Prestasi</h4>
-                        <p class="text-xl md:text-2xl font-bold text-green-600">jumlah prestasi</p>
+                        <p class="text-xl md:text-2xl font-bold text-green-600">$jumlahPrestasi</p>
                     </div>
                 </div>
 
@@ -191,14 +215,14 @@ return $currentPage === $pageName
                     <i class="fas fa-chart-line text-3xl md:text-4xl text-blue-500"></i>
                     <div>
                         <h4 class="text-base md:text-lg font-semibold text-gray-800">Peringkat</h4>
-                        <p class="text-xl md:text-2xl font-bold text-blue-600">peringkat</p>
+                        <p class="text-xl md:text-2xl font-bold text-blue-600">$peringkat</p>
                     </div>
                 </div>
             </section>
         HTML;
     }
 
-    public function profile($no_induk)
+    public function profile()
     {
         try {
             $sql = "SELECT 
@@ -206,7 +230,7 @@ return $currentPage === $pageName
                 foto_profile
             FROM mahasiswa
             WHERE nim = ?";
-            $params = [$no_induk];
+            $params = [$this->nim];
 
             // Ambil hasil query
             $row = $this->db->fetchOne($sql, $params);
@@ -321,7 +345,7 @@ return $currentPage === $pageName
                         </script>
                 SCRIPT;
             } else {
-                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($no_induk));
+                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($this->nim));
             }
         } catch (Exception $e) {
             // Log kesalahan dan lempar ulang
@@ -362,7 +386,7 @@ return $currentPage === $pageName
             </section>
         HTML;
     }
-    public function getHistoryPendingList($nim, $page = 1, $limit = 10) {
+    public function getHistoryPendingList($page = 1, $limit = 10) {
 
         $offset = ($page - 1) * $limit;
 
@@ -376,14 +400,14 @@ return $currentPage === $pageName
         ORDER BY nim
             OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        $params = [$nim, $offset, $limit];
+        $params = [$this->nim, $offset, $limit];
 
         $result = $this->db->fetchAll($sql, $params); // Ambil data prestasi berdasarkan NIM
 
         $countQuery = "SELECT COUNT(*) as total 
             FROM vw_prestasi_list_by_nim 
             WHERE nim = ? AND status ='pending'";
-        $countResult = $this->db->fetchOne($countQuery, [$nim]); // Ambil total data prestasi berdasarkan NIM
+        $countResult = $this->db->fetchOne($countQuery, [$this->nim]); // Ambil total data prestasi berdasarkan NIM
         $totalItems = $countResult['total'];
         $totalPages = ceil($totalItems / $limit);
     
@@ -394,7 +418,7 @@ return $currentPage === $pageName
         ];
     }
 
-    public function getHistoryPrestasiList($nim, $page = 1, $limit = 10){
+    public function getHistoryPrestasiList($page = 1, $limit = 10){
         $offset = ($page - 1) * $limit;
 
         $sql = " SELECT 
@@ -407,14 +431,14 @@ return $currentPage === $pageName
         ORDER BY nim
             OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        $params = [$nim, $offset, $limit];
+        $params = [$this->nim, $offset, $limit];
 
         $result = $this->db->fetchAll($sql, $params); // Ambil data prestasi berdasarkan NIM
 
         $countQuery = "SELECT COUNT(*) as total 
             FROM vw_prestasi_list_by_nim 
             WHERE nim = ? AND status IN ('valid', 'tolak', 'dihapus')";
-        $countResult = $this->db->fetchOne($countQuery, [$nim]);
+        $countResult = $this->db->fetchOne($countQuery, [$this->nim]);
         $totalItems = $countResult['total'];
         $totalPages = ceil($totalItems / $limit);
     
@@ -545,7 +569,7 @@ return $currentPage === $pageName
     }
 
     //Profil
-    public function profilDetail($no_induk) {
+    public function profilDetail() {
         try {
             $sql = "SELECT 
                 m.nim,
@@ -557,7 +581,7 @@ return $currentPage === $pageName
             JOIN prodi p ON m.id_prodi = p.id_prodi
             JOIN jurusan j ON m.id_jurusan = j.id_jurusan
             WHERE m.nim = ?";
-            $params = [ $no_induk ];
+            $params = [$this->nim];
 
             // Ambil hasil query
             $row = $this->db->fetchOne( $sql, $params );
@@ -595,7 +619,7 @@ return $currentPage === $pageName
                 HTML;
 
             } else {
-                throw new Exception( 'Data tidak ditemukan untuk username: ' . htmlspecialchars( $no_induk ) );
+                throw new Exception( 'Data tidak ditemukan untuk username: ' . htmlspecialchars($this->nim) );
             }
         } catch ( Exception $e ) {
             // Log kesalahan dan lempar ulang
@@ -604,7 +628,7 @@ return $currentPage === $pageName
         }
     }
 
-    public function listPrestasiByNim($no_induk, $page = 1, $limit = 10, $search = '') {
+    public function listPrestasiByNim($page = 1, $limit = 10, $search = '') {
         $offset = ($page - 1) * $limit;
     
         $query = "SELECT 
@@ -624,7 +648,7 @@ return $currentPage === $pageName
                   OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
     
         $searchTerm = "%$search%";
-        $params = [$no_induk, $searchTerm, $searchTerm, $searchTerm, $offset, $limit];
+        $params = [$this->nim, $searchTerm, $searchTerm, $searchTerm, $offset, $limit];
     
         $result = $this->db->fetchAll($query, $params);
     
@@ -635,7 +659,7 @@ return $currentPage === $pageName
                             LOWER(event) LIKE LOWER(?) OR 
                             LOWER(juara) LIKE LOWER(?)
                         );";
-        $countResult = $this->db->fetchOne($countQuery, [$no_induk, $searchTerm, $searchTerm, $searchTerm]);
+        $countResult = $this->db->fetchOne($countQuery, [$this->nim, $searchTerm, $searchTerm, $searchTerm]);
     
         return [
             'data' => $result,

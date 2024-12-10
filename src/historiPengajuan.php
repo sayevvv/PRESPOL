@@ -12,17 +12,18 @@ if ($_SESSION['role'] != '3') {
     header('Location: home.php');
 }
 
-$user = new Mahasiswa();
-$username = $_SESSION['username'];
-$nim = $_SESSION['no_induk']; // Pastikan NIM disimpan di sesi saat login
+$nim = $_SESSION['no_induk'];
+
+$user = new Mahasiswa($nim);
+$username = $_SESSION['username']; 
 
 $diprosesPage = isset($_GET['diproses_page']) ? intval($_GET['diproses_page']) : 1;
 $sudahDiprosesPage = isset($_GET['sudahDiproses_page']) ? intval($_GET['sudahDiproses_page']) : 1;
 
 $activeTab = isset($_GET['active_tab']) ? $_GET['active_tab'] : 'diproses';
 
-$listDiproses = $user->getHistoryPendingList($nim, $diprosesPage);
-$listSudahDiproses = $user->getHistoryPrestasiList($nim, $sudahDiprosesPage);
+$listDiproses = $user->getHistoryPendingList($diprosesPage);
+$listSudahDiproses = $user->getHistoryPrestasiList($sudahDiprosesPage);
 ?>
 
 <html>
@@ -50,7 +51,7 @@ $listSudahDiproses = $user->getHistoryPrestasiList($nim, $sudahDiprosesPage);
     <!-- Main Content -->
     <main class="flex-1 p-6 pt-8">
         <div>
-            <?php $user->profile($username); ?>
+            <?php $user->profile(); ?>
         </div>
 
         <!-- Buttons -->
