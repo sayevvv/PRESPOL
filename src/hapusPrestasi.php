@@ -1,4 +1,5 @@
 <?php
+session_start();
 header('Content-Type: text/plain'); // Ubah header menjadi text/plain
 
 include_once 'classes/User.php';
