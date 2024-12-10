@@ -304,7 +304,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                     <!-- Leaderboard Section -->
                     <section id="leaderb" class="mt-16 md:mt-36">
                         <div class="bg-none p-4 md:p-6 rounded-xl border-2 border-slate-800 mx-auto max-w-4xl">
-                            <h3 class="text-xl font-semibold md:text-2xl mb-6 md:mb-8">Peringkat Prestasi</h3>
+                            <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl mb-6 md:mb-8">Peringkat Prestasi</h3>
                             <div class="space-y-3">
                                 <?php
                                 if (!empty($leaderboardData)) {
@@ -352,6 +352,9 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 ?>
                             </div>
                         </div>
+                        <p class="max-w-xl md:max-w-3xl mx-auto text-center mt-4 text-sm md:text-base text-gray-500">
+                                *Peringkat 5 besar mahasiswa Polinema dengan poin terbanyak | Leaderboard PRESPOL
+                            </p>
                     </section>
 
                     <div id="fitur" class="mt-36 md:">
@@ -467,7 +470,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                     Abdullah Shamil Basayev
                                 </h1>
                                 <p class="text-sm md:text-base mt-2 text-gray-500 capitalize">
-                                    UI/UX Designer & Frontend Developer
+                                    UI/UX Designer & Front-end Developer
                                 </p>
                                 <div class="flex justify-center mt-4 -mx-2">
                                     <a href="https://www.linkedin.com/in/shamilcoy" class="mx-2 text-gray-600 hover:text-orange-500">
@@ -502,7 +505,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                     Dwi Ahmad Khairy
                                 </h1>
                                 <p class="text-sm md:text-base mt-2 text-gray-500 capitalize">
-                                    Project Manager & Frontend Developer
+                                    Project Manager & Full-stack Developer
                                 </p>
                                 <div class="flex justify-center mt-4 -mx-2">
                                     <a href="https://www.linkedin.com/in/dwikh" class="mx-2 text-gray-600 hover:text-orange-500">
@@ -536,8 +539,8 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 <h1 class="text-base md:text-2xl font-semibold text-gray-700 capitalize">
                                     Muhammad Rifda Musyaffa'
                                 </h1>
-                                <p class="mt-2 text-gray-500 capitalize text-sm">
-                                    Database Designer-Administrator & Fullstack Developer
+                                <p class="mt-2 text-gray-500 capitalize text-sm md:text-base">
+                                    Database Designer-Administrator & Back-end Developer
                                 </p>
                                 <div class="flex justify-center mt-4 -mx-2">
                                     <a href="https://www.linkedin.com/in/muhammad-rifda-musyaffa-21ab712a2" class="mx-2 text-gray-600 hover:text-orange-500">
@@ -572,7 +575,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                     Rizkya Salsabila
                                 </h1>
                                 <p class="text-sm md:text-base mt-2 text-gray-500 capitalize">
-                                    Database Administrator & Backend Developer
+                                    Back-end Developer
                                 </p>
                                 <div class="flex justify-center mt-4 -mx-2">
                                     <a href="https://www.linkedin.com/in/rizkya-salsabila-279b3b28b" class="mx-2 text-gray-600 hover:text-orange-500">
@@ -607,7 +610,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                     Yan Daffa Putra Liandhie
                                 </h1>
                                 <p class="text-sm md:text-base mt-2 text-gray-500 capitalize">
-                                    Database Administrator & Backend Developer
+                                    Back-end Developer
                                 </p>
                                 <div class="flex justify-center mt-4 -mx-2">
                                     <a href="https://www.linkedin.com/in/yan-daffa-putra-liandhie-7723aa294/" class="mx-2 text-gray-600 hover:text-orange-500">
