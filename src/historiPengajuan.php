@@ -120,15 +120,15 @@ $listSudahDiproses = $user->getHistoryPrestasiList($nim, $sudahDiprosesPage);
             <div id="tableDilayani" class="container mx-auto py-8 <?php echo $activeTab === 'diproses' ? 'hidden' : ''; ?>">
                 <h1 class="text-2xl font-bold mb-4">Daftar Prestasi yang sudah divalidasi</h1>
                 <div class="flex justify-end mb-4">
-                <select id="tabSelector" class="px-4 py-2 border rounded-2xl" onchange="switchTab(this.value)">
-                    <option value="diproses" <?php echo ($activeTab === 'diproses' || $activeTab === '') ? 'selected' : ''; ?>>
-                        Sedang Diproses
-                    </option>
-                    <option value="sudahDiproses" <?php echo $activeTab === 'sudahDiproses' ? 'selected' : ''; ?>>
-                        Sudah Diproses
-                    </option>
-                </select>
-            </div>
+                    <select id="tabSelector" class="px-4 py-2 border rounded-2xl" onchange="switchTab(this.value)">
+                        <option value="diproses" <?php echo ($activeTab === 'diproses' || $activeTab === '') ? 'selected' : ''; ?>>
+                            Sedang Diproses
+                        </option>
+                        <option value="sudahDiproses" <?php echo $activeTab === 'sudahDiproses' ? 'selected' : ''; ?>>
+                            Sudah Diproses
+                        </option>
+                    </select>
+                </div>
                 <table class="w-full bg-white rounded-3xl overflow-hidden">
                     <thead>
                         <tr class="bg-orange-500 text-white rounded">
@@ -149,9 +149,9 @@ $listSudahDiproses = $user->getHistoryPrestasiList($nim, $sudahDiprosesPage);
                                 <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kompetisi']); ?></td>
                                 <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['event']); ?></td>
                                 <td class='py-3 px-6 border 
-                                    <?php
-                                    echo ($item['status'] === 'valid') ? 'text-green-600 font-bold' : (($item['status'] === 'tolak' || $item['status'] === 'dihapus') ? 'text-red-600 font-bold' : '');
-                                    ?>'>
+                                <?php
+                                echo ($item['status'] === 'Valid') ? 'text-green-600 font-bold' : (($item['status'] === 'tolak' || $item['status'] === 'dihapus') ? 'text-red-600 font-bold' : '');
+                                ?>'>
                                     <?php echo htmlspecialchars($item['status']); ?>
                                 </td>
                                 <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['deskripsi']); ?></td>

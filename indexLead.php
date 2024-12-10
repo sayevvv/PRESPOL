@@ -63,6 +63,33 @@ $leaderboardData = $db->fetchAll($sql, $params);
             position: relative;
         }
     </style>
+    <style>
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-marquee {
+            display: flex;
+            animation: marquee 20s linear infinite;
+            width: calc(200% + 16px);
+            /* Adjust width to fit duplicated logos */
+        }
+
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        .space-x-16>*+* {
+            margin-left: 4rem;
+            /* Adjust spacing between logos */
+        }
+    </style>
 </head>
 
 <body class="font-helvetica text-stone-900 
@@ -176,78 +203,95 @@ $leaderboardData = $db->fetchAll($sql, $params);
             </nav>
 
 
-            <section class="mt-36">
+            <section class="mt-24">
                 <div class="container px-4 py-12 md:py-16 mx-auto text-center">
                     <!-- Call to Action -->
-                    <div class="max-w-xl mx-auto">
-                        <h1 class="text-3xl md:text-5xl lg:text-6xl font-semibold text-slate-800 tracking-normal md:tracking-wider">
-                            Selamat Datang <span class="font-bold">Champions!</span>
-                        </h1>
+                    <div class="flex flex-col md:flex-row max-w-5xl mx-auto items-center space-y-6 md:space-y-0 md:justify-between">
+                        <div class="w-full md:w-2/3 text-center md:text-left md:pr-12">
+                            <h1 class="text-3xl md:text-5xl lg:text-6xl font-semibold text-slate-800 tracking-normal md:tracking-wider">
+                                Selamat Datang <span class="font-bold">Champions!</span>
+                            </h1>
 
-                        <h2 class="text-base md:text-xl mt-4 md:mt-6 text-stone-600">
-                            Torehkan Prestasi, Wujudkan Eksistensi!
-                        </h2>
+                            <h2 class="text-base md:text-xl mt-4 md:mt-6 text-stone-600">
+                                Torehkan Prestasi, Wujudkan Eksistensi!
+                            </h2>
 
-                        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8 md:mt-12">
-                            <a href="src/signup.html" class="w-auto sm:w-auto inline-block">
-                                <button class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
-                                    Gabung Kami!
-                                </button>
-                            </a>
-                            <div class="w-auto sm:w-auto inline-block">
-                                <button
-                                    onclick="transitionToPage(2)"
-                                    class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
-                                    Panduan
-                                </button>
+                            <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mt-8 md:mt-12">
+                                <a href="src/signup.html" class="w-auto sm:w-auto inline-block">
+                                    <button class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
+                                        Gabung Kami!
+                                    </button>
+                                </a>
+                                <div class="w-auto sm:w-auto inline-block">
+                                    <button
+                                        onclick="transitionToPage(2)"
+                                        class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
+                                        Panduan
+                                    </button>
+                                </div>
                             </div>
+                        </div>
+
+                        <div class="hidden md:block w-full md:w-1/3 flex justify-center items-center">
+                            <img src="src/img/iconpiala.png" alt="Champions Icon" class="w-24 h-24 md:w-full md:h-auto object-contain">
                         </div>
                     </div>
 
                     <!-- Department Logos -->
-                    <div class="max-w-screen-xl mx-auto mt-16 md:mt-24">
-                        <div class="max-w-lg mx-auto">
-                            <p class="text-sm md:text-base text-stone-600">Dipercaya oleh:</p>
-                        </div>
-                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-4 mt-4 md:mt-6">
-                            <!-- Department Logo Links -->
-                            <div class="flex items-center justify-center">
-                                <a href="https://jti.polinema.ac.id/">
+                    <div class="max-w-screen-xl mx-auto mt-16 overflow-hidden">
+                        <p class="text-sm md:text-base text-stone-600 text-center mb-4">Dipercaya oleh:</p>
+
+                        <div class="relative flex overflow-hidden">
+                            <div class="flex animate-marquee space-x-16">
+                                <!-- First Row of Logos -->
+                                <a href="https://jti.polinema.ac.id/" class="flex-shrink-0">
                                     <img src="src/img/jti.svg" alt="jti" class="max-h-12 md:max-h-16">
                                 </a>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <a href="https://tekkim.polinema.ac.id/">
+                                <a href="https://tekkim.polinema.ac.id/" class="flex-shrink-0">
                                     <img src="src/img/tekkim.svg" alt="tekkim" class="max-h-12 md:max-h-16">
                                 </a>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <a href="https://www.instagram.com/polinema.jtm/">
+                                <a href="https://www.instagram.com/polinema.jtm/" class="flex-shrink-0">
                                     <img src="src/img/MESIN.svg" alt="mesin" class="max-h-12 md:max-h-16">
                                 </a>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <a href="https://tekniksipilpolinema.id/">
+                                <a href="https://tekniksipilpolinema.id/" class="flex-shrink-0">
                                     <img src="src/img/sipil.svg" alt="sipil" class="max-h-12 md:max-h-16">
                                 </a>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <a href="https://akuntansi.polinema.ac.id/">
+                                <a href="https://akuntansi.polinema.ac.id/" class="flex-shrink-0">
                                     <img src="src/img/AK.svg" alt="akuntansi" class="max-h-12 md:max-h-16">
                                 </a>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <a href="https://www.instagram.com/anpolinema/?hl=en">
+                                <a href="https://www.instagram.com/anpolinema/?hl=en" class="flex-shrink-0">
                                     <img src="src/img/AN.svg" alt="an" class="max-h-12 md:max-h-16">
                                 </a>
-                            </div>
-                            <div class="flex items-center justify-center lg:block hidden">
-                                <a href="https://jte.polinema.ac.id/">
+                                <a href="https://jte.polinema.ac.id/" class="flex-shrink-0">
+                                    <img src="src/img/ELEKTRO.svg" alt="elektro" class="max-h-12 md:max-h-16">
+                                </a>
+
+                                <!-- Duplicate Row for Seamless Looping -->
+                                <a href="https://jti.polinema.ac.id/" class="flex-shrink-0">
+                                    <img src="src/img/jti.svg" alt="jti" class="max-h-12 md:max-h-16">
+                                </a>
+                                <a href="https://tekkim.polinema.ac.id/" class="flex-shrink-0">
+                                    <img src="src/img/tekkim.svg" alt="tekkim" class="max-h-12 md:max-h-16">
+                                </a>
+                                <a href="https://www.instagram.com/polinema.jtm/" class="flex-shrink-0">
+                                    <img src="src/img/MESIN.svg" alt="mesin" class="max-h-12 md:max-h-16">
+                                </a>
+                                <a href="https://tekniksipilpolinema.id/" class="flex-shrink-0">
+                                    <img src="src/img/sipil.svg" alt="sipil" class="max-h-12 md:max-h-16">
+                                </a>
+                                <a href="https://akuntansi.polinema.ac.id/" class="flex-shrink-0">
+                                    <img src="src/img/AK.svg" alt="akuntansi" class="max-h-12 md:max-h-16">
+                                </a>
+                                <a href="https://www.instagram.com/anpolinema/?hl=en" class="flex-shrink-0">
+                                    <img src="src/img/AN.svg" alt="an" class="max-h-12 md:max-h-16">
+                                </a>
+                                <a href="https://jte.polinema.ac.id/" class="flex-shrink-0">
                                     <img src="src/img/ELEKTRO.svg" alt="elektro" class="max-h-12 md:max-h-16">
                                 </a>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </section>
             <!-- Penjelasan PRESPOL  -->
@@ -270,7 +314,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                         <div class="bg-none p-4 md:p-6 rounded-xl border-2 border-slate-800 mx-auto max-w-4xl">
                             <h3 class="text-xl font-semibold md:text-2xl mb-6 md:mb-8">Peringkat Prestasi</h3>
                             <div class="space-y-3">
-                            <?php
+                                <?php
                                 if (!empty($leaderboardData)) {
                                     // Find the maximum points in the leaderboard for normalization
                                     $maxPoints = max(array_column($leaderboardData, 'total_poin'));
@@ -290,8 +334,8 @@ $leaderboardData = $db->fetchAll($sql, $params);
 
                                         // Select background color based on rank
                                         $bgColor = $orangeGradient[$index] ?? end($orangeGradient);
-                                        ?>
-                                       <div class="flex flex-col space-y-1">
+                                ?>
+                                        <div class="flex flex-col space-y-1">
                                             <div class="block md:hidden flex flex-col items-start space-y-1 mb-1">
                                                 <span class="text-sm font-semibold block">
                                                     <?php echo $data['peringkat']; ?> - <?php echo $data['nama']; ?>
@@ -308,12 +352,12 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php
+                                <?php
                                     }
                                 } else {
                                     echo '<p class="text-gray-600">Data leaderboard tidak tersedia.</p>';
                                 }
-                            ?>
+                                ?>
                             </div>
                         </div>
                     </section>
@@ -1110,10 +1154,10 @@ $leaderboardData = $db->fetchAll($sql, $params);
                     </p>
                 </div>
                 <div class="flex justify-center space-x-4 mt-4"><a href="src/signup.html">
-                    <button class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
-                        Gabung!
-                    </button>
-                </a>
+                        <button class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
+                            Gabung!
+                        </button>
+                    </a>
                 </div>
             </div>
         </section>
