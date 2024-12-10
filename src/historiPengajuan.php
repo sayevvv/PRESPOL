@@ -56,61 +56,13 @@ $listSudahDiproses = $user->getHistoryPrestasiList($sudahDiprosesPage);
         <?php echo $user->sidebar(); ?>
     </aside>
 
+
     <!-- Main Content -->
-    <main class="flex-1 p-6 pt-8">
-        <div>
-            <?php $user->profile(); ?>
-        </div>
-
-        <!-- Buttons -->
-        <button id="btnDiproses" class="bg-blue-600 text-white px-4 py-2 rounded-md mt-4" 
-            onclick="switchTab('diproses')">Sedang Diproses</button>
-        <button id="btnSudahDiproses" class="bg-green-600 text-white px-4 py-2 rounded-md mt-4" 
-            onclick="switchTab('sudahDiproses')">Sudah Diproses</button>
-
-        <!-- Table Pengajuan -->
-        <div id="tablePengajuan" class="container mx-auto py-8 <?php echo $activeTab === 'sudahDiproses' ? 'hidden' : ''; ?>">
-            <h1 class="text-2xl font-bold mb-4">Daftar prestasi dalam proses validasi</h1>
-            <table class="min-w-full bg-white rounded-lg shadow-md">
-                <thead>
-                    <tr class="bg-orange-500 text-white">
-                        <th class="py-2 px-4">No</th>
-                        <th class="py-2 px-4">Nama Kompetisi</th>
-                        <th class="py-2 px-4">Event</th>
-                        <th class="py-2 px-4">Status Validasi</th>
-                        <th class="py-2 px-4">Deskripsi Validasi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php 
-                    $no = ($listDiproses['currentPage'] - 1) * 10 + 1;
-                    foreach ($listDiproses['data'] as $item): 
-                    ?>
-                        <tr class="border-b">
-                            <td class='py-3 px-6 border'><?php echo $no++; ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['nama_kompetisi']); ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['event']); ?></td>
-                            <td class='py-3 px-6 border text-orange-600 font-bold'><?php echo htmlspecialchars($item['status']); ?></td>
-                            <td class='py-3 px-6 border'><?php echo htmlspecialchars($item['deskripsi']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-
-            <!-- Pagination for Pengajuan -->
-            <div class="flex justify-center mt-4">
-                <?php for ($i = 1; $i <= $listDiproses['totalPages']; $i++): ?>
-                    <a href="?diproses_page=<?php echo $i; ?>&sudahDiproses_page=<?php echo $sudahDiprosesPage; ?>&active_tab=diproses" 
-                    class="mx-1 px-3 py-1 mb-12 <?php echo $i == $listDiproses['currentPage'] ? 'bg-blue-500 text-white' : 'bg-gray-200'; ?> rounded">
-                        <?php echo $i; ?>
-                    </a>
-                <?php endfor; ?>
+    <main class="flex-2 lg:overflow-y-auto md:w-[calc(100%-5rem)] lg:w-[calc(100%-16rem)] p-4 md:p-6 pt-8 bg-white/60 md:bg-transparent">
+        <div class="container mx-auto max-w-full space-y-6">
+            <div>
+                <?php $user->profile($username); ?>
             </div>
-
-            <!-- Buttons -->
-
-
-
             <!-- Table Pengajuan -->
             <div id="tablePengajuan" class="container mx-auto py-8 <?php echo $activeTab === 'sudahDiproses' ? 'hidden' : ''; ?>">
                 <h1 class="text-2xl font-bold mb-4">Daftar prestasi dalam proses validasi</h1>

@@ -104,7 +104,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
 
     <div id="app" class="w-full h-full">
         <!-- Page 1 -->
-        <div id="page1" class="page hidden">
+        <div id="page1" class="page block">
             <!-- Navbar -->
             <nav
                 x-data="{
@@ -118,13 +118,13 @@ $leaderboardData = $db->fetchAll($sql, $params);
             const currentScrollPos = window.pageYOffset;
             const scrollingDown = prevScrollPos < currentScrollPos;
             const scrolledFarDown = currentScrollPos > 200;
-            
+
             // Update shadow
             hasShadow = currentScrollPos > 10;
-            
+
             // Update visibility based on scroll direction
             visible = scrolledFarDown ? !scrollingDown : true;
-            
+
             prevScrollPos = currentScrollPos;
         })"
                 :class="[
@@ -201,49 +201,40 @@ $leaderboardData = $db->fetchAll($sql, $params);
                     </div>
                 </section>
             </nav>
-
-
-           <section class="mt-24">
-              <div class="container px-4 py-12 md:py-16 mx-auto text-center">
-                  <!-- Call to Action -->
-                  <div class="flex flex-col md:flex-row max-w-5xl mx-auto items-center space-y-6 md:space-y-0 md:justify-between">
-                      <div class="w-full md:w-2/3 text-center md:text-left md:pr-12">
-                          <h1 class="text-3xl md:text-5xl lg:text-6xl font-semibold text-slate-800 tracking-normal md:tracking-wider">
-                              Selamat Datang <span class="font-bold">Champions!</span>
-                          </h1>
-
-                          <h2 class="text-base md:text-xl mt-4 md:mt-6 text-stone-600">
-                              Torehkan Prestasi, Wujudkan Eksistensi!
-                          </h2>
-
-                          <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mt-8 md:mt-12">
-                              <a href="src/signup.php" class="w-auto sm:w-auto inline-block">
-                                  <button class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
-                                      Gabung Kami!
-                                  </button>
-                              </a>
-                              <div class="w-auto sm:w-auto inline-block">
-                                  <button
-                                      onclick="transitionToPage(2)"
-                                      class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
-                                      Panduan
-                                  </button>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="hidden md:block w-full md:w-1/3 flex justify-center items-center">
-                          <img src="src/img/iconpiala.png" alt="Champions Icon" class="w-24 h-24 md:w-full md:h-auto object-contain">
-                      </div>
-                  </div>
-              </div>
-          </section>
-
+            <section class="mt-24">
+                <div class="container px-4 py-12 md:py-16 mx-auto text-center">
+                    <!-- Call to Action -->
+                    <div class="flex flex-col md:flex-row max-w-5xl mx-auto items-center space-y-6 md:space-y-0 md:justify-between">
+                        <div class="w-full md:w-2/3 text-center md:text-left md:pr-12">
+                            <h1 class="text-3xl md:text-5xl lg:text-6xl font-semibold text-slate-800 tracking-normal md:tracking-wider">
+                                Selamat Datang <span class="font-bold">Champions!</span>
+                            </h1>
+                            <h2 class="text-base md:text-xl mt-4 md:mt-6 text-stone-600">
+                                Torehkan Prestasi, Wujudkan Eksistensi!
+                            </h2>
+                            <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mt-8 md:mt-12">
+                                <a href="src/signup.php" class="w-auto sm:w-auto inline-block">
+                                    <button class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
+                                        Gabung Kami!
+                                    </button>
+                                </a>
+                                <div class="w-auto sm:w-auto inline-block">
+                                    <button
+                                        onclick="transitionToPage(2)"
+                                        class="w-auto sm:w-auto text-sm px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 focus:outline-none focus:bg-orange-400 text-white text-semibold">
+                                        Panduan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden md:block w-full md:w-1/3 flex justify-center items-center">
+                            <img src="src/img/iconpiala.png" alt="Champions Icon" class="w-24 h-24 md:w-full md:h-auto object-contain">
+                        </div>
+                    </div>
 
                     <!-- Department Logos -->
                     <div class="max-w-screen-xl mx-auto mt-16 overflow-hidden">
                         <p class="text-sm md:text-base text-stone-600 text-center mb-4">Dipercaya oleh:</p>
-
                         <div class="relative flex overflow-hidden">
                             <div class="flex animate-marquee space-x-16">
                                 <!-- First Row of Logos -->
@@ -268,7 +259,6 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 <a href="https://jte.polinema.ac.id/" class="flex-shrink-0">
                                     <img src="src/img/ELEKTRO.svg" alt="elektro" class="max-h-12 md:max-h-16">
                                 </a>
-
                                 <!-- Duplicate Row for Seamless Looping -->
                                 <a href="https://jti.polinema.ac.id/" class="flex-shrink-0">
                                     <img src="src/img/jti.svg" alt="jti" class="max-h-12 md:max-h-16">
@@ -294,7 +284,6 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </div>
                         </div>
                     </div>
-
                 </div>
             </section>
             <!-- Penjelasan PRESPOL  -->
@@ -699,33 +688,33 @@ $leaderboardData = $db->fetchAll($sql, $params);
     </div>
 
     <!-- Page 2 -->
-    <div id="page2" class="page ">
+    <div id="page2" class="page hidden">
         <!-- navbar -->
         <nav
             x-data="{
-            isOpen: false, 
-            hasShadow: false,
-            activeLink: null,
-            prevScrollPos: window.pageYOffset,
-            visible: true
-        }"
+                isOpen: false, 
+                hasShadow: false,
+                activeLink: null,
+                prevScrollPos: window.pageYOffset,
+                visible: true
+            }"
             x-init="window.addEventListener('scroll', () => {
-            const currentScrollPos = window.pageYOffset;
-            const scrollingDown = prevScrollPos < currentScrollPos;
-            const scrolledFarDown = currentScrollPos > 200;
-            
-            // Update shadow
-            hasShadow = currentScrollPos > 10;
-            
-            // Update visibility based on scroll direction
-            visible = scrolledFarDown ? !scrollingDown : true;
-            
-            prevScrollPos = currentScrollPos;
-        })"
+                const currentScrollPos = window.pageYOffset;
+                const scrollingDown = prevScrollPos < currentScrollPos;
+                const scrolledFarDown = currentScrollPos > 200;
+    
+                // Update shadow
+                hasShadow = currentScrollPos > 10;
+    
+                // Update visibility based on scroll direction
+                visible = scrolledFarDown ? !scrollingDown : true;
+    
+                prevScrollPos = currentScrollPos;
+            })"
             :class="[
-            hasShadow ? 'shadow-lg bg-white' : 'shadow-none',
-            visible ? 'translate-y-0' : '-translate-y-full'
-        ]"
+                hasShadow ? 'shadow-lg bg-white' : 'shadow-none',
+                visible ? 'translate-y-0' : '-translate-y-full'
+            ]"
             class="fixed w-screen left-0 top-0 z-50 px-6 lg:flex lg:justify-between lg:items-center transition-all duration-300 ease-in-out">
             <section class="container mx-auto flex items-center justify-between w-full px-5 py-6 sm:px-3 sm:py:5">
                 <a onclick="navigateToPage('indexLead.php')">
@@ -748,11 +737,11 @@ $leaderboardData = $db->fetchAll($sql, $params);
                 <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
                 <div x-cloak
                     :class="[
-                isOpen ? 'translate-x-0 opacity-100 bg-white shadow-lg' : 'opacity-0 -translate-x-full',
-                'absolute inset-x-0 z-20 w-[calc(100%-3rem)] mx-6 mt-72 px-6 py-4 transition-all duration-300 ease-in-out',
-                'rounded-xl',
-                'lg:shadow-none lg:mt-0 lg:p-0 lg:top-0 lg:bg-transparent lg:relative lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center lg:justify-center'
-            ]">
+                    isOpen ? 'translate-x-0 opacity-100 bg-white shadow-lg' : 'opacity-0 -translate-x-full',
+                    'absolute inset-x-0 z-20 w-[calc(100%-3rem)] mx-6 mt-72 px-6 py-4 transition-all duration-300 ease-in-out',
+                    'rounded-xl',
+                    'lg:shadow-none lg:mt-0 lg:p-0 lg:top-0 lg:bg-transparent lg:relative lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center lg:justify-center'
+                ]">
                     <div class="flex flex-col space-y-4 lg:mt-0 lg:flex-row lg:space-y-0 lg:items-center lg:justify-center">
                         <div class="flex flex-col lg:flex-row lg:items-center lg:space-x-6">
                             <a
@@ -804,19 +793,6 @@ $leaderboardData = $db->fetchAll($sql, $params);
                 </div>
             </div>
         </section>
-
-        <!-- Penjelasan PRESPOL  -->
-        <!-- <section id="tentang" class="mt-48">
-            <div class="container px-6 py-10 mx-auto text-center">
-                <div class="animate-fadeIn opacity-0 transition-opacity duration-4500">
-                    <h1 class="text-4xl md:text-6xl font-bold text-orange-800 tracking-widest">PRESPOL</h1>
-                    <p class="mt-2 md:mt-4 text-lg md:text-2xl text-orange-600 italic">
-                        <i>Platform Pencatatan Prestasi Mahasiswa POLINEMA</i>
-                    </p>
-                    <p class="max-w-3xl mx-auto text-center mt-4 text-l text-gray-500">Platform berbasis web yang dirancang untuk memudahkan proses pendaftaran, pendataan, pencatatan, verifikasi, dan pengelolaan data prestasi mahasiswa di lingkungan kampus Politeknik Negeri Malang.</p>
-                </div>
-            </div>
-        </section> -->
 
         <!-- Panduan Halaman -->
         <section id="panduan" class="mt-8 md:mt-36">
@@ -1156,8 +1132,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                         Catatkan Prestasimu di PRESPOL.
                     </p>
                 </div>
-                <div class="flex justify-center space-x-4 mt-4">
-                    <a href="src/signup.php">
+                <div class="flex justify-center space-x-4 mt-4"><a href="src/signup.php">
                         <button class="cursor-pointer inline-block text-white transition-all duration-300 tracking-normal h-10 px-4 py-2 transition-colors duration-300 transform bg-orange-500 rounded-md hover:bg-orange-400 hover:h-15 hover:tracking-widest focus:outline-none focus:bg-orange-400">
                             Gabung!
                         </button>
@@ -1165,7 +1140,6 @@ $leaderboardData = $db->fetchAll($sql, $params);
                 </div>
             </div>
         </section>
-
 
         <!-- Footer -->
         <footer class="mt-8 bg-red-900 text-white">
@@ -1204,5 +1178,3 @@ $leaderboardData = $db->fetchAll($sql, $params);
     </div>
     </div>
 </body>
-
-</html>
