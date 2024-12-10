@@ -13,8 +13,8 @@ if ($_SESSION['role'] != '1') {
 }
 
 $no_induk = $_SESSION['no_induk'];
-$db = new Database();
-$user = new Admin($db);
+
+$user = new Admin($no_induk);
 
 // Get current page from URL, default to 1
 $pengajuanPage = isset($_GET['pengajuan_page']) ? intval($_GET['pengajuan_page']) : 1;

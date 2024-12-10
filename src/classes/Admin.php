@@ -8,6 +8,16 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
 class Admin extends User
 {
 
+    private $nip;
+    public function __construct($nip) {
+        parent::__construct();
+        $this->nip = $nip;
+    }
+
+    public function getNim() {
+        return $this->nip;
+    }
+
     public function sidebar()
     {
         // Get the current page filename
@@ -167,9 +177,9 @@ class Admin extends User
             : 'text-gray-700';
     }
 
-    public function mainContent($username)
+    public function mainContent()
     {
-        $this->profile($username);
+        $this->profile();
         echo
         <<<HTML
                     <header class="flex flex-col lg:flex-row justify-between items-center mt-24 md:mt-16 mb-16 md:mb-0">
@@ -184,7 +194,7 @@ class Admin extends User
                 HTML;
     }
 
-    public function profile($username)
+    public function profile()
     {
         try {
             $sql = "SELECT 
@@ -192,7 +202,7 @@ class Admin extends User
                 foto_profile
             FROM pegawai
             WHERE no_induk = ?";
-            $params = [$username];
+            $params = [$this->nip];
 
             // Ambil hasil query
             $row = $this->db->fetchOne($sql, $params);
@@ -308,7 +318,7 @@ class Admin extends User
                         </script>
                 SCRIPT;
             } else {
-                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($username));
+                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($this->nip));
             }
         } catch (Exception $e) {
             // Log kesalahan dan lempar ulang
@@ -354,7 +364,7 @@ class Admin extends User
         ];
     }
 
-    public function getPrestasiVerifiedList($no_induk, $page = 1, $limit = 10)
+    public function getPrestasiVerifiedList($page = 1, $limit = 10)
     {
         // Calculate offset
         $offset = ($page - 1) * $limit;
@@ -365,7 +375,7 @@ class Admin extends User
             ORDER BY id_validasi
             OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        $params = [$no_induk, $offset, $limit];
+        $params = [$this->nip, $offset, $limit];
 
         $result = $this->db->fetchAll($query, $params);
 
@@ -377,7 +387,7 @@ class Admin extends User
         $countQuery = "SELECT COUNT(*) as total 
             FROM vw_daftar_pengajuan_terlayani 
             WHERE no_induk_pegawai = ?";
-        $countParams = [$no_induk];
+        $countParams = [$this->nip];
         $countResult = $this->db->fetchOne($countQuery, $countParams);
         $totalItems = $countResult['total'];
         $totalPages = ceil($totalItems / $limit);
@@ -404,7 +414,7 @@ class Admin extends User
     }
 
 
-    public function validatePrestasi($id_pending, $status, $deskripsi, $no_induk)
+    public function validatePrestasi($id_pending, $status, $deskripsi)
     {
         try {
             // mengambil path kelima file dari tabel prestasi_pending
@@ -417,7 +427,7 @@ class Admin extends User
             }
             //mengambil id_pegawai
             $sql = 'SELECT id_pegawai FROM pegawai WHERE no_induk = ?';
-            $stmt = $this->db->fetchOne($sql, [$no_induk]);
+            $stmt = $this->db->fetchOne($sql, [$this->nip]);
             $id_pegawai = $stmt['id_pegawai'];
 
             // Panggil prosedur untuk memindahkan atau memperbarui data
@@ -612,7 +622,7 @@ class Admin extends User
         return $this->db->fetchOne($query, $params);
     }
 
-    public function profilDetail($no_induk)
+    public function profilDetail()
     {
         try {
             $sql = "SELECT 
@@ -621,7 +631,7 @@ class Admin extends User
                 p.foto_profile
             FROM pegawai p
             WHERE p.no_induk = ?";
-            $params = [$no_induk];
+            $params = [$this->nip];
 
             // Ambil hasil query
             $row = $this->db->fetchOne($sql, $params);
@@ -635,14 +645,14 @@ class Admin extends User
                         <div class="space-y-2">
                             <h1 class = 'text-3xl font-bold'> $nama </h1>
                             <div class = 'flex items-center'>
-                            <!-- <span class = 'bg-orange-200 text-orange-600 px-2 py-1 rounded-full text-sm'> $no_induk </span> -->
-                            <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $no_induk </span>
+                            <!-- <span class = 'bg-orange-200 text-orange-600 px-2 py-1 rounded-full text-sm'> $this->nip </span> -->
+                            <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $this->nip </span>
                         </div>
                     </div>
                     <img src = "img/setting.svg" alt = 'Profile Picture' class = 'w-10 h-10 rounded-full ml-2'>
                 HTML;
             } else {
-                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($no_induk));
+                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($this->nip));
             }
         } catch (Exception $e) {
             // Log kesalahan dan lempar ulang

@@ -7,15 +7,16 @@ Auth::checkLogin();
 if ($_SESSION['role'] == '2') {
     header('Location: home.php');
 }
+
+$no_induk= $_SESSION['no_induk'];
 $user = null;
 
 if ($_SESSION['role'] == '1') {
     include_once 'classes/Admin.php';
-    $user = new Admin();
+    $user = new Admin($no_induk);
 } else if ($_SESSION['role'] == '3') {
     include_once 'classes/Mahasiswa.php';
-    $user = new Mahasiswa();
-    $nim = $_SESSION['no_induk'];
+    $user = new Mahasiswa($no_induk);
 }
 
 ?>
@@ -78,7 +79,7 @@ if ($_SESSION['role'] == '1') {
                     echo <<<HTML
                         <div>
                             <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
-                            <input type="text" id="nim" name="nim" value="$nim" readonly class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                            <input type="text" id="nim" name="nim" value="$no_induk" readonly class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
                             <p class="text-red-500 text-sm hidden" id="error-nim">NIM tidak boleh kosong!</p>
                         </div>
                     HTML;

@@ -12,9 +12,10 @@ if($_SESSION['role'] != '1'){
     header('Location: home.php');
 }
 
-$user = new Admin();
 
 $no_induk= $_SESSION['no_induk'];
+
+$user = new Admin($no_induk);
 ?>
 
 <!DOCTYPE html>
