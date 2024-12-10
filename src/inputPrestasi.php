@@ -27,6 +27,11 @@ if ($_SESSION['role'] == '1') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Prestasi</title>
+    <!-- tambah kode -->
+    <link rel="icon" href="img/pres.png" type="image/x-icon">
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <!-- jQuery and jQuery UI -->
@@ -48,7 +53,13 @@ if ($_SESSION['role'] == '1') {
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col md:flex-row">
+<body class="min-h-screen flex flex-col md:flex-row [&::-webkit-scrollbar]:w-2
+            [&::-webkit-scrollbar-track]:rounded-full
+            [&::-webkit-scrollbar-track]:bg-neutral-100
+            [&::-webkit-scrollbar-thumb]:rounded-full
+            [&::-webkit-scrollbar-thumb]:bg-neutral-300
+            md:[&::-webkit-scrollbar]:block
+            [&::-webkit-scrollbar]:hidden">
         <!-- Sidebar -->
         <aside class="flex-1">
             <?php
@@ -65,9 +76,9 @@ if ($_SESSION['role'] == '1') {
             <!-- Note Mobile -->
             <div class="block lg:hidden bg-white p-6 border border-gray-300 rounded-lg">
                 <h2 class="text-xl font-bold text-orange-500">Note!</h2>
-                    <p class="mt-4 text-gray-700">(1) Semua kolom wajib diisi</p>
+                    <p class="mt-4 text-gray-700">(1) Semua kolom yang <b>tidak</b> berlabel opsional, <b>WAJIB DIISI</b></p>
                     <p class="mt-4 text-gray-700">(2) Lampiran File : </p>
-                    <p class="mt-1 text-gray-700">- Format file yang didukung : <i>JPEG, PNG,</i> dan <i>PDF</i></p>
+                    <p class="mt-1 text-gray-700">- Format file yang didukung : <i>JPG, JPEG, PNG, SVG, </i> dan <i>PDF</i></p>
                     <p class="mt-1 text-gray-700">- Ukuran file tidak boleh melebihi batas maksimum</p>
                     <p class="mt-4 text-gray-700">(3) Pasikan sebelum klik tombol <b>SIMPAN</b>, cek terlebih dahulu datanya</p>
             </div>
@@ -87,7 +98,7 @@ if ($_SESSION['role'] == '1') {
                     echo <<<HTML
                         <div>
                             <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
-                            <input type="text" id="nim" name="nim" placeholder="Masukkan NIM" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
+                            <input type="text" id="nim" name="nim" placeholder="2341720056" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
                             <p class="text-red-500 text-sm hidden" id="error-nim">NIM tidak boleh kosong!</p>
                         </div>
                     HTML;
@@ -96,7 +107,7 @@ if ($_SESSION['role'] == '1') {
 
                 <div>
                     <label for="nama_kompetisi" class="block text-sm font-medium text-gray-700">Nama Kompetisi</label>
-                    <input type="text" id="nama_kompetisi" name="nama_kompetisi" placeholder="Masukkan Nama Kompetisi" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
+                    <input type="text" id="nama_kompetisi" name="nama_kompetisi" placeholder="UI / UX Design" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
                     <p class="text-red-500 text-sm hidden" id="error-nama_kompetisi">Nama Kompetisi tidak boleh kosong!</p>
                 </div>
 
@@ -121,29 +132,29 @@ if ($_SESSION['role'] == '1') {
 
                 <div>
                     <label for="penyelenggara" class="block text-sm font-medium text-gray-700">Penyelenggara</label>
-                    <input type="text" id="penyelenggara" name="penyelenggara" placeholder="Masukkan Penyelenggara" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
+                    <input type="text" id="penyelenggara" name="penyelenggara" placeholder="Universitas Negeri Malang" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
                     <p class="text-red-500 text-sm hidden" id="error-penyelenggara">Penyelenggara tidak boleh kosong!</p>
                 </div>
 
                 <div>
                     <label for="event" class="block text-sm font-medium text-gray-700">Event</label>
-                    <input type="text" id="event" name="event" placeholder="Masukkan Event" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
+                    <input type="text" id="event" name="event" placeholder="Creative UI/UX Designer Competition" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
                     <p class="text-red-500 text-sm hidden" id="error-event">Event tidak boleh kosong!</p>
                 </div>
 
                 <div>
-                    <label for="dospem1" class="block text-sm font-medium text-gray-700">Dosen Pembimbing 1</label>
-                    <input type="text" id="dospem1" name="dosen_pembimbing_1" placeholder="Masukkan Dosen Pembimbing 1" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
+                    <label for="dospem1" class="block text-sm font-medium text-gray-700">Dosen Pembimbing 1 <i>(Opsional)</i></label>
+                    <input type="text" id="dospem1" name="dosen_pembimbing_1" placeholder="Wafiqah Azzahra Na'imah S.Kom., M.Kom." class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
                 </div>
 
                 <div>
-                    <label for="dospem2" class="block text-sm font-medium text-gray-700">Dosen Pembimbing 2</label>
-                    <input type="text" id="dospem2" name="dosen_pembimbing_2" placeholder="Masukkan Dosen Pembimbing 2" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
+                    <label for="dospem2" class="block text-sm font-medium text-gray-700">Dosen Pembimbing 2 <i>(Opsional)</i></label>
+                    <input type="text" id="dospem2" name="dosen_pembimbing_2" placeholder="Ahmad Thaha Al - Junaedi" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
                 </div>
 
                 <div>
                     <label for="peserta" class="block text-sm font-medium text-gray-700">Jumlah Peserta</label>
-                    <input type="text" id="peserta" name="jumlah_peserta" placeholder="Masukkan Jumlah Peserta" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
+                    <input type="text" id="peserta" name="jumlah_peserta" placeholder="3" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
                     <p class="text-red-500 text-sm hidden" id="error-peserta">Jumlah Peserta tidak boleh kosong!</p>
                 </div>
                 <div>
@@ -164,13 +175,13 @@ if ($_SESSION['role'] == '1') {
                 <div>
                     <h2 class="text-xl font-bold mt-6 mb-3">Waktu Pelaksanaan</h2>
                     <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
-                    <input type="text" id="tanggal_mulai" name="tanggal_mulai" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg" placeholder="Select a date">
-                    <p class="text-red-500 text-sm hidden" id="error-tanggal_mulai">Waktu Pelaksanaan tidak boleh kosong!</p>
+                    <input type="text" id="tanggal_mulai" name="tanggal_mulai" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg" placeholder="08-10-2024">
+                    <p class="text-red-500 text-sm hidden" id="error-tanggal_mulai">Tanggal Mulai tidak boleh kosong!</p>
                 </div>
 
                 <div>
                     <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
-                    <input type="text" id="tanggal_selesai" name="tanggal_selesai" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg" placeholder="Select a date">
+                    <input type="text" id="tanggal_selesai" name="tanggal_selesai" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg" placeholder="23-11-2024">
                     <p class="text-red-500 text-sm hidden" id="error-tanggal_selesai">Tanggal Selesai tidak boleh kosong!</p>
                 </div>
 
@@ -178,29 +189,132 @@ if ($_SESSION['role'] == '1') {
                 <section>
                     <h2 class="text-xl font-bold mt-6 mb-3">Lampiran</h2>
                     <div class="space-y-4">
-                        <div>
-                            <label for="foto_lomba" class="block text-sm font-medium text-gray-700">Foto Lomba</label>
-                            <input type="file" id="foto_lomba" name="foto_kompetisi" accept="image/*" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg bg-white">
-                            <p class="text-red-500 text-sm hidden" id="error-foto_lomba">Foto Kompetisi tidak boleh kosong!</p>
+                        <div class="foto_kompetisi">
+                            <!-- Label untuk file -->
+                            <label for="foto_kompetisi" class="block text-sm font-medium text-gray-700">Foto Kompetisi (maks 5MB)</label>
+
+                            <!-- Container input dengan label -->
+                            <label for="foto_kompetisi" class="flex items-center px-3 py-3 w-full lg:w-3/4 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                <h2 id="file-foto" class="mx-3 text-gray-400 truncate">xxx.jpeg</h2>
+                                <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                                <!-- Tooltip -->
+                                <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
+                                    Pastikan foto berukuran 1:1 dengan format .jpg, .jpeg, .png, atau .svg. Maks: 5 MB
+                                </span>
+                                <!-- Input file -->
+                                <input id="foto_kompetisi" type="file" name="foto_kompetisi" class="hidden" accept="image/*">
+                            </label>
+
+                            <!-- Pesan kesalahan -->
+                            <p class="text-red-500 text-sm hidden" id="error-foto_kompetisi">Foto Kompetisi tidak boleh kosong!</p>
                         </div>
-                        <div>
-                            <label for="flyer_lomba" class="block text-sm font-medium text-gray-700">Poster Lomba</label>
-                            <input type="file" id="flyer_lomba" name="flyer" accept=".pdf,image/*" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg bg-white">
-                            <p class="text-red-500 text-sm hidden" id="error-flyer_lomba">Poster Lomba tidak boleh kosong!</p>
+                        <div class="poster_kompetisi">
+                            <!-- Label untuk file -->
+                            <label for="poster_kompetisi" class="block text-sm font-medium text-gray-700">Poster Kompetisi (maks 5MB)</label>
+
+                            <!-- Container input dengan label -->
+                            <label for="poster_kompetisi" class="flex items-center px-3 py-3 w-full lg:w-3/4 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                <h2 id="file-poster" class="mx-3 text-gray-400 truncate">xxx.png</h2>
+                                <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                                <!-- Tooltip -->
+                                <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
+                                    Pastikan file menggunakan format .pdf, .jpg, .jpeg, .png, atau .svg. Maks: 5 MB
+                                </span>
+                                <!-- Input file -->
+                                <input id="poster_kompetisi" type="file" name="poster_kompetisi" class="hidden" accept=".pdf,image/*">
+                            </label>
+
+                            <!-- Pesan kesalahan -->
+                            <p class="text-red-500 text-sm hidden" id="error-poster_kompetisi">Poster Kompetisi tidak boleh kosong!</p>
                         </div>
-                        <div>
-                            <label for="sertifikat" class="block text-sm font-medium text-gray-700">Sertifikat</label>
-                            <input type="file" id="sertifikat" name="sertifikat" accept=".pdf" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg bg-white">
-                            <p class="text-red-500 text-sm hidden" id="error-sertifikat">Sertifikat tidak boleh kosong!</p>
+                        <div class="sertifikat_kompetisi">
+                            <!-- Label untuk file -->
+                            <label for="sertifikat" class="block text-sm font-medium text-gray-700">Sertifikat (maks 5MB)</label>
+
+                            <!-- Container input dengan label -->
+                            <label for="sertifikat" class="flex items-center px-3 py-3 w-full lg:w-3/4 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                <h2 id="file-sertifikat" class="mx-3 text-gray-400 truncate">xxx.pdf</h2>
+                                <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                                <!-- Tooltip -->
+                                <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
+                                    Pastikan file menggunakan format .pdf. Maks: 5 MB
+                                </span>
+                                <!-- Input file -->
+                                <input id="sertifikat" type="file" name="sertifikat" class="hidden" accept=".pdf">
+                            </label>
+
+                            <!-- Pesan kesalahan -->
+                            <p class="text-red-500 text-sm hidden" id="error-sertifikat">Sertifikat Kompetisi tidak boleh kosong!</p>
                         </div>
-                        <div>
-                            <label for="surat_tugas" class="block text-sm font-medium text-gray-700">Surat Tugas</label>
-                            <input type="file" id="surat_tugas" name="surat_tugas" accept=".pdf" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg bg-white">
+                        <div class="surat_tugas">
+                            <!-- Label untuk file -->
+                            <label for="surat_tugas" class="block text-sm font-medium text-gray-700">Surat Tugas (maks 5MB)</label>
+
+                            <!-- Container input dengan label -->
+                            <label for="surat_tugas" class="flex items-center px-3 py-3 w-full lg:w-3/4 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                <h2 id="file-surat_tugas" class="mx-3 text-gray-400 truncate">xxx.pdf</h2>
+                                <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                                <!-- Tooltip -->
+                                <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
+                                    Pastikan file menggunakan format: .pdf. Maks: 5 MB
+                                </span>
+                                <!-- Input file -->
+                                <input id="surat_tugas" type="file" name="surat_tugas" class="hidden" accept=".pdf">
+                            </label>
+
+                            <!-- Pesan kesalahan -->
                             <p class="text-red-500 text-sm hidden" id="error-surat_tugas">Surat Tugas tidak boleh kosong!</p>
                         </div>
-                        <div>
-                            <label for="upload_karya" class="block text-sm font-medium text-gray-700">Upload Karya</label>
-                            <input type="file" id="upload_karya" name="karya_kompetisi" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg bg-white">
+                        <div class="upload_karya">
+                            <!-- Label untuk file -->
+                            <label for="upload_karya" class="block text-sm font-medium text-gray-700">Karya (maks 5MB)</label>
+
+                            <!-- Container input dengan label -->
+                            <label for="upload_karya" class="flex items-center px-3 py-3 w-full lg:w-3/4 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                <h2 id="file-karya" class="mx-3 text-gray-400 truncate">xxx.png</h2>
+                                <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                                <!-- Tooltip -->
+                                <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
+                                    Pastikan file menggunakan format .pdf, .jpg, .jpeg, .png, atau .svg. Maks: 5 MB
+                                </span>
+                                <!-- Input file -->
+                                <input id="upload_karya" type="file" name="karya_kompetisi" class="hidden" accept=".pdf, image/*">
+                            </label>
                         </div>
                     </div>
                 </section>
@@ -209,12 +323,12 @@ if ($_SESSION['role'] == '1') {
             </form>
         </main>
         <!-- Note Section -->
-        <aside class="hidden lg:block w-1/5 p-10 py-32 fixed right-0">
+        <aside class="hidden lg:block w-1/5 p-10 py-25 fixed right-0">
             <div class="bg-white p-6 border border-gray-300 rounded-lg">
                 <h2 class="text-xl font-bold text-orange-500">Note!</h2>
-                    <p class="mt-4 text-gray-700">(1) Semua kolom wajib diisi</p>
+                    <p class="mt-4 text-gray-700">(1) Semua kolom yang <b>tidak</b> berlabel opsional, <b>WAJIB DIISI</b></p>
                     <p class="mt-4 text-gray-700">(2) Lampiran File : </p>
-                    <p class="mt-1 text-gray-700">- Format file yang didukung : <i>JPEG, PNG,</i> dan <i>PDF</i></p>
+                    <p class="mt-1 text-gray-700">- Format file yang didukung : <i>JPG, JPEG, PNG, SVG, </i> dan <i>PDF</i></p>
                     <p class="mt-1 text-gray-700">- Ukuran file tidak boleh melebihi batas maksimum</p>
                     <p class="mt-4 text-gray-700">(3) Pasikan sebelum klik tombol <b>SIMPAN</b>, cek terlebih dahulu datanya</p>
             </div>
@@ -368,14 +482,14 @@ if ($_SESSION['role'] == '1') {
                         labelSelector: "label[for='tanggal_selesai']"
                     },
                     {
-                        id: "#foto_lomba",
-                        errorId: "#error-foto_lomba",
-                        labelSelector: "label[for='foto_lomba']"
+                        id: "#foto_kompetisi",
+                        errorId: "#error-foto_kompetisi",
+                        labelSelector: "label[for='foto_kompetisi']"
                     },
                     {
-                        id: "#flyer_lomba",
-                        errorId: "#error-flyer_lomba",
-                        labelSelector: "label[for='flyer_lomba']"
+                        id: "#poster_kompetisi",
+                        errorId: "#error-poster_kompetisi",
+                        labelSelector: "label[for='poster_kompetisi']"
                     },
                     {
                         id: "#sertifikat",
@@ -464,6 +578,39 @@ if ($_SESSION['role'] == '1') {
                 }
             });
         });
+    </script>
+    <!-- JavaScript -->
+    <script>
+        // Fungsi untuk menangani perubahan input file
+        function handleFileChange(fileInputId, fileNameDisplayId, defaultText) {
+            // Elemen yang diperlukan
+            const fileInput = document.getElementById(fileInputId);
+            const fileNameDisplay = document.getElementById(fileNameDisplayId);
+            // const errorMessage = document.getElementById(errorMessageId);
+
+            // Event listener untuk menampilkan nama file
+            fileInput.addEventListener("change", () => {
+                if (fileInput.files.length > 0) {
+                    const fileName = fileInput.files[0].name; // Ambil nama file
+                    fileNameDisplay.textContent = fileName; // Tampilkan di UI
+                    fileNameDisplay.classList.remove("text-gray-400"); // Ganti warna teks
+                    fileNameDisplay.classList.add("text-black"); // Tambahkan warna hitam
+                    // errorMessage.classList.add("hidden"); // Sembunyikan pesan error
+                } else {
+                    fileNameDisplay.textContent = defaultText; // Default teks jika file dihapus
+                    fileNameDisplay.classList.remove("text-black"); // Hapus warna hitam
+                    fileNameDisplay.classList.add("text-gray-400"); // Tambahkan warna abu-abu
+                    // errorMessage.classList.remove("hidden"); // Tampilkan pesan error
+                }
+            });
+        }
+
+        // Menjalankan fungsi untuk setiap elemen unggahan file
+        handleFileChange("foto_kompetisi", "file-foto", "Upload Foto Kompetisi");
+        handleFileChange("poster_kompetisi", "file-poster", "Upload Poster Kompetisi");
+        handleFileChange("sertifikat", "file-sertifikat", "Upload Sertifikat Kompetisi");
+        handleFileChange("surat_tugas", "file-surat_tugas", "Upload Surat Tugas");
+        handleFileChange("upload_karya", "file-karya", "Upload Karya");
     </script>
 </body>
 
