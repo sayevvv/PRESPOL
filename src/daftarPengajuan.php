@@ -52,14 +52,20 @@ $listDilayani = $user->getPrestasiVerifiedList($dilayaniPage);
     
     <!-- Main Content -->
     <main class="ml-[20%] w-[80%] p-8">
-    <button id="btnPengajuan" class="bg-blue-600 text-white px-4 py-2 rounded-md mt-4" 
-            onclick="switchTab('pengajuan')">Pengajuan</button>
-    <button id="btnDilayani" class="bg-green-600 text-white px-4 py-2 rounded-md mt-4" 
-            onclick="switchTab('dilayani')">Dilayani</button>
     
     <!-- Table Pengajuan -->
     <div id="tablePengajuan" class="container mx-auto py-8 <?php echo $activeTab === 'dilayani' ? 'hidden' : ''; ?>">
-        <h1 class="text-2xl font-bold mb-4">Daftar Pengajuan Prestasi</h1>
+        <h1 class="text-2xl font-bold mb-4">Daftar prestasi dalam proses validasi</h1>
+        <div class="flex justify-end mb-4">
+            <select id="tabSelector" class="px-4 py-2 border rounded-2xl" onchange="switchTab(this.value)">
+                <option value="pengajuan" <?php echo ($activeTab === 'pengajuan' || $activeTab === '') ? 'selected' : ''; ?>>
+                    Sedang Diproses
+                </option>
+                <option value="dilayani" <?php echo $activeTab === 'dilayani' ? 'selected' : ''; ?>>
+                    Sudah Diproses
+                </option>
+            </select>
+        </div>
         <table class="min-w-full bg-white rounded-lg shadow-md">
             <thead>
                 <tr class="bg-orange-500 text-white">
@@ -105,7 +111,17 @@ $listDilayani = $user->getPrestasiVerifiedList($dilayaniPage);
     
     <!-- Table Dilayani -->
     <div id="tableDilayani" class="container mx-auto py-8 <?php echo $activeTab === 'pengajuan' ? 'hidden' : ''; ?>">
-        <h1 class="text-2xl font-bold mb-4">Daftar Prestasi Dilayani</h1>
+        <h1 class="text-2xl font-bold mb-4">Daftar Prestasi yang sudah divalidasi</h1>
+        <div class="flex justify-end mb-4">
+            <select id="tabSelector" class="px-4 py-2 border rounded-2xl" onchange="switchTab(this.value)">
+                <option value="pengajuan" <?php echo ($activeTab === 'pengajuan' || $activeTab === '') ? 'selected' : ''; ?>>
+                    Sedang Diproses
+                </option>
+                <option value="dilayani" <?php echo $activeTab === 'dilayani' ? 'selected' : ''; ?>>
+                    Sudah Diproses
+                </option>
+            </select>
+        </div>
         <table class="min-w-full bg-white rounded-lg shadow-md">
             <thead>
                 <tr class="bg-orange-500 text-white">

@@ -147,6 +147,21 @@ $user = new Admin($no_induk);
             const actionText = isValidasi ? 'Validasi' : 'Tolak';
             const confirmButtonColor = isValidasi ? '#28a745' : '#dc3545';
 
+            // Validasi jika textarea kosong
+            const deskripsi = $('textarea[name="deskripsi"]').val().trim();
+            if (deskripsi === '') {
+                $('textarea[name="deskripsi"]').addClass('border-red-500'); // Tambahkan border merah pada textarea
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Input Kosong!',
+                    text: 'Deskripsi wajib diisi sebelum melanjutkan.',
+                    confirmButtonColor: '#dc3545'
+                });
+                return; // Hentikan proses jika kosong
+            } else {
+                $('textarea[name="deskripsi"]').removeClass('border-red-500'); // Hapus border merah jika sudah diisi
+            }
+
             // SweetAlert untuk konfirmasi
             Swal.fire({
                 title: `Konfirmasi ${actionText}`,
