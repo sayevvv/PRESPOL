@@ -49,6 +49,10 @@ if ($_SESSION['role'] == '1') {
         .border-red-500 {
             border-color: red !important;
         }
+        
+        #tooltip {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+}
     </style>
 </head>
 
@@ -77,7 +81,7 @@ if ($_SESSION['role'] == '1') {
                 <h2 class="text-xl font-bold text-orange-500">Note!</h2>
                     <p class="mt-4 text-gray-700">(1) Semua kolom yang <b>tidak</b> berlabel opsional, <b>WAJIB DIISI</b></p>
                     <p class="mt-4 text-gray-700">(2) Lampiran File : </p>
-                    <p class="mt-1 text-gray-700">- Format file yang didukung : <i>JPG, JPEG, PNG, SVG, </i> dan <i>PDF</i></p>
+                    <p class="mt-1 text-gray-700">- Format file yang didukung : <i>JPG, JPEG, PNG, SVG, MP4</i> dan <i>PDF</i></p>
                     <p class="mt-1 text-gray-700">- Ukuran file tidak boleh melebihi batas maksimum</p>
                     <p class="mt-4 text-gray-700">(3) Pasikan sebelum klik tombol <b>SIMPAN</b>, cek terlebih dahulu datanya</p>
             </div>
@@ -148,7 +152,7 @@ if ($_SESSION['role'] == '1') {
 
                 <div>
                     <label for="dospem2" class="block text-sm font-medium text-gray-700">Dosen Pembimbing 2 <i>(Opsional)</i></label>
-                    <input type="text" id="dospem2" name="dosen_pembimbing_2" placeholder="Ahmad Thaha Al - Junaedi" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
+                    <input type="text" id="dospem2" name="dosen_pembimbing_2" placeholder="Ahmad Thaha Al - Junaedi S.ST., M.Sc" class="w-full lg:w-3/4 p-3 border border-gray-300 rounded-lg">
                 </div>
 
                 <div>
@@ -198,15 +202,7 @@ if ($_SESSION['role'] == '1') {
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
                                 <h2 id="file-foto" class="mx-3 text-gray-400 truncate">xxx.jpeg</h2>
-                                <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </button>
-                                <!-- Tooltip -->
-                                <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
-                                    Pastikan foto berukuran 1:1 dengan format .jpg, .jpeg, .png, atau .svg. Maks: 5 MB
-                                </span>
+                                
                                 <!-- Input file -->
                                 <input id="foto_kompetisi" type="file" name="foto_kompetisi" class="hidden" accept="image/*">
                             </label>
@@ -214,6 +210,7 @@ if ($_SESSION['role'] == '1') {
                             <!-- Pesan kesalahan -->
                             <p class="text-red-500 text-sm hidden" id="error-foto_kompetisi">Foto Kompetisi tidak boleh kosong!</p>
                         </div>
+
                         <div class="poster_kompetisi">
                             <!-- Label untuk file -->
                             <label for="poster_kompetisi" class="block text-sm font-medium text-gray-700">Poster Kompetisi (maks 5MB)</label>
@@ -224,15 +221,7 @@ if ($_SESSION['role'] == '1') {
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
                                 <h2 id="file-poster" class="mx-3 text-gray-400 truncate">xxx.png</h2>
-                                <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </button>
-                                <!-- Tooltip -->
-                                <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
-                                    Pastikan file menggunakan format .pdf, .jpg, .jpeg, .png, atau .svg. Maks: 5 MB
-                                </span>
+            
                                 <!-- Input file -->
                                 <input id="poster_kompetisi" type="file" name="poster_kompetisi" class="hidden" accept=".pdf,image/*">
                             </label>
@@ -250,15 +239,7 @@ if ($_SESSION['role'] == '1') {
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
                                 <h2 id="file-sertifikat" class="mx-3 text-gray-400 truncate">xxx.pdf</h2>
-                                <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </button>
-                                <!-- Tooltip -->
-                                <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
-                                    Pastikan file menggunakan format .pdf. Maks: 5 MB
-                                </span>
+                                
                                 <!-- Input file -->
                                 <input id="sertifikat" type="file" name="sertifikat" class="hidden" accept=".pdf">
                             </label>
@@ -276,15 +257,7 @@ if ($_SESSION['role'] == '1') {
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
                                 <h2 id="file-surat_tugas" class="mx-3 text-gray-400 truncate">xxx.pdf</h2>
-                                <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </button>
-                                <!-- Tooltip -->
-                                <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
-                                    Pastikan file menggunakan format: .pdf. Maks: 5 MB
-                                </span>
+                                
                                 <!-- Input file -->
                                 <input id="surat_tugas" type="file" name="surat_tugas" class="hidden" accept=".pdf">
                             </label>
@@ -294,7 +267,7 @@ if ($_SESSION['role'] == '1') {
                         </div>
                         <div class="upload_karya">
                             <!-- Label untuk file -->
-                            <label for="upload_karya" class="block text-sm font-medium text-gray-700">Karya (maks 5MB)</label>
+                            <label for="upload_karya" class="block text-sm font-medium text-gray-700">Karya (maks 75MB) <i>Opsional</i></label>
 
                             <!-- Container input dengan label -->
                             <label for="upload_karya" class="flex items-center px-3 py-3 w-full lg:w-3/4 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer">
@@ -302,17 +275,9 @@ if ($_SESSION['role'] == '1') {
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
                                 <h2 id="file-karya" class="mx-3 text-gray-400 truncate">xxx.png</h2>
-                                <button type="button" id="tooltipButton" class="focus:outline-none ml-10">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 hover:text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </button>
-                                <!-- Tooltip -->
-                                <span id="tooltip" class="absolute hidden bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 rounded bg-gray-900 p-2 text-xs text-white">
-                                    Pastikan file menggunakan format .pdf, .jpg, .jpeg, .png, atau .svg. Maks: 5 MB
-                                </span>
+                                
                                 <!-- Input file -->
-                                <input id="upload_karya" type="file" name="karya_kompetisi" class="hidden" accept=".pdf, image/*">
+                                <input id="upload_karya" type="file" name="karya_kompetisi" class="hidden">
                             </label>
                         </div>
                     </div>
@@ -327,7 +292,7 @@ if ($_SESSION['role'] == '1') {
                 <h2 class="text-xl font-bold text-orange-500">Note!</h2>
                     <p class="mt-4 text-gray-700">(1) Semua kolom yang <b>tidak</b> berlabel opsional, <b>WAJIB DIISI</b></p>
                     <p class="mt-4 text-gray-700">(2) Lampiran File : </p>
-                    <p class="mt-1 text-gray-700">- Format file yang didukung : <i>JPG, JPEG, PNG, SVG, </i> dan <i>PDF</i></p>
+                    <p class="mt-1 text-gray-700">- Format file yang didukung : <i>JPG, JPEG, PNG, SVG, MP4</i> dan <i>PDF</i></p>
                     <p class="mt-1 text-gray-700">- Ukuran file tidak boleh melebihi batas maksimum</p>
                     <p class="mt-4 text-gray-700">(3) Pasikan sebelum klik tombol <b>SIMPAN</b>, cek terlebih dahulu datanya</p>
             </div>
