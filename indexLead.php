@@ -1021,7 +1021,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Profile Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/profilAdmin.png" alt="Profile Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -1032,7 +1032,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Validate Achievement Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/validasi.png" alt="Validate Achievement Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -1043,7 +1043,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Logout Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/keluar.png" alt="Logout Preview">
                         </div>
                     </section>
                 </div>
@@ -1058,7 +1058,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Log in Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/login.png" alt="Log in Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -1069,7 +1069,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Beranda Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/berandaKajur.png" alt="Beranda Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -1080,7 +1080,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Profil Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/profilKajur.png" alt="Profil Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -1091,7 +1091,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="List Prestasi Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/listKajur.png" alt="List Prestasi Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -1102,7 +1102,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Ekspor Data Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/eksporKajur.png" alt="Ekspor Data Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -1113,7 +1113,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Log out Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/keluar.png" alt="Log out Preview">
                         </div>
                     </section>
                 </div>
