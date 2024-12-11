@@ -71,6 +71,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Redirect untuk me-reload halaman
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
+
+    setcookie('username', $username, time() + (86400 * 30)); // 86400 = 1 day
+    setcookie('password', $password, time() + (86400 * 30)); // 86400 = 1 day
 }
 
 $db->close();
@@ -222,7 +225,7 @@ $db->close();
                                 </div>
                     
                                 <div class="mt-6">
-                                    <button type="button" class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:ring focus:ring-orange-300 focus:ring-opacity-50">
+                                    <button type="button" id="next" class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-orange-500 rounded-lg hover:bg-orange-400 focus:outline-none focus:ring focus:ring-orange-300 focus:ring-opacity-50">
                                         Selanjutnya
                                     </button>
                     
@@ -591,6 +594,17 @@ $db->close();
 
         
         document.addEventListener('DOMContentLoaded', function() {
+            const pw = document.getElementById('confirmPw');
+            const next = document.getElementById('next');
+            // Tambahkan event listener pada input
+            pw.addEventListener('keydown', function (event) {
+            // Periksa jika tombol yang ditekan adalah 'Enter'
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Mencegah aksi default jika diperlukan
+                next.click(); // Panggil aksi tombol
+            }
+            });
+
             const form = document.getElementById('signupForm');
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();

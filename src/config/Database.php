@@ -1,6 +1,6 @@
 <?php
 class Database {
-    private $serverName = 'LENOVO';
+    private $serverName = 'ARCH';
     private $connectionInfo = array( "Database"=>"PrespolTest");
     private $connection;
 

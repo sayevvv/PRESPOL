@@ -200,9 +200,20 @@ $csrf = new CSRFToken();
 
         document.addEventListener('DOMContentLoaded', function() {
             // Pagination --
-            const signupForm = document.getElementById('signupForm');
             const step1 = document.getElementById('step1');
             const step2 = document.getElementById('step2');
+
+            const pw = document.getElementById('password');
+            const submit = document.getElementById('submit');
+
+            // Tambahkan event listener pada input
+            pw.addEventListener('keydown', function (event) {
+            // Periksa jika tombol yang ditekan adalah 'Enter'
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Mencegah aksi default jika diperlukan
+                submit.click(); // Panggil aksi tombol
+            }
+            });
 
             // Step 1 Next Button
             const step1NextBtn = step1.querySelector('#hubungi');
