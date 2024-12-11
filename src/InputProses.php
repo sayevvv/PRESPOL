@@ -63,6 +63,9 @@ function getAllowedMimeTypes($extension) {
         'png' => ['image/png'],
         'gif' => ['image/gif'],
         'pdf' => ['application/pdf'],
+        'mkv' => ['video/x-matroska'],
+        'mov' => ['video/quicktime'],
+        'mp4' => ['video/mp4'],
     ];
 
     return $mimeTypes[$extension] ?? [];
@@ -97,7 +100,7 @@ function processForm($db, $formData, $fileData) {
             'flyer' => ['allowed' => ['jpg', 'jpeg', 'png', 'gif', 'pdf'], 'size' => 5 * 1024 * 1024],
             'sertifikat' => ['allowed' => ['pdf'], 'size' => 5 * 1024 * 1024],
             'surat_tugas' => ['allowed' => ['pdf'], 'size' => 5 * 1024 * 1024],
-            'karya_kompetisi' => ['allowed' => [], 'size' => 5 * 1024 * 1024],
+            'karya_kompetisi' => ['allowed' => [], 'size' => 75 * 1024 * 1024],
         ];
 
         foreach ($fileRules as $key => $rules) {
