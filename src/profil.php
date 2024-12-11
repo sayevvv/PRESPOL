@@ -80,6 +80,7 @@ if ($role == '1') {
     <title>Profil</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" href="img/pres.png" type="image/x-icon">
 
     <style>
         body {
@@ -136,26 +137,12 @@ if ($role == '1') {
                 echo
                 <<<HTML
                         <header class="flex flex-col lg:flex-row justify-between items-center mb-8">
-                            <div class="text-center lg:text-left">
-                                <h1 class="text-3xl font-bold">Selamat Datang</h1>
-                                <h2 class="text-5xl font-bold text-black">Admin!</h2>
-                                <button onclick="window.location.href='daftarPengajuan.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
-                                    Validasi Prestasi
-                                </button>
-                            </div>
                         </header>
                     HTML;
             elseif ($user instanceof Kajur):
                 echo
                 <<<HTML
                         <header class="flex flex-col lg:flex-row justify-between items-center mb-8">
-                            <div class="text-center lg:text-left">
-                                <h1 class="text-3xl font-bold">Selamat Datang</h1>
-                                <h2 class="text-5xl font-bold text-black">Kepala Jurusan!</h2>
-                                <button onclick="window.location.href='daftarPrestasi.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
-                                    Lihat Prestasi
-                                </button>
-                            </div>
                         </header>
                     HTML;
             endif;

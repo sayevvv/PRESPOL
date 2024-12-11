@@ -860,7 +860,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Homepage Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/landing.png" alt="Homepage Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -871,7 +871,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/panduan.png" alt="Guide Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/panduan.png" alt="Guide Preview">
                         </div>
                     </section>
                 </div>
@@ -885,7 +885,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 Fitur untuk mahasiswa masuk ke dalam sistem menggunakan akun yang telah terdaftar.</h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Masuk / Log in Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/login.png" alt="Masuk / Log in Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -895,7 +895,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 Fitur pendaftaran bagi mahasiswa baru yang belum memiliki akun. Mahasiswa perlu meng-input-kan data seperti username, kata sandi, nama, NIM, jurusan, program studi, dan juga foto profil untuk membuat akun.</h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Daftar / Sign up Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/signup.png" alt="Daftar / Sign up Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -905,7 +905,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 Halaman setelah login berhasil yang menampilkan ucapan selamat datang dan leaderboard terkini. Leaderboard memperlihatkan peringkat mahasiswa berdasarkan jumlah poin prestasi.</h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Beranda Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/beranda.png" alt="Beranda Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -915,7 +915,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 Halaman untuk melihat dan mengedit informasi pribadi mahasiswa, seperti nama, email, foto profil, dan total poin prestasi.</h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Profil Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/profil.png" alt="Profil Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -925,7 +925,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 Formulir untuk menambahkan data prestasi yang telah diraih, seperti lomba atau penghargaan. Mahasiswa dapat meng-input-kan data perlombaan dan mengunggah bukti prestasi seperti sertifikat, foto kompetisi, dan lain lain dalam format dokumen atau gambar.</h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Tambah Prestasi Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/tambah.png" alt="Tambah Prestasi Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -941,7 +941,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Pengajuan Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/pengajuan.png" alt="Pengajuan Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -951,7 +951,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 Halaman yang menampilkan daftar seluruh prestasi mahasiswa yang telah terdaftar dalam sistem. Dilengkapi dengan fitur search, sort, dan filter untuk mempermudah pencarian berdasarkan kriteria seperti kategori prestasi, tanggal, atau status.</h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="List Prestasi Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/list.png" alt="List Prestasi Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -961,7 +961,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                                 Fitur untuk keluar dari sistem dan mengakhiri sesi login dengan aman.</h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Keluar / Log out Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/keluar.png" alt="Keluar / Log out Preview">
                         </div>
                     </section>
                 </div>
@@ -977,7 +977,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Login Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/login.png" alt="Login Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -988,7 +988,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Dashboard Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/berandaAdmin.png" alt="Dashboard Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -999,7 +999,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Add Achievement Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarpanduan/tambahAdmin.png" alt="Add Achievement Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
@@ -1010,7 +1010,7 @@ $leaderboardData = $db->fetchAll($sql, $params);
                             </h2>
                         </div>
                         <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
-                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/homepage.png" alt="Achievements List Preview">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/listAdmin.png" alt="Achievements List Preview">
                         </div>
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">

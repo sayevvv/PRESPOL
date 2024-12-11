@@ -641,7 +641,7 @@ class Admin extends User
                 echo
                 <<<HTML
                     <div class = 'flex items-center mb-8'>
-                        <img alt = 'User profile picture' class = 'space-y-8 rounded-full mr-4' height = '100' src = '$fotoProfile' width = '100'/>
+                        <img alt = 'User profile picture' class ="w-20 h-20 space-y-8 rounded-full mr-4 object cover" src = '$fotoProfile'/>
                         <div class="space-y-2">
                             <h1 class = 'text-3xl font-bold'> $nama </h1>
                             <div class = 'flex items-center'>
@@ -649,7 +649,6 @@ class Admin extends User
                             <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $this->nip </span>
                         </div>
                     </div>
-                    <img src = "img/setting.svg" alt = 'Profile Picture' class = 'w-10 h-10 rounded-full ml-2'>
                 HTML;
             } else {
                 throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($this->nip));

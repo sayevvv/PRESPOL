@@ -289,11 +289,11 @@ return $currentPage === $pageName
                             <ul class="py-2">
                                 <li>
                                     <a 
-                                        href="#" 
+                                        href="../profil.php" 
                                         id="settings-btn" 
                                         class="block px-4 py-2 hover:bg-gray-100 text-gray-800 hover:text-black"
                                     >
-                                        <i class="mr-2">⚙️</i>Settings
+                                        <i class="mr-2">⚙️</i>Profil
                                     </a>
                                 </li>
                                 <li>
@@ -598,7 +598,7 @@ return $currentPage === $pageName
                 echo
                 <<<HTML
                     <div class = 'flex items-center mb-8'>
-                        <img alt = 'User profile picture' class = 'space-y-8 rounded-full mr-4' height = '100' src = '$fotoProfile' width = '100'/>
+                    <img alt = 'User profile picture' class ="w-20 h-20 space-y-8 rounded-full mr-4 object cover" src = '$fotoProfile'/>
                         <div class="space-y-2">
                             <h1 class = 'text-3xl font-bold'> $nama </h1>
                             <div class = 'flex items-center'>
@@ -619,7 +619,6 @@ return $currentPage === $pageName
                             </div>
                         </div>
                     </div>
-                    <img src = "img/setting.svg" alt = 'Profile Picture' class = 'w-10 h-10 rounded-full ml-2'>
                 HTML;
 
             } else {
