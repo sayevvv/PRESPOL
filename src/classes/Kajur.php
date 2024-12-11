@@ -473,7 +473,6 @@ class Kajur extends User {
                             <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $this->nidn </span>
                         </div>
                     </div>
-                    <img src = "img/setting.svg" alt = 'Profile Picture' class = 'w-10 h-10 rounded-full ml-2'>
                 HTML;
 
             } else {
