@@ -1037,6 +1037,17 @@ $leaderboardData = $db->fetchAll($sql, $params);
                     </section>
                     <section class="flex flex-col-reverse lg:flex-row lg:items-center">
                         <div class="lg:w-1/2 px-4 lg:pl-10 lg:pr-10 mt-4 lg:mt-0">
+                            <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Ekspor Data</b></p>
+                            <h2 class="mt-2 text-md text-gray-600 text-justify">
+                            Halaman untuk mengunduh laporan data prestasi mahasiswa dalam format Excel. Data ini mencakup seluruh informasi dari tabel prestasi mahasiswa sesuai dengan jurusan yang dipilih.
+                            </h2>
+                        </div>
+                        <div class="lg:w-1/2 px-4 lg:mr-16 drop-shadow-md hover:drop-shadow-xl">
+                            <img class="object-cover w-full h-64 rounded-lg md:h-96" src="src/img/gambarPanduan/eksporKajur.png" alt="Validate Achievement Preview">
+                        </div>
+                    </section>
+                    <section class="flex flex-col-reverse lg:flex-row lg:items-center">
+                        <div class="lg:w-1/2 px-4 lg:pl-10 lg:pr-10 mt-4 lg:mt-0">
                             <p class="text-lg tracking-wider text-orange-500 uppercase"><b>Keluar / Log out</b></p>
                             <h2 class="mt-2 text-md text-gray-600 text-justify">
                                 Fitur untuk keluar dari sistem dan mengakhiri sesi login dengan aman.

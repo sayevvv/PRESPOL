@@ -166,7 +166,7 @@ class Kajur extends User {
                 <<<HTML
                     <header class="flex flex-col lg:flex-row justify-between items-center mt-24 md:mt-16 mb-16 md:mb-0">
                         <div class="text-center lg:text-left">
-                            <h1 class="text-xl md:text-xl lg:text-3xl font-bold">Selamat Datang</h1>
+                            <h1 class="text-xl md:text-2xl lg:text-3xl font-bold">Selamat Datang</h1>
                             <h2 class="text-2xl md:text-3xl lg:text-5xl font-bold text-black">Ketua Jurusan!</h2>
                             <button onclick="window.location.href='#'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
                                 Lihat Prestasi
@@ -464,13 +464,19 @@ class Kajur extends User {
                 $fotoProfile = $row[ 'foto_profile' ] ?? 'default-profile.png';
                 echo
                 <<<HTML
-                    <div class = 'flex items-center mb-8'>
-                        <img alt = 'User profile picture' class = 'space-y-8 rounded-full mr-4' height = '100' src = '$fotoProfile' width = '100'/>
-                        <div class="space-y-2">
-                            <h1 class = 'text-3xl font-bold'> $nama </h1>
-                            <div class = 'flex items-center'>
-                            <!-- <span class = 'bg-orange-200 text-orange-600 px-2 py-1 rounded-full text-sm'> $this->nidn</span> -->
-                            <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $this->nidn </span>
+                    <div class="flex flex-col pt-20 mb-8 w-full max-w-screen-md">
+                        <div class="flex items-center mb-8">
+                            <img alt="User profile picture" class="rounded-full mr-4" height="150" src="$fotoProfile" width="150" />
+                            <div class="space-y-2">
+                                <h1 class="text-5xl font-semibold">$nama</h1>
+                                <div class="flex items-center">
+                                    <span class="text-xl md:text-2xl bg-orange-400 text-white py-2 px-6 rounded-full">NIDN $this->nidn</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Ketua Jurusan Card -->
+                        <div class="bg-white border px-6 py-4 rounded-lg shadow-lg">
+                            <p class="text-lg font-semibold">Ketua Jurusan Teknologi Informasi Polinema</p>
                         </div>
                     </div>
                 HTML;

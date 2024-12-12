@@ -224,7 +224,7 @@ if ($_SESSION['role'] == '1') {
                                 <h2 id="file-poster" class="mx-3 text-gray-400 truncate">xxx.png</h2>
             
                                 <!-- Input file -->
-                                <input id="poster_kompetisi" type="file" name="poster_kompetisi" class="hidden" accept=".pdf,image/*">
+                                <input id="poster_kompetisi" type="file" name="flyer" class="hidden" accept=".pdf,image/*">
                             </label>
 
                             <!-- Pesan kesalahan -->

@@ -640,13 +640,23 @@ class Admin extends User
                 $fotoProfile = $row['foto_profile'] ?? 'default-profile.png';
                 echo
                 <<<HTML
-                    <div class = 'flex items-center mb-8'>
-                        <img alt = 'User profile picture' class ="w-20 h-20 space-y-8 rounded-full mr-4 object cover" src = '$fotoProfile'/>
-                        <div class="space-y-2">
-                            <h1 class = 'text-3xl font-bold'> $nama </h1>
-                            <div class = 'flex items-center'>
-                            <!-- <span class = 'bg-orange-200 text-orange-600 px-2 py-1 rounded-full text-sm'> $this->nip </span> -->
-                            <span class = 'text-xl bg-orange-400 text-white py-2 px-6 rounded'> NIM $this->nip </span>
+                    <div class="flex flex-col pt-20 mb-8 w-full max-w-screen-md">
+                        <div class="flex items-center mb-8">
+                        <img 
+                            alt="User profile picture" 
+                            class="w-36 h-36 rounded-full object-cover mr-4" 
+                            src="$fotoProfile" 
+                            />
+                            <div class="space-y-2">
+                                <h1 class="text-5xl font-semibold">$nama</h1>
+                                <div class="flex items-center">
+                                    <span class="text-xl md:text-2xl bg-orange-400 text-white py-2 px-6 rounded-full">NIP $this->nip</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Ketua Jurusan Card -->
+                        <div class="bg-white border px-6 py-4 rounded-lg shadow-lg">
+                            <p class="text-lg font-semibold">Admin Prespol</p>
                         </div>
                     </div>
                 HTML;

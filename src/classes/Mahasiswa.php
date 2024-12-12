@@ -190,8 +190,8 @@ return $currentPage === $pageName
         <<<HTML
             <header class="flex flex-col lg:flex-row justify-between items-center mt-24 md:mt-16 mb-16 md:mb-0">
                 <div class="text-center lg:text-left">
-                    <h1 class="text-xl md:text-xl lg:text-2xl font-bold">Selamat Datang</h1>
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-black">Champions!</h2>
+                    <h1 class="text-xl md:text-2xl lg:text-3xl font-bold">Selamat Datang</h1>
+                    <h2 class="text-2xl md:text-3xl lg:text-5xl font-bold text-black">Champions!</h2>
                     <p class="text-orange-500 mt-2">Kamu peringkat ke-$peringkat di Leaderboard Prespol terkini. Teruskan semangatmu!</p>
                 </div>
             </header>
