@@ -54,13 +54,13 @@ class Admin extends User
                             </a>
                         </li>
                         <li>
-                            <a href="daftarPengajuan.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                            <a href="daftarPengajuan.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'daftarPengajuan.php')} {$this->getActiveClass($currentPage, 'detailPengajuan.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                                 <i class="fas fa-file-alt"></i>
                                 <span class="hidden lg:inline ml-6">Validasi</span>
                             </a>
                         </li>
                         <li>
-                            <a href="daftarPrestasi.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'daftarPrestasi.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                            <a href="daftarPrestasi.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'daftarPrestasi.php')} {$this->getActiveClass($currentPage, 'detailPrestasi.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                                 <i class="fas fa-list"></i>
                                 <span class="hidden lg:inline ml-5">List Prestasi</span>
                             </a>
@@ -459,7 +459,7 @@ class Admin extends User
                 }
 
                 // Berikan konfirmasi penghapusan
-                return "Prestasi ditolak. File yang dihapus: " . implode(", ", $deletedFiles);
+                return "Prestasi ditolak dengan alasan " . $deskripsi;
             }
 
             // Periksa hasil dan kembalikan pesan sesuai status

@@ -48,7 +48,7 @@ class Kajur extends User {
                             </a>
                         </li>
                         <li>
-                            <a href="daftarPrestasi.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'daftarPrestasi.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                            <a href="daftarPrestasi.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'daftarPrestasi.php')} {$this->getActiveClass($currentPage, 'detailPrestasi.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                                 <i class="fas fa-list"></i>
                                 <span class="hidden lg:inline ml-5">List Prestasi</span>
                             </a>
@@ -168,7 +168,7 @@ class Kajur extends User {
                         <div class="text-center lg:text-left">
                             <h1 class="text-xl md:text-2xl lg:text-3xl font-bold">Selamat Datang</h1>
                             <h2 class="text-2xl md:text-3xl lg:text-5xl font-bold text-black">Ketua Jurusan!</h2>
-                            <button onclick="window.location.href='#'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
+                            <button onclick="window.location.href='daftarPrestasi.php'" class="mt-4 bg-black text-white py-2 px-6 rounded hover:bg-gray-800">
                                 Lihat Prestasi
                             </button>
                         </div>
