@@ -12,6 +12,8 @@ $db = new Database();
 
 $no_induk = $_SESSION['no_induk'];
 
+$backUrl = 'daftarPrestasi.php';
+
 if($_SESSION['role'] == '1'){
     include_once 'classes/Admin.php';
     $user = new Admin($no_induk);
@@ -21,6 +23,7 @@ if($_SESSION['role'] == '1'){
 } else if($_SESSION['role'] == '3'){
     include_once 'classes/Mahasiswa.php';
     $user = new Mahasiswa($no_induk);
+    $backUrl = 'profil.php';
 }
 
 $username = $_SESSION['username'];
@@ -34,6 +37,8 @@ $username = $_SESSION['username'];
     <title>Detail Prestasi Pending</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <style>
@@ -152,6 +157,7 @@ $username = $_SESSION['username'];
             <?php endif; ?>
         </div>
 
+
             <?php if ($user instanceof Admin): ?>
                 <!-- Edit Form -->
             <div id="editForm" class="bg-white p-6 rounded-lg shadow-lg border border-gray-300 hidden">
@@ -250,6 +256,14 @@ $username = $_SESSION['username'];
         <?php } else { ?>
         <p class="text-red-600">ID tidak ditemukan!</p>
         <?php } ?>
+    </div>
+
+    <div class="container mt-4">
+        <!-- Tombol Kembali -->
+        <a href="<?php echo $backUrl; ?>" class="btn btn-primary d-inline-flex align-items-center">
+            <i class="bi bi-arrow-left me-2"></i>
+            Kembali
+        </a>
     </div>
 
     </main>
