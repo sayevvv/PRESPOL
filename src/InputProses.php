@@ -8,7 +8,7 @@ function sanitizeInput($data) {
     return trim($data) === '' ? null : htmlspecialchars(trim($data));
 }
 
-function uploadFile($file, $allowedExtensions, $maxSize, $key) {
+function uploadFile($file, $allowedExtensions, $maxSize, $key, $nim, $increment) {
     if ($file['error'] !== UPLOAD_ERR_OK) {
         throw new Exception("Error uploading file: " . $file['name']);
     }
@@ -41,10 +41,14 @@ function uploadFile($file, $allowedExtensions, $maxSize, $key) {
     }
 
     $targetDirectory = $directoryMapping[$key];
-    $uniqueFileName = strtolower(uniqid('file_', true) . "_" . basename($file['name']));
-    $sanitizedFileName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $uniqueFileName);
+    $originalFileName = pathinfo($file['name'], PATHINFO_FILENAME);
+    $sanitizedOriginalFileName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $originalFileName);
+    $sanitizedExtension = preg_replace('/[^a-zA-Z0-9]/', '', $extension);
 
-    $targetFilePath = $targetDirectory . $sanitizedFileName;
+    // Generate unique file name with nim, original name, and increment
+    $uniqueFileName = "{$nim}_{$sanitizedOriginalFileName}_{$increment}.{$sanitizedExtension}";
+    $targetFilePath = $targetDirectory . $uniqueFileName;
+
     if (!is_dir($targetDirectory)) {
         mkdir($targetDirectory, 0755, true);
     }
@@ -55,6 +59,7 @@ function uploadFile($file, $allowedExtensions, $maxSize, $key) {
 
     return $targetFilePath;
 }
+
 
 function getAllowedMimeTypes($extension) {
     $mimeTypes = [
@@ -71,6 +76,20 @@ function getAllowedMimeTypes($extension) {
     return $mimeTypes[$extension] ?? [];
 }
 
+function getCurrentIncrement() {
+    $file = 'increment_counter.txt';
+    if (!file_exists($file)) {
+        file_put_contents($file, 1);
+    }
+    return (int) file_get_contents($file);
+}
+
+function updateIncrement($newIncrement) {
+    $file = 'increment_counter.txt';
+    file_put_contents($file, $newIncrement);
+}
+
+
 function processForm($db, $formData, $fileData) {
     try {
         $query = "SELECT id_mahasiswa FROM mahasiswa WHERE nim = ?";
@@ -80,6 +99,8 @@ function processForm($db, $formData, $fileData) {
         if (!$student) {
             throw new Exception("Student not found with NIM: {$formData['nim']}.");
         }
+
+        $increment = getCurrentIncrement();
 
         $data = [
             'id_mahasiswa' => $student['id_mahasiswa'],
@@ -100,12 +121,12 @@ function processForm($db, $formData, $fileData) {
             'flyer' => ['allowed' => ['jpg', 'jpeg', 'png', 'gif', 'pdf'], 'size' => 5 * 1024 * 1024],
             'sertifikat' => ['allowed' => ['pdf'], 'size' => 5 * 1024 * 1024],
             'surat_tugas' => ['allowed' => ['pdf'], 'size' => 5 * 1024 * 1024],
-            'karya_kompetisi' => ['allowed' => [], 'size' => 75 * 1024 * 1024],
+            'karya_kompetisi' => ['allowed' => ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'mkv', 'mov', 'mp4'], 'size' => 75 * 1024 * 1024],
         ];
 
         foreach ($fileRules as $key => $rules) {
             $data[$key] = (isset($fileData[$key]) && $fileData[$key]['size'] > 0)
-                ? uploadFile($fileData[$key], $rules['allowed'], $rules['size'], $key)
+                ? uploadFile($fileData[$key], $rules['allowed'], $rules['size'], $key, $formData['nim'], $increment)
                 : null;
         }
 
@@ -122,6 +143,7 @@ function processForm($db, $formData, $fileData) {
         ];
 
         $db->executeProcedure($procedure, $params);
+        updateIncrement($increment + 1);
         return "Data successfully saved!";
     } catch (Exception $e) {
         throw new Exception("Error: " . $e->getMessage());

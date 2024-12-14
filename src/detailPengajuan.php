@@ -31,7 +31,13 @@ $user = new Admin($no_induk);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
+    <style>
+        body {
+            background: url('img/homepageGradient.png') no-repeat center center fixed;
+            background-size: cover;
+            flex: 1;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col lg:flex-row">
     <!-- Sidebar -->

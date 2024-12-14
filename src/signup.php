@@ -2,13 +2,9 @@
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
 include 'config/Database.php';
-// header('Content-Type: application/json');
 
 $db = new Database();
 $conn = $db->getConnection();
-
-
-// $response = array();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ambil data dari form
@@ -16,17 +12,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $password_hash = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $nama = $_POST['nama'];
-    $foto_profile = $_FILES['dropzone-file']['name'];
-    $foto_profile_tmp = $_FILES['dropzone-file']['tmp_name'];
+    $nim = $_POST['nim'];
     $jurusan_id = $_POST['jurusan'];
     $prodi_id = $_POST['prodi'];
     $role_id = '3';
-    $nim = $_POST['nim'];
+
+    $foto_profile_tmp = $_FILES['dropzone-file']['tmp_name'];
+    $foto_profile_ext = pathinfo($_FILES['dropzone-file']['name'], PATHINFO_EXTENSION);
 
     // Validasi file foto
     $uploadDir = 'upload/profile/mahasiswa/';
-    $uploadFile = $uploadDir . basename($foto_profile);
 
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    // Fungsi untuk mendapatkan increment saat ini dari file
+    function getCurrentProfileIncrement() {
+        $file = 'profile_increment_counter.txt';
+        if (!file_exists($file)) {
+            file_put_contents($file, 1);
+        }
+        return (int) file_get_contents($file);
+    }
+
+    // Fungsi untuk memperbarui increment
+    function updateProfileIncrement($newIncrement) {
+        $file = 'profile_increment_counter.txt';
+        file_put_contents($file, $newIncrement);
+    }
+
+    // Generate nama file unik dengan increment
+    $increment = getCurrentProfileIncrement();
+    $sanitizedNama = preg_replace('/[^a-zA-Z0-9]/', '_', $nama);
+    $newFileName = $nim . "_" . $sanitizedNama . "_" . $increment . "." . $foto_profile_ext;
+    $uploadFile = $uploadDir . $newFileName;
 
     if (move_uploaded_file($foto_profile_tmp, $uploadFile)) {
         try {
@@ -35,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Simpan data mahasiswa
             $insertMahasiswaQuery = "INSERT INTO mahasiswa (nim, nama, foto_profile, id_jurusan, id_prodi)
-                                    OUTPUT INSERTED.id_mahasiswa 
+                                     OUTPUT INSERTED.id_mahasiswa 
                                      VALUES (?, ?, ?, ?, ?)";
             $paramsMahasiswa = [$nim, $nama, $uploadFile, $jurusan_id, $prodi_id];
             $mahasiswa = $db->fetchOne($insertMahasiswaQuery, $paramsMahasiswa);
@@ -55,8 +75,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Commit transaksi
             sqlsrv_commit($conn);
 
-            // Kembalikan status berhasil
-            // echo ("Akun berhasil dibuat!");
+            // Update increment setelah berhasil menyimpan
+            updateProfileIncrement($increment + 1);
+
         } catch (Exception $e) {
             // Rollback jika ada kesalahan
             sqlsrv_rollback($conn);
