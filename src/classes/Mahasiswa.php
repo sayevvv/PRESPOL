@@ -289,7 +289,7 @@ return $currentPage === $pageName
                             <ul class="py-2">
                                 <li>
                                     <a 
-                                        href="../profil.php" 
+                                        href="../src/profil.php" 
                                         id="settings-btn" 
                                         class="block px-4 py-2 hover:bg-gray-100 text-gray-800 hover:text-black"
                                     >
@@ -332,12 +332,6 @@ return $currentPage === $pageName
                                 e.stopPropagation();
                             });
 
-                            // Settings button click handler
-                            document.getElementById('settings-btn').addEventListener('click', function(e) {
-                                e.preventDefault();
-                                alert('Settings clicked');
-                                dropdownMenu.classList.add('hidden');
-                            });
 
                             // Logout button click handler
                             document.getElementById('logout-btn').addEventListener('click', function(e) {
