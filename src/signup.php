@@ -90,9 +90,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Set session untuk menandakan form sudah disubmit
     $_SESSION['form_submitted'] = true;
     // Redirect untuk me-reload halaman
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
-
+    // header("Location: " . $_SERVER['PHP_SELF']);
+    // exit();
+    if (isset($_SESSION['form_submitted']) && $_SESSION['form_submitted']) {
+        echo "<script>
+            window.onload = function() {
+                createAlertSuccess(); 
+                setTimeout(function() {
+                    window.location.href = '" . $_SERVER['PHP_SELF'] . "';
+                }, 3000); // Tunda reload selama 3 detik
+            };
+        </script>";
+        unset($_SESSION['form_submitted']);
+    }
     setcookie('username', $username, time() + (86400 * 30)); // 86400 = 1 day
     setcookie('password', $password, time() + (86400 * 30)); // 86400 = 1 day
 }
@@ -556,11 +566,12 @@ $db->close();
             // Create alert content
             card.innerHTML = `
                 <div class="p-6 space-y-4">
-                    <div class="flex items-center justify-center w-16 h-16 mx-auto bg-orange-100 rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    <div class="flex items-center justify-center w-16 h-16 mx-auto bg-green-100 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
+
                     
                     <div class="text-center">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Pendaftaran Berhasil!</h3>
@@ -606,12 +617,7 @@ $db->close();
         }
 
         // Cek jika session 'form_submitted' ada
-        <?php if (isset($_SESSION['form_submitted']) && $_SESSION['form_submitted']): ?>
-            // Tampilkan overlay alert menggunakan fungsi
-            createAlertSuccess();
-            // Hapus session setelah menampilkan alert
-            <?php unset($_SESSION['form_submitted']); ?>
-        <?php endif; ?>
+        
 
         
         document.addEventListener('DOMContentLoaded', function() {
