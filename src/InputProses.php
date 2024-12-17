@@ -91,6 +91,8 @@ function updateIncrement($newIncrement) {
 
 
 function processForm($db, $formData, $fileData) {
+    $uploadedFiles = []; // Array untuk melacak file yang berhasil diunggah
+
     try {
         $query = "SELECT id_mahasiswa FROM mahasiswa WHERE nim = ?";
         $params = [$formData['nim']];
@@ -125,9 +127,13 @@ function processForm($db, $formData, $fileData) {
         ];
 
         foreach ($fileRules as $key => $rules) {
-            $data[$key] = (isset($fileData[$key]) && $fileData[$key]['size'] > 0)
-                ? uploadFile($fileData[$key], $rules['allowed'], $rules['size'], $key, $formData['nim'], $increment)
-                : null;
+            if (isset($fileData[$key]) && $fileData[$key]['size'] > 0) {
+                $filePath = uploadFile($fileData[$key], $rules['allowed'], $rules['size'], $key, $formData['nim'], $increment);
+                $uploadedFiles[] = $filePath; // Simpan file yang berhasil diunggah ke dalam array
+                $data[$key] = $filePath;
+            } else {
+                $data[$key] = null;
+            }
         }
 
         $procedure = "EXEC sp_InsertPrestasiPending @id_mahasiswa=?, @nama_kompetisi=?, @id_juara=?, @penyelenggara=?,
@@ -146,9 +152,16 @@ function processForm($db, $formData, $fileData) {
         updateIncrement($increment + 1);
         return "Data successfully saved!";
     } catch (Exception $e) {
+        // Jika terjadi kesalahan, hapus semua file yang telah diunggah
+        foreach ($uploadedFiles as $filePath) {
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
         throw new Exception("Error: " . $e->getMessage());
     }
 }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
