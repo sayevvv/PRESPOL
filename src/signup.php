@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Generate nama file unik dengan increment
     $increment = getCurrentProfileIncrement();
-    $sanitizedNama = preg_replace('/[^a-zA-Z0-9]/', '_', $nama);
+    $sanitizedNama = preg_replace('/[^a-zA-Z0-9]/', '_', 'foto_profile');
     $newFileName = $nim . "_" . $sanitizedNama . "_" . $increment . "." . $foto_profile_ext;
     $uploadFile = $uploadDir . $newFileName;
 

@@ -41,11 +41,12 @@ function uploadFile($file, $allowedExtensions, $maxSize, $key, $nim, $increment)
     }
 
     $targetDirectory = $directoryMapping[$key];
-    $originalFileName = pathinfo($file['name'], PATHINFO_FILENAME);
-    $sanitizedOriginalFileName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $originalFileName);
+
+    // Replace original file name with the key name (e.g., "foto_kompetisi")
+    $sanitizedOriginalFileName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $key);
     $sanitizedExtension = preg_replace('/[^a-zA-Z0-9]/', '', $extension);
 
-    // Generate unique file name with nim, original name, and increment
+    // Generate unique file name with nim, key, and increment
     $uniqueFileName = "{$nim}_{$sanitizedOriginalFileName}_{$increment}.{$sanitizedExtension}";
     $targetFilePath = $targetDirectory . $uniqueFileName;
 
@@ -59,7 +60,6 @@ function uploadFile($file, $allowedExtensions, $maxSize, $key, $nim, $increment)
 
     return $targetFilePath;
 }
-
 
 function getAllowedMimeTypes($extension) {
     $mimeTypes = [
@@ -88,7 +88,6 @@ function updateIncrement($newIncrement) {
     $file = 'increment_counter.txt';
     file_put_contents($file, $newIncrement);
 }
-
 
 function processForm($db, $formData, $fileData) {
     $uploadedFiles = []; // Array untuk melacak file yang berhasil diunggah
@@ -161,7 +160,6 @@ function processForm($db, $formData, $fileData) {
         throw new Exception("Error: " . $e->getMessage());
     }
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
