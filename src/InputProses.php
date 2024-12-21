@@ -41,11 +41,12 @@ function uploadFile($file, $allowedExtensions, $maxSize, $key, $nim, $increment)
     }
 
     $targetDirectory = $directoryMapping[$key];
-    $originalFileName = pathinfo($file['name'], PATHINFO_FILENAME);
-    $sanitizedOriginalFileName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $originalFileName);
+
+    // Replace original file name with the key name (e.g., "foto_kompetisi")
+    $sanitizedOriginalFileName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $key);
     $sanitizedExtension = preg_replace('/[^a-zA-Z0-9]/', '', $extension);
 
-    // Generate unique file name with nim, original name, and increment
+    // Generate unique file name with nim, key, and increment
     $uniqueFileName = "{$nim}_{$sanitizedOriginalFileName}_{$increment}.{$sanitizedExtension}";
     $targetFilePath = $targetDirectory . $uniqueFileName;
 
@@ -59,7 +60,6 @@ function uploadFile($file, $allowedExtensions, $maxSize, $key, $nim, $increment)
 
     return $targetFilePath;
 }
-
 
 function getAllowedMimeTypes($extension) {
     $mimeTypes = [
@@ -89,8 +89,9 @@ function updateIncrement($newIncrement) {
     file_put_contents($file, $newIncrement);
 }
 
-
 function processForm($db, $formData, $fileData) {
+    $uploadedFiles = []; // Array untuk melacak file yang berhasil diunggah
+
     try {
         $query = "SELECT id_mahasiswa FROM mahasiswa WHERE nim = ?";
         $params = [$formData['nim']];
@@ -125,9 +126,13 @@ function processForm($db, $formData, $fileData) {
         ];
 
         foreach ($fileRules as $key => $rules) {
-            $data[$key] = (isset($fileData[$key]) && $fileData[$key]['size'] > 0)
-                ? uploadFile($fileData[$key], $rules['allowed'], $rules['size'], $key, $formData['nim'], $increment)
-                : null;
+            if (isset($fileData[$key]) && $fileData[$key]['size'] > 0) {
+                $filePath = uploadFile($fileData[$key], $rules['allowed'], $rules['size'], $key, $formData['nim'], $increment);
+                $uploadedFiles[] = $filePath; // Simpan file yang berhasil diunggah ke dalam array
+                $data[$key] = $filePath;
+            } else {
+                $data[$key] = null;
+            }
         }
 
         $procedure = "EXEC sp_InsertPrestasiPending @id_mahasiswa=?, @nama_kompetisi=?, @id_juara=?, @penyelenggara=?,
@@ -146,6 +151,12 @@ function processForm($db, $formData, $fileData) {
         updateIncrement($increment + 1);
         return "Data successfully saved!";
     } catch (Exception $e) {
+        // Jika terjadi kesalahan, hapus semua file yang telah diunggah
+        foreach ($uploadedFiles as $filePath) {
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
         throw new Exception("Error: " . $e->getMessage());
     }
 }

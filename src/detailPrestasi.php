@@ -40,6 +40,8 @@ $username = $_SESSION['username'];
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <style>
         body {
@@ -282,6 +284,40 @@ $username = $_SESSION['username'];
             $('#detailView').show();
         });
     });
+    </script>
+    <?php if (isset($_GET['status'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            <?php if ($_GET['status'] == 'success'): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Data berhasil diperbarui!',
+                    confirmButtonText: 'OK'
+                });
+            <?php elseif ($_GET['status'] == 'failure'): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Data gagal diperbarui. Silakan coba lagi.',
+                    confirmButtonText: 'OK'
+                });
+            <?php elseif ($_GET['status'] == 'invalid_request'): ?>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid Request',
+                    text: 'Permintaan tidak valid.',
+                    confirmButtonText: 'OK'
+                });
+            <?php endif; ?>
+        });
+    </script>
+    <?php endif; ?>
+    <script>
+    // Hapus parameter `status` dari URL setelah notifikasi tampil
+    const url = new URL(window.location.href);
+    url.searchParams.delete('status');
+    window.history.replaceState({}, document.title, url.toString());
     </script>
 </body>
 </html>
