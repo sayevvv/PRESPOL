@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 createAlertSuccess(); 
                 setTimeout(function() {
                     window.location.href = '" . $_SERVER['PHP_SELF'] . "';
-                }, 3000); // Tunda reload selama 3 detik
+                }, 5000); // Tunda reload selama 5 detik
             };
         </script>";
         unset($_SESSION['form_submitted']);

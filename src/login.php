@@ -128,7 +128,7 @@ $csrf = new CSRFToken();
                                     </div>
 
                                     <div class="mt-2">
-                                        <p class="text-sm text-right text-gray-400">Lupa password? <button id="hubungi" class="cursor-pointer text-orange-500 focus:outline-none focus:underline hover:underline">Hubungi Admin!</button></p>
+                                        <p class="text-sm text-right text-gray-400">Lupa password? <a id="hubungi" class="cursor-pointer text-orange-500 focus:outline-none focus:underline hover:underline">Hubungi Admin!</a></p>
                                     </div>
 
                                     <div class="mt-6">
@@ -158,7 +158,7 @@ $csrf = new CSRFToken();
                                 <form>
                                     <div class="w-full mb-4 border border-orange-200 rounded-lg bg-orange-50">
                                         <div class="px-4 py-2 bg-white rounded-t-lg">
-                                            <textarea id="message" rows="4" class="w-full px-0 text-sm text-orange-900 bg-white " placeholder="p..Atmint!" required ></textarea>
+                                            <textarea id="message" rows="4" class="w-full px-0 outline-none text-sm text-orange-900 bg-white " placeholder="p..Atmint!" required ></textarea>
                                         </div>
                                         <div class="flex items-center justify-between px-3 py-2 border-t ">
                                             <button onclick="sendMessage()" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-orange-700 rounded-lg focus:ring-4 focus:ring-orange-200 hover:bg-orange-800">
