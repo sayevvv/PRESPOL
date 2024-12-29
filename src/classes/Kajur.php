@@ -1,20 +1,24 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Table;
 use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
 
-class Kajur extends User {
+class Kajur extends User
+{
 
     private $nidn;
 
-    public function __construct($nidn) {
+    public function __construct($nidn)
+    {
         parent::__construct();
         $this->nidn = $nidn;
     }
 
-    public function getNidn(){
+    public function getNidn()
+    {
         return $this->nidn;
     }
 
@@ -42,7 +46,7 @@ class Kajur extends User {
                             </a>
                         </li>
                         <li>
-                            <a href="profil.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'profile.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                            <a href="profil.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'profil.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                                 <i class="fas fa-user"></i>
                                 <span class="hidden lg:inline ml-5">Profil</span>
                             </a>
@@ -160,10 +164,11 @@ class Kajur extends User {
             : 'text-gray-700';
     }
 
-    public function mainContent(){
+    public function mainContent()
+    {
         $this->profile();
-        echo 
-                <<<HTML
+        echo
+        <<<HTML
                     <header class="flex flex-col lg:flex-row justify-between items-center mt-24 md:mt-16 mb-16 md:mb-0">
                         <div class="text-center lg:text-left">
                             <h1 class="text-xl md:text-2xl lg:text-3xl font-bold">Selamat Datang</h1>
@@ -308,14 +313,15 @@ class Kajur extends User {
         }
     }
 
-    public function listPrestasi($search = '', $filterKategori = '', $filterJuara = '', $filterJurusan = '', $sort = 'newest') {
+    public function listPrestasi($search = '', $filterKategori = '', $filterJuara = '', $filterJurusan = '', $sort = 'newest')
+    {
         $page = isset($_POST['page']) ? (int)$_POST['page'] : 1; // Change from $_GET to $_POST
         $limit = 10;
         $offset = ($page - 1) * $limit;
-    
+
         $totalQuery = "SELECT COUNT(*) AS total FROM vw_daftar_prestasi WHERE 1=1";
         $params = [];
-    
+
         // Filter conditions (keep existing code)
         if (!empty($search)) {
             $totalQuery .= " AND (
@@ -327,7 +333,7 @@ class Kajur extends User {
             $params[] = '%' . $search . '%';
             $params[] = '%' . $search . '%';
         }
-    
+
         if (!empty($filterKategori)) {
             $totalQuery .= " AND kategori = ?";
             $params[] = $filterKategori;
@@ -340,11 +346,11 @@ class Kajur extends User {
             $totalQuery .= " AND jurusan = ?";
             $params[] = $filterJurusan;
         }
-    
+
         $totalRow = $this->db->fetchOne($totalQuery, $params);
         $totalData = $totalRow['total'];
         $totalPages = ceil($totalData / $limit);
-    
+
         // Query data (keep existing query structure)
         $query = "SELECT 
                     id_prestasi,
@@ -357,7 +363,7 @@ class Kajur extends User {
                     tahun
                   FROM vw_daftar_prestasi 
                   WHERE 1=1";
-    
+
         // Add filter conditions to the main query (similar to total query)
         if (!empty($search)) {
             $query .= " AND (
@@ -366,7 +372,7 @@ class Kajur extends User {
                 event LIKE ?
             )";
         }
-        
+
         if (!empty($filterKategori)) {
             $query .= " AND kategori = ?";
         }
@@ -376,7 +382,7 @@ class Kajur extends User {
         if (!empty($filterJurusan)) {
             $query .= " AND jurusan = ?";
         }
-    
+
         // Sorting (keep existing sorting logic)
         switch ($sort) {
             case 'newest':
@@ -392,13 +398,13 @@ class Kajur extends User {
                 $query .= " ORDER BY nama DESC";
                 break;
         }
-    
+
         $query .= " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         $params[] = $offset;
         $params[] = $limit;
-    
+
         $result = $this->db->fetchAll($query, $params);
-    
+
         $rows = '';
         if ($result) {
             foreach ($result as $index => $row) {
@@ -408,7 +414,7 @@ class Kajur extends User {
                 $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['jurusan'] ?? '') . "</td>";
                 $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['nama_kompetisi'] ?? '') . "</td>";
                 $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['event'] ?? '') . "</td>";
-                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['juara'] ?? '') ."</td>";
+                $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['juara'] ?? '') . "</td>";
                 $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['kategori'] ?? '') . "</td>";
                 $rows .= "<td class='py-3 px-6 border'>" . htmlspecialchars($row['tahun'] ?? '') . "</td>";
                 $detailUrl = "detailPrestasi.php?id_prestasi=" . urlencode($row['id_prestasi']);
@@ -424,7 +430,7 @@ class Kajur extends User {
         } else {
             $rows = '<tr><td colspan="9" class="text-center">Tidak ada data ditemukan</td></tr>';
         }
-    
+
         return json_encode([
             'rows' => $rows,
             'pagination' => [
@@ -435,19 +441,21 @@ class Kajur extends User {
         ]);
     }
 
-    public function getPrestasiDetail($id_prestasi) {
+    public function getPrestasiDetail($id_prestasi)
+    {
         // Query untuk mendapatkan data detail dari VIEW
         $query = "
             SELECT * 
             FROM vw_daftar_prestasi 
             WHERE id_prestasi = ?
         ";
-    
+
         $params = [$id_prestasi];
         return $this->db->fetchOne($query, $params);
     }
 
-    public function profilDetail() {
+    public function profilDetail()
+    {
         try {
             $sql = "SELECT 
                 p.no_induk,
@@ -458,10 +466,10 @@ class Kajur extends User {
             $params = [$this->nidn];
 
             // Ambil hasil query
-            $row = $this->db->fetchOne( $sql, $params );
-            if ( $row ) {
-                $nama = $row[ 'nama' ] ?? 'Unknown';
-                $fotoProfile = $row[ 'foto_profile' ] ?? 'default-profile.png';
+            $row = $this->db->fetchOne($sql, $params);
+            if ($row) {
+                $nama = $row['nama'] ?? 'Unknown';
+                $fotoProfile = $row['foto_profile'] ?? 'default-profile.png';
                 echo
                 <<<HTML
                     <div class="flex flex-col pt-20 mb-8 w-full max-w-screen-md">
@@ -480,18 +488,18 @@ class Kajur extends User {
                         </div>
                     </div>
                 HTML;
-
             } else {
-                throw new Exception( 'Data tidak ditemukan untuk username: ' . htmlspecialchars( $this->nidn ) );
+                throw new Exception('Data tidak ditemukan untuk username: ' . htmlspecialchars($this->nidn));
             }
-        } catch ( Exception $e ) {
+        } catch (Exception $e) {
             // Log kesalahan dan lempar ulang
-            error_log( $e->getMessage() );
+            error_log($e->getMessage());
             echo 'Akun tidak ditemukan';
         }
     }
 
-    public function eksporData($export_type = 'all', $kategori = '', $jurusan = '') {
+    public function eksporData($export_type = 'all', $kategori = '', $jurusan = '')
+    {
         // Set the base query
         $query = "SELECT 
             p.id_prestasi AS idpres, m.nama AS namaMhs, m.nim AS nimMhs, jn.nama_jurusan AS namaJur, 
@@ -506,7 +514,7 @@ class Kajur extends User {
         JOIN kategori k ON p.id_kategori = k.id_kategori
         JOIN juara j ON p.id_juara = j.id_juara
         ";
-        
+
         // Filter by date if required
         if ($export_type == 'recent') {
             $query .= " WHERE DATEDIFF(day, p.created_date, GETDATE()) <= 30";
@@ -543,7 +551,7 @@ class Kajur extends User {
 
         // Create a new PHPExcel object
         require 'vendor/autoload.php'; // Assuming you're using PhpSpreadsheet
-        
+
 
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -551,15 +559,15 @@ class Kajur extends User {
         ob_flush();
         // Set Excel headers
         $headers = [
-            'A' => 'ID Prestasi', 
-            'B' => 'Nama Mahasiswa', 
+            'A' => 'ID Prestasi',
+            'B' => 'Nama Mahasiswa',
             'C' => 'NIM',
             'D' => 'Jurusan',
-            'E' => 'Peringkat', 
-            'F' => 'Nama Kompetisi', 
-            'G' => 'Event', 
-            'H' => 'Penyelenggara', 
-            'I' => 'Kategori', 
+            'E' => 'Peringkat',
+            'F' => 'Nama Kompetisi',
+            'G' => 'Event',
+            'H' => 'Penyelenggara',
+            'I' => 'Kategori',
             'J' => 'Jumlah Peserta',
             'K' => 'Dosen Pembimbing 1',
             'L' => 'Dosen Pembimbing 2',
@@ -571,7 +579,7 @@ class Kajur extends User {
             'R' => 'Karya Kompetisi',
             'S' => 'Surat Tugas'
         ];
-        
+
         // Write headers
         foreach ($headers as $col => $header) {
             $sheet->setCellValue($col . '1', $header);
@@ -595,7 +603,7 @@ class Kajur extends User {
             $sheet->setCellValue('L' . $rowCount, isset($row['dosbing2']) ? $row['dosbing2'] : 'N/A');
             $sheet->setCellValue('M' . $rowCount, isset($row['tanggal_mulai']) ? $row['tanggal_mulai'] : 'N/A');
             $sheet->setCellValue('N' . $rowCount, isset($row['tanggal_selesai']) ? $row['tanggal_selesai'] : 'N/A');
-            
+
             $sheet->setCellValue('O' . $rowCount, isset($row['flyer']) ? $row['flyer'] : 'N/A');
             $filePath = isset($row['flyer']) ? $row['flyer'] : null;
             $fileName = $filePath ? basename($filePath) : 'No file';
@@ -607,7 +615,7 @@ class Kajur extends User {
             $fileName = $filePath ? basename($filePath) : 'No file';
             $link_foto = 'http://localhost/Programs/src/upload/prestasi/kompetisi/' . $fileName;
             $sheet->getCell('P' . $rowCount)->getHyperlink()->setUrl($link_foto);
-            
+
             $sheet->setCellValue('Q' . $rowCount, isset($row['sertifikat']) ? $row['sertifikat'] : 'N/A');
             $filePath = isset($row['sertifikat']) ? $row['sertifikat'] : null;
             $fileName = $filePath ? basename($filePath) : 'No file';
@@ -625,10 +633,10 @@ class Kajur extends User {
             $fileName = $filePath ? basename($filePath) : 'No file';
             $link_surat = 'http://localhost/Programs/src/upload/prestasi/surat-tugas/' . $fileName;
             $sheet->getCell('S' . $rowCount)->getHyperlink()->setUrl($link_surat);
-            
+
             $rowCount++;
         }
-        
+
         // Set non-header cells 
         $sheet->getStyle('A:S')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
@@ -645,7 +653,7 @@ class Kajur extends User {
         $lastCell = $lastColumn . $lastRow; // Gabungkan kolom dan baris untuk mendapatkan sel terakhir
 
         // Create a table range
-        $tableRange = 'A1:'.$lastCell; // Adjust based on your data range
+        $tableRange = 'A1:' . $lastCell; // Adjust based on your data range
         $table = new Table($tableRange);
 
         // Add table style
@@ -663,4 +671,3 @@ class Kajur extends User {
         exit();
     }
 }
-?>

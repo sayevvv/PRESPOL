@@ -1,6 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Table;
 use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
@@ -9,12 +10,14 @@ class Admin extends User
 {
 
     private $nip;
-    public function __construct($nip) {
+    public function __construct($nip)
+    {
         parent::__construct();
         $this->nip = $nip;
     }
 
-    public function getNim() {
+    public function getNim()
+    {
         return $this->nip;
     }
 
@@ -42,7 +45,7 @@ class Admin extends User
                             </a>
                         </li>
                         <li>
-                            <a href="profil.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'profile.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
+                            <a href="profil.php" class="flex items-center mx-2 py-2 px-4 lg:px-6 {$this->getActiveClass($currentPage, 'profil.php')} hover:bg-orange-400 hover:text-white rounded-lg transition duration-200">
                                 <i class="fas fa-user"></i>
                                 <span class="hidden lg:inline ml-5">Profil</span>
                             </a>
@@ -748,7 +751,8 @@ class Admin extends User
         }
     }
 
-    public function eksporData($export_type = 'all', $kategori = '', $jurusan = '') {
+    public function eksporData($export_type = 'all', $kategori = '', $jurusan = '')
+    {
         // Set the base query
         $query = "SELECT 
             p.id_prestasi AS idpres, m.nama AS namaMhs, m.nim AS nimMhs, jn.nama_jurusan AS namaJur, 
@@ -763,7 +767,7 @@ class Admin extends User
         JOIN kategori k ON p.id_kategori = k.id_kategori
         JOIN juara j ON p.id_juara = j.id_juara
         ";
-        
+
         // Filter by date if required
         if ($export_type == 'recent') {
             $query .= " WHERE DATEDIFF(day, p.created_date, GETDATE()) <= 30";
@@ -800,7 +804,7 @@ class Admin extends User
 
         // Create a new PHPExcel object
         require 'vendor/autoload.php'; // Assuming you're using PhpSpreadsheet
-        
+
 
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -808,15 +812,15 @@ class Admin extends User
         ob_flush();
         // Set Excel headers
         $headers = [
-            'A' => 'ID Prestasi', 
-            'B' => 'Nama Mahasiswa', 
+            'A' => 'ID Prestasi',
+            'B' => 'Nama Mahasiswa',
             'C' => 'NIM',
             'D' => 'Jurusan',
-            'E' => 'Peringkat', 
-            'F' => 'Nama Kompetisi', 
-            'G' => 'Event', 
-            'H' => 'Penyelenggara', 
-            'I' => 'Kategori', 
+            'E' => 'Peringkat',
+            'F' => 'Nama Kompetisi',
+            'G' => 'Event',
+            'H' => 'Penyelenggara',
+            'I' => 'Kategori',
             'J' => 'Jumlah Peserta',
             'K' => 'Dosen Pembimbing 1',
             'L' => 'Dosen Pembimbing 2',
@@ -828,7 +832,7 @@ class Admin extends User
             'R' => 'Karya Kompetisi',
             'S' => 'Surat Tugas'
         ];
-        
+
         // Write headers
         foreach ($headers as $col => $header) {
             $sheet->setCellValue($col . '1', $header);
@@ -852,7 +856,7 @@ class Admin extends User
             $sheet->setCellValue('L' . $rowCount, isset($row['dosbing2']) ? $row['dosbing2'] : 'N/A');
             $sheet->setCellValue('M' . $rowCount, isset($row['tanggal_mulai']) ? $row['tanggal_mulai'] : 'N/A');
             $sheet->setCellValue('N' . $rowCount, isset($row['tanggal_selesai']) ? $row['tanggal_selesai'] : 'N/A');
-            
+
             $sheet->setCellValue('O' . $rowCount, isset($row['flyer']) ? $row['flyer'] : 'N/A');
             $filePath = isset($row['flyer']) ? $row['flyer'] : null;
             $fileName = $filePath ? basename($filePath) : 'No file';
@@ -864,7 +868,7 @@ class Admin extends User
             $fileName = $filePath ? basename($filePath) : 'No file';
             $link_foto = 'http://localhost/Programs/src/upload/prestasi/kompetisi/' . $fileName;
             $sheet->getCell('P' . $rowCount)->getHyperlink()->setUrl($link_foto);
-            
+
             $sheet->setCellValue('Q' . $rowCount, isset($row['sertifikat']) ? $row['sertifikat'] : 'N/A');
             $filePath = isset($row['sertifikat']) ? $row['sertifikat'] : null;
             $fileName = $filePath ? basename($filePath) : 'No file';
@@ -882,10 +886,10 @@ class Admin extends User
             $fileName = $filePath ? basename($filePath) : 'No file';
             $link_surat = 'http://localhost/Programs/src/upload/prestasi/surat-tugas/' . $fileName;
             $sheet->getCell('S' . $rowCount)->getHyperlink()->setUrl($link_surat);
-            
+
             $rowCount++;
         }
-        
+
         // Set non-header cells 
         $sheet->getStyle('A:S')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
@@ -902,7 +906,7 @@ class Admin extends User
         $lastCell = $lastColumn . $lastRow; // Gabungkan kolom dan baris untuk mendapatkan sel terakhir
 
         // Create a table range
-        $tableRange = 'A1:'.$lastCell; // Adjust based on your data range
+        $tableRange = 'A1:' . $lastCell; // Adjust based on your data range
         $table = new Table($tableRange);
 
         // Add table style
